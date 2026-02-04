@@ -42,7 +42,7 @@ export default function Newsletter() {
               />
             </div>
 
-            <button type="submit" className="btn btn-primary w-100">
+            <button type="submit" className="btn btn-primary">
               <span>Subscribe</span>
 
               <ArrowRight size={20} aria-hidden="true" />

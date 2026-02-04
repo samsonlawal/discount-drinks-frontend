@@ -41,8 +41,13 @@
 
 /* Badge pulse animation */
 @keyframes pulse {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.2); }
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
 }
 
 .btn-badge.pulse {
@@ -310,7 +315,7 @@
   margin: 0;
 }
 
-.quantity-input[type=number] {
+.quantity-input[type="number"] {
   -moz-appearance: textfield;
 }
 
@@ -457,8 +462,10 @@
   text-align: center;
 }
 
-.trust-badge ion-icon {
+.trust-badge svg {
   font-size: 28px;
+  width: 28px;
+  height: 28px;
   color: var(--middle-blue-green);
 }
 
@@ -476,7 +483,7 @@
 }
 
 .btn-loading::after {
-  content: '';
+  content: "";
   position: absolute;
   width: 16px;
   height: 16px;
@@ -491,7 +498,9 @@
 }
 
 @keyframes spinner {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* ============================================

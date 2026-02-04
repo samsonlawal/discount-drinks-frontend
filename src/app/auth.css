@@ -1,0 +1,566 @@
+/**
+ * AUTHENTICATION PAGE STYLES
+ * Production-ready authentication interface
+ * Version: 1.0.0
+ */
+
+/* ============================================
+   AUTH PAGE LAYOUT
+   ============================================ */
+
+.auth-page {
+  background: linear-gradient(135deg, var(--cultured) 0%, var(--white) 100%);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.auth-header {
+  padding: 20px 0;
+  background: var(--white);
+  box-shadow: 0 2px 10px hsla(0, 0%, 0%, 0.05);
+}
+
+.auth-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 60px 0;
+}
+
+/* ============================================
+   AUTH CONTAINER
+   ============================================ */
+
+.auth-container {
+  display: grid;
+  gap: 60px;
+  max-width: 1100px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ============================================
+   AUTH CARD
+   ============================================ */
+
+.auth-card {
+  /* background: var(--white); */
+  border-radius: 16px;
+  padding: 50px;
+  box-shadow: 0 10px 40px hsla(0, 0%, 0%, 0.08);
+  max-width: 480px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.auth-card-header {
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.auth-title {
+  font-size: var(--fs-2);
+  color: var(--eerie-black);
+  margin-bottom: 10px;
+  font-weight: var(--fw-600);
+}
+
+.auth-subtitle {
+  color: var(--sonic-silver);
+  font-size: var(--fs-8);
+  line-height: 1.5;
+}
+
+/* ============================================
+   ALERT MESSAGES
+   ============================================ */
+
+.auth-alert {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  border-radius: 8px;
+  margin-bottom: 25px;
+  font-size: var(--fs-9);
+  font-weight: var(--fw-500);
+  animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.auth-alert ion-icon {
+  font-size: 24px;
+  flex-shrink: 0;
+}
+
+.auth-alert--error {
+  background: hsl(356, 65%, 95%);
+  color: var(--candy-pink);
+  border: 1px solid var(--candy-pink);
+}
+
+.auth-alert--success {
+  background: hsl(353, 42%, 95%);
+  color: var(--middle-blue-green);
+  border: 1px solid var(--middle-blue-green);
+}
+
+.auth-alert--info {
+  background: hsl(210, 100%, 95%);
+  color: hsl(210, 100%, 40%);
+  border: 1px solid hsl(210, 100%, 70%);
+}
+
+/* ============================================
+   AUTH FORM
+   ============================================ */
+
+.auth-form {
+  margin-bottom: 30px;
+}
+
+.form-group {
+  margin-bottom: 24px;
+}
+
+.form-label {
+  display: block;
+  color: var(--eerie-black);
+  font-size: var(--fs-9);
+  font-weight: var(--fw-500);
+  margin-bottom: 8px;
+}
+
+.form-required {
+  color: var(--candy-pink);
+  margin-left: 2px;
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input-icon {
+  position: absolute;
+  left: 16px;
+  font-size: 20px;
+  color: var(--sonic-silver);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.form-input {
+  width: 100%;
+  height: 52px;
+  padding: 0 48px;
+  border: 2px solid var(--cultured);
+  border-radius: 8px;
+  font-size: var(--fs-8);
+  color: var(--eerie-black);
+  background: var(--white);
+  transition: var(--transition-1);
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--middle-blue-green);
+  background: var(--white);
+}
+
+.form-input.input-error {
+  border-color: var(--candy-pink);
+  background: hsl(356, 65%, 98%);
+}
+
+.form-input::placeholder {
+  color: var(--sonic-silver);
+  opacity: 0.7;
+}
+
+.form-error {
+  display: none;
+  color: var(--candy-pink);
+  font-size: var(--fs-10);
+  margin-top: 6px;
+  font-weight: var(--fw-500);
+}
+
+/* Password Toggle */
+.password-toggle {
+  position: absolute;
+  right: 16px;
+  background: none;
+  border: none;
+  color: var(--sonic-silver);
+  font-size: 20px;
+  cursor: pointer;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition-1);
+  z-index: 1;
+}
+
+.password-toggle:hover {
+  color: var(--eerie-black);
+}
+
+.password-toggle:focus {
+  outline: 2px solid var(--middle-blue-green);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Form Options */
+.form-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 28px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-size: var(--fs-9);
+  color: var(--eerie-black);
+  user-select: none;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: var(--middle-blue-green);
+}
+
+.link-text {
+  color: var(--middle-blue-green);
+  font-size: var(--fs-9);
+  font-weight: var(--fw-500);
+  text-decoration: none;
+  transition: var(--transition-1);
+}
+
+.link-text:hover {
+  text-decoration: underline;
+}
+
+/* Submit Button */
+.btn-submit {
+  height: 54px;
+  font-size: var(--fs-7);
+  position: relative;
+}
+
+.btn-submit:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.btn-loader {
+  display: inline-flex;
+  align-items: center;
+}
+
+.btn-loader ion-icon {
+  font-size: 20px;
+  animation: rotate 0.8s linear infinite;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ============================================
+   DEMO INFO
+   ============================================ */
+
+.demo-info {
+  background: hsl(45, 100%, 95%);
+  border: 1px solid hsl(45, 100%, 70%);
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+}
+
+.demo-title {
+  font-size: var(--fs-9);
+  font-weight: var(--fw-600);
+  color: hsl(45, 100%, 30%);
+  margin-bottom: 8px;
+}
+
+.demo-text {
+  font-size: var(--fs-10);
+  color: hsl(45, 100%, 25%);
+  margin-bottom: 4px;
+}
+
+.demo-text:last-child {
+  margin-bottom: 0;
+}
+
+.demo-text strong {
+  font-weight: var(--fw-600);
+}
+
+/* ============================================
+   DIVIDER
+   ============================================ */
+
+.auth-divider {
+  position: relative;
+  text-align: center;
+  margin: 30px 0;
+}
+
+.auth-divider::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: var(--cultured);
+}
+
+.auth-divider span {
+  position: relative;
+  background: var(--white);
+  padding: 0 16px;
+  color: var(--sonic-silver);
+  font-size: var(--fs-9);
+}
+
+/* ============================================
+   AUTH FOOTER
+   ============================================ */
+
+.auth-footer {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.auth-footer-text {
+  color: var(--sonic-silver);
+  font-size: var(--fs-9);
+}
+
+.link-primary {
+  color: var(--middle-blue-green);
+  font-weight: var(--fw-600);
+  text-decoration: none;
+  transition: var(--transition-1);
+}
+
+.link-primary:hover {
+  text-decoration: underline;
+}
+
+/* Security Notice */
+.security-notice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px;
+  background: var(--cultured);
+  border-radius: 8px;
+  font-size: var(--fs-10);
+  color: var(--sonic-silver);
+}
+
+.security-notice ion-icon {
+  font-size: 18px;
+  color: var(--middle-blue-green);
+}
+
+/* ============================================
+   AUTH SIDE (Info Section)
+   ============================================ */
+
+.auth-side {
+  display: none;
+}
+
+.auth-side-content {
+  padding: 50px;
+  background: var(--eerie-black);
+  border-radius: 16px;
+  color: var(--white);
+  height: 100%;
+}
+
+.side-title {
+  font-size: var(--fs-2);
+  margin-bottom: 20px;
+  font-weight: var(--fw-600);
+}
+
+.side-text {
+  font-size: var(--fs-8);
+  line-height: 1.7;
+  margin-bottom: 40px;
+  opacity: 0.9;
+}
+
+.feature-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: var(--fs-8);
+}
+
+.feature-item ion-icon {
+  font-size: 24px;
+  color: var(--middle-blue-green);
+  flex-shrink: 0;
+}
+
+/* ============================================
+   FOOTER MINIMAL
+   ============================================ */
+
+.auth-footer-minimal {
+  padding: 30px 0;
+  text-align: center;
+  background: var(--white);
+  border-top: 1px solid var(--cultured);
+}
+
+.auth-footer-minimal p {
+  color: var(--sonic-silver);
+  font-size: var(--fs-10);
+  margin-bottom: 12px;
+}
+
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.footer-links a {
+  color: var(--middle-blue-green);
+  font-size: var(--fs-10);
+  text-decoration: none;
+  transition: var(--transition-1);
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+/* ============================================
+   RESPONSIVE DESIGN
+   ============================================ */
+
+/* Desktop */
+@media (min-width: 992px) {
+  .auth-container {
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+  }
+
+  .auth-card {
+    margin: 0;
+  }
+
+  .auth-side {
+    display: block;
+  }
+}
+
+/* Tablets */
+@media (min-width: 768px) and (max-width: 991px) {
+  .auth-card {
+    padding: 40px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 580px) {
+  .auth-main {
+    padding: 40px 0;
+  }
+
+  .auth-card {
+    padding: 30px 20px;
+    border-radius: 12px;
+  }
+
+  .auth-title {
+    font-size: var(--fs-3);
+  }
+
+  .form-input {
+    height: 48px;
+    padding: 0 40px;
+    font-size: var(--fs-9);
+  }
+
+  .input-icon {
+    left: 12px;
+    font-size: 18px;
+  }
+
+  .password-toggle {
+    right: 12px;
+  }
+
+  .btn-submit {
+    height: 50px;
+    font-size: var(--fs-8);
+  }
+
+  .form-options {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .demo-info {
+    padding: 12px;
+  }
+}
+
+/* Extra Small */
+@media (max-width: 400px) {
+  .auth-card {
+    padding: 25px 16px;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+}

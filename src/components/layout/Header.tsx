@@ -9,7 +9,7 @@ import { User, Search, ShoppingBag, Heart, X } from "lucide-react";
 export default function Header() {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const { getCartCount } = useCart();
+  const { getCartCount, isLoading } = useCart();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -60,7 +60,7 @@ export default function Header() {
         </a>
 
         <div className="header-actions">
-          <a href="/login" className="header-action-btn" data-auth-btn>
+          <a href="/auth/signin" className="header-action-btn" data-auth-btn>
             <User aria-hidden="true" className="icon" />
             <p className="header-action-label">Sign in</p>
           </a>
@@ -73,9 +73,15 @@ export default function Header() {
           <a href="/cart" className="header-action-btn">
             <ShoppingBag aria-hidden="true" className="icon h-3 w-3" />
             <p className="header-action-label">Cart</p>
-            <div className="btn-badge green" aria-hidden="true" data-cart-count>
-              {getCartCount()}
-            </div>
+            {!isLoading && (
+              <div
+                className="btn-badge green"
+                aria-hidden="true"
+                data-cart-count
+              >
+                {getCartCount()}
+              </div>
+            )}
           </a>
 
           <a href="/wishlist" className="header-action-btn">
@@ -121,19 +127,19 @@ export default function Header() {
 
           <ul className="navbar-list">
             <li>
-              <a href="#home" className="navbar-link" onClick={closeNav}>
+              <a href="/" className="navbar-link" onClick={closeNav}>
                 Home
               </a>
             </li>
 
             <li>
-              <a href="#" className="navbar-link" onClick={closeNav}>
+              <a href="/products" className="navbar-link" onClick={closeNav}>
                 Shop
               </a>
             </li>
 
             <li>
-              <a href="#" className="navbar-link" onClick={closeNav}>
+              <a href="/about" className="navbar-link" onClick={closeNav}>
                 About
               </a>
             </li>
