@@ -2,31 +2,36 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { useCart } from "@/contexts/CartContext";
-import { User, Search, ShoppingBag, Heart, X } from "lucide-react";
+import { useWishlist } from "@/contexts/WishlistContext";
+import {
+  User,
+  Search,
+  ShoppingCart,
+  Heart,
+  X,
+  Menu,
+  Home,
+  Store,
+  Info,
+  BookOpen,
+  Mail,
+} from "lucide-react";
 
 export default function Header() {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { getCartCount, isLoading } = useCart();
+  const { getWishlistCount, isLoading: isWishlistLoading } = useWishlist();
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 0);
-    };
-
+    const handleScroll = () => setIsScrolled(window.scrollY > 0);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const toggleNav = () => {
-    setIsNavOpen(!isNavOpen);
-  };
-
-  const closeNav = () => {
-    setIsNavOpen(false);
-  };
+  const toggleNav = () => setIsNavOpen(!isNavOpen);
+  const closeNav = () => setIsNavOpen(false);
 
   return (
     <header className={`header ${isScrolled ? "active" : ""}`} data-header>
@@ -35,8 +40,23 @@ export default function Header() {
           className={`overlay ${isNavOpen ? "active" : ""}`}
           data-overlay
           onClick={closeNav}
-        ></div>
+        />
 
+        {/*
+          MOBILE: single row → [hamburger] [logo] [user] [search] [cart]
+          DESKTOP: single row → [search-bar] [logo] [nav] [user] [cart] [wishlist]
+        */}
+
+        {/* Hamburger — mobile only */}
+        <button
+          className="nav-open-btn"
+          aria-label="Open Menu"
+          onClick={toggleNav}
+        >
+          <Menu size={22} />
+        </button>
+
+        {/* Desktop search bar */}
         <div className="header-search">
           <input
             type="search"
@@ -44,13 +64,13 @@ export default function Header() {
             placeholder="Search Product..."
             className="input-field"
           />
-
           <button className="search-btn" aria-label="Search">
             <Search />
           </button>
         </div>
 
-        <a href="index.html" className="logo">
+        {/* Logo */}
+        <a href="/" className="logo">
           <img
             src="/images/logo.svg"
             alt="DiscountDrinks logo"
@@ -59,19 +79,22 @@ export default function Header() {
           />
         </a>
 
+        {/* Action icons */}
         <div className="header-actions">
+          {/* User */}
           <a href="/auth/signin" className="header-action-btn" data-auth-btn>
             <User aria-hidden="true" className="icon" />
             <p className="header-action-label">Sign in</p>
           </a>
 
-          <button className="header-action-btn">
+          {/* Search — mobile only */}
+          <button className="header-action-btn header-search-btn-mobile">
             <Search aria-hidden="true" className="icon" />
-            <p className="header-action-label">Search</p>
           </button>
 
+          {/* Cart */}
           <a href="/cart" className="header-action-btn">
-            <ShoppingBag aria-hidden="true" className="icon h-3 w-3" />
+            <ShoppingCart aria-hidden="true" className="icon" />
             <p className="header-action-label">Cart</p>
             {!isLoading && (
               <div
@@ -84,29 +107,25 @@ export default function Header() {
             )}
           </a>
 
-          <a href="/wishlist" className="header-action-btn">
+          {/* Wishlist — desktop only */}
+          <a
+            href="/wishlist"
+            className="header-action-btn header-wishlist-desktop"
+          >
             <Heart aria-hidden="true" className="icon" />
             <p className="header-action-label">Wishlist</p>
-            <div className="btn-badge" aria-hidden="true">
-              2
-            </div>
+            {!isWishlistLoading && (
+              <div className="btn-badge" aria-hidden="true">
+                {getWishlistCount()}
+              </div>
+            )}
           </a>
         </div>
 
-        <button
-          className="nav-open-btn"
-          data-nav-open-btn
-          aria-label="Open Menu"
-          onClick={toggleNav}
-        >
-          <span></span>
-          <span></span>
-          <span></span>
-        </button>
-
+        {/* Side nav drawer */}
         <nav className={`navbar ${isNavOpen ? "active" : ""}`} data-navbar>
           <div className="navbar-top">
-            <a href="index.html" className="logo">
+            <a href="/" className="logo">
               <img
                 src="/images/logo.svg"
                 alt="DiscountDrinks logo"
@@ -114,10 +133,8 @@ export default function Header() {
                 height={31}
               />
             </a>
-
             <button
               className="nav-close-btn"
-              data-nav-close-btn
               aria-label="Close Menu"
               onClick={closeNav}
             >
@@ -128,32 +145,58 @@ export default function Header() {
           <ul className="navbar-list">
             <li>
               <a href="/" className="navbar-link" onClick={closeNav}>
-                Home
+                <Home size={16} className="navbar-link-icon" /> Home
               </a>
             </li>
-
             <li>
               <a href="/products" className="navbar-link" onClick={closeNav}>
-                Shop
+                <Store size={16} className="navbar-link-icon" /> Shop
               </a>
             </li>
-
-            <li>
-              <a href="/about" className="navbar-link" onClick={closeNav}>
-                About
+            {/* Wishlist — in side drawer on mobile only */}
+            <li className="navbar-wishlist">
+              <a href="/wishlist" className="navbar-link" onClick={closeNav}>
+                <Heart size={16} className="navbar-link-icon" />
+                Wishlist
+                {!isWishlistLoading && getWishlistCount() > 0 && (
+                  <span className="navbar-wishlist-badge">
+                    {getWishlistCount()}
+                  </span>
+                )}
               </a>
             </li>
-
-            <li>
-              <a href="#blog" className="navbar-link" onClick={closeNav}>
-                Blog
-              </a>
+            <li style={{ cursor: "not-allowed" }}>
+              <Link
+                href="#"
+                className="navbar-link"
+                style={{ pointerEvents: "none", opacity: 0.5, color: "gray" }}
+                aria-disabled="true"
+                tabIndex={-1}
+              >
+                <Info size={16} className="navbar-link-icon" /> About
+              </Link>
             </li>
-
-            <li>
-              <a href="#" className="navbar-link" onClick={closeNav}>
-                Contact
-              </a>
+            <li style={{ cursor: "not-allowed" }}>
+              <Link
+                href="#"
+                className="navbar-link"
+                style={{ pointerEvents: "none", opacity: 0.5, color: "gray" }}
+                aria-disabled="true"
+                tabIndex={-1}
+              >
+                <BookOpen size={16} className="navbar-link-icon" /> Blog
+              </Link>
+            </li>
+            <li style={{ cursor: "not-allowed" }}>
+              <Link
+                href="#"
+                className="navbar-link"
+                style={{ pointerEvents: "none", opacity: 0.5, color: "gray" }}
+                aria-disabled="true"
+                tabIndex={-1}
+              >
+                <Mail size={16} className="navbar-link-icon" /> Contact
+              </Link>
             </li>
           </ul>
         </nav>

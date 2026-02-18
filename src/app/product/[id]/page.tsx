@@ -7,12 +7,13 @@ import Link from "next/link";
 import { products } from "@/data";
 import { useCart } from "@/contexts/CartContext";
 import ProductCard from "@/components/products/ProductCard";
+import { CheckCircle2, Heart } from "lucide-react";
 
 export default function ProductDetailPage() {
   const params = useParams();
   const productId = params.id as string;
   const product = products.find((p) => p.id === productId);
-  const { addToCart } = useCart();
+  const { addToCart, isInCart } = useCart();
 
   if (!product) {
     return (
@@ -38,170 +39,124 @@ export default function ProductDetailPage() {
   };
 
   return (
-    <main className="py-20">
-      <div className="container">
-        {/* Breadcrumb */}
-        <nav className="mb-8">
-          <ol className="flex items-center gap-2 text-sm text-sonic-silver">
-            <li>
-              <Link
-                href="/"
-                className="hover:text-eerie-black transition-colors"
-              >
-                Home
-              </Link>
-            </li>
-            <li>/</li>
-            <li>
-              <Link
-                href="/shop"
-                className="hover:text-eerie-black transition-colors"
-              >
-                Shop
-              </Link>
-            </li>
-            <li>/</li>
-            <li className="text-eerie-black">{product.name}</li>
-          </ol>
-        </nav>
+    <main>
+      {/* <article> */}
+      <section className="section product">
+        <div className="container">
+          {/* Breadcrumb */}
 
-        {/* Product Details */}
-        <div className="grid md:grid-cols-2 gap-12 mb-20">
-          {/* Product Image */}
-          <div className="bg-cultured rounded-lg overflow-hidden">
-            <Image
-              src={product.image}
-              alt={product.name}
-              width={800}
-              height={1034}
-              className="w-full h-auto"
-              priority
-            />
+          <div className="products-page-header">
+            <nav className="breadcrumb">
+              <ul className="breadcrumb-list">
+                <li className="breadcrumb-item">
+                  <Link href="/">Home</Link>
+                </li>
+                <li className="breadcrumb-item">
+                  <Link href="/products">Products</Link>
+                </li>
+                <li className="breadcrumb-item active">{product.name}</li>
+              </ul>
+            </nav>
           </div>
 
-          {/* Product Info */}
-          <div>
-            {product.badge && (
-              <span
-                className={`inline-block text-white text-fs-9 font-medium px-3 py-1 rounded mb-4 ${
-                  product.badge === "sale" ? "bg-candy-pink" : "bg-ocean-green"
-                }`}
-              >
-                {product.badgeText}
-              </span>
-            )}
-
-            <h1 className="text-fs-1 font-semibold text-eerie-black mb-4">
-              {product.name}
-            </h1>
-
-            <div className="flex items-baseline gap-3 mb-6">
-              <span className="text-fs-1 font-semibold text-eerie-black">
-                £{product.price.toFixed(2)}
-              </span>
-              {product.originalPrice && (
-                <span className="text-fs-6 text-sonic-silver line-through">
-                  £{product.originalPrice.toFixed(2)}
-                </span>
-              )}
-            </div>
-
-            <div className="border-t border-b border-cultured py-6 mb-6">
-              <p className="text-sonic-silver leading-relaxed">
-                Premium quality drink sourced from the finest producers. Perfect
-                for any occasion, whether you&apos;re celebrating or just
-                enjoying a quiet evening. Our bulk discount prices ensure you
-                get the best value for your money.
-              </p>
-            </div>
-
-            <div className="space-y-4 mb-8">
-              <div className="flex items-center gap-3">
-                <svg
-                  className="w-5 h-5 text-ocean-green"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                <span className="text-sonic-silver">In Stock</span>
+          {/* Product Details */}
+          <section className="section product-detail">
+            <div className="product-detail-grid">
+              {/* Product Image */}
+              <div className="product-showcase">
+                <Image
+                  src={product.image}
+                  alt={product.name}
+                  width={800}
+                  height={1034}
+                  className="product-img"
+                  priority
+                />
               </div>
-              <div className="flex items-center gap-3">
-                <svg
-                  className="w-5 h-5 text-ocean-green"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                <span className="text-sonic-silver">
-                  Free Shipping on Orders Over £599
-                </span>
-              </div>
-              <div className="flex items-center gap-3">
-                <svg
-                  className="w-5 h-5 text-ocean-green"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                >
-                  <path
-                    fillRule="evenodd"
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-                <span className="text-sonic-silver">30 Day Returns Policy</span>
-              </div>
-            </div>
 
-            <div className="flex gap-4">
-              <button
-                onClick={handleAddToCart}
-                className="btn btn-primary flex-grow"
-              >
-                Add to Cart
-              </button>
-              <button className="btn btn-outline w-14 px-0">
-                <svg
-                  className="w-6 h-6 mx-auto"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-                  />
-                </svg>
-              </button>
+              {/* Product Info */}
+              <div className="product-info">
+                {product.badge && (
+                  <span
+                    className={`product-badge ${
+                      product.badge === "sale" ? "red" : "green"
+                    }`}
+                  >
+                    {product.badgeText}
+                  </span>
+                )}
+
+                <h1 className="h2 product-title">{product.name}</h1>
+
+                <div className="price-wrapper">
+                  <data className="price" value={product.price}>
+                    £{product.price.toFixed(2)}
+                  </data>
+                  {product.originalPrice && (
+                    <data className="price-old" value={product.originalPrice}>
+                      £{product.originalPrice.toFixed(2)}
+                    </data>
+                  )}
+                </div>
+
+                <div className="product-description">
+                  <p>
+                    Premium quality drink sourced from the finest producers.
+                    Perfect for any occasion, whether you&apos;re celebrating or
+                    just enjoying a quiet evening. Our bulk discount prices
+                    ensure you get the best value for your money.
+                  </p>
+                </div>
+
+                <ul className="product-features">
+                  <li className="feature-item">
+                    <CheckCircle2 className="feature-icon" />
+                    <span>In Stock</span>
+                  </li>
+                  <li className="feature-item">
+                    <CheckCircle2 className="feature-icon" />
+                    <span>Free Shipping on Orders Over £599</span>
+                  </li>
+                  <li className="feature-item">
+                    <CheckCircle2 className="feature-icon" />
+                    <span>30 Day Returns Policy</span>
+                  </li>
+                </ul>
+
+                <div className="product-actions">
+                  <button
+                    onClick={handleAddToCart}
+                    className={`btn ${
+                      isInCart(product.id) ? "btn-outline" : "btn-primary"
+                    }`}
+                  >
+                    <span className="cart-btn-text">
+                      {isInCart(product.id) ? "Already in Cart" : "Add to Cart"}
+                    </span>
+                  </button>
+                  <button className="btn btn-outline wishlist-btn">
+                    <Heart className="icon" />
+                  </button>
+                </div>
+              </div>
             </div>
-          </div>
+          </section>
+
+          {/* Related Products */}
+          <section className="section">
+            <h2 className="h2 section-title">Related Products</h2>
+            <ul className="product-list">
+              {relatedProducts.map((relatedProduct) => (
+                <li key={relatedProduct.id}>
+                  <ProductCard product={relatedProduct} />
+                </li>
+              ))}
+            </ul>
+          </section>
         </div>
+      </section>
 
-        {/* Related Products */}
-        <div>
-          <h2 className="text-fs-2 font-semibold text-eerie-black mb-8">
-            Related Products
-          </h2>
-          <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {relatedProducts.map((relatedProduct) => (
-              <li key={relatedProduct.id}>
-                <ProductCard product={relatedProduct} />
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
+      {/* </article> */}
     </main>
   );
 }

@@ -68,7 +68,7 @@ export default function CartPage() {
           </ol>
         </nav>
 
-        <h1 className="cart-title">Shopping Cart</h1>
+        {/* <h1 className="cart-title">Shopping Cart</h1> */}
 
         {/* Loading State */}
         {isLoading ? (

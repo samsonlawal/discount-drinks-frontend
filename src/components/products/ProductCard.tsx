@@ -2,9 +2,11 @@
 
 import React from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Product } from "@/types";
 import { useCart } from "@/contexts/CartContext";
-import { Eye, ShoppingBag, Heart } from "lucide-react";
+import { useWishlist } from "@/contexts/WishlistContext";
+import { Eye, ShoppingCart, Heart } from "lucide-react";
 
 interface ProductCardProps {
   product: Product;
@@ -12,10 +14,26 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   const { addToCart } = useCart();
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
+  const router = useRouter();
 
   const handleAddToCart = () => {
     addToCart(product);
   };
+
+  const handleWishlistToggle = () => {
+    if (isInWishlist(product.id)) {
+      removeFromWishlist(product.id);
+    } else {
+      addToWishlist(product);
+    }
+  };
+
+  const handleQuickView = () => {
+    router.push(`/product/${product.id}`);
+  };
+
+  const inWishlist = isInWishlist(product.id);
 
   return (
     <div className="product-card">
@@ -40,7 +58,11 @@ export default function ProductCard({ product }: ProductCardProps) {
         )}
 
         <div className="card-actions">
-          <button className="card-action-btn" aria-label="Quick view">
+          <button
+            className="card-action-btn card-eye-btn"
+            onClick={handleQuickView}
+            aria-label="Quick view"
+          >
             <Eye className="icon" />
           </button>
 
@@ -49,12 +71,22 @@ export default function ProductCard({ product }: ProductCardProps) {
             onClick={handleAddToCart}
             aria-label={`Add ${product.name} to cart`}
           >
-            <ShoppingBag className="icon" aria-hidden="true" />
-            <p>Add to Cart</p>
+            <ShoppingCart className="icon" aria-hidden="true" />
+            <p className="cart-btn-text">Add to Cart</p>
           </button>
 
-          <button className="card-action-btn" aria-label="Add to Wishlist">
-            <Heart className="icon" />
+          <button
+            className="card-action-btn"
+            onClick={handleWishlistToggle}
+            aria-label={inWishlist ? "Remove from Wishlist" : "Add to Wishlist"}
+            style={{
+              color: inWishlist ? "var(--candy-pink)" : "inherit",
+            }}
+          >
+            <Heart
+              className="icon"
+              fill={inWishlist ? "currentColor" : "none"}
+            />
           </button>
         </div>
       </figure>

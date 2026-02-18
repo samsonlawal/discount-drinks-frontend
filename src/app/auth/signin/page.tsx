@@ -39,20 +39,6 @@ export default function SignInPage() {
 
   return (
     <main className="auth-page">
-      {/* Minimal Header */}
-      {/* <header className="auth-header">
-        <div className="container">
-          <Link href="/" className="logo">
-            <Image
-              src="/images/logo.svg"
-              alt="Discount Drinks logo"
-              width={130}
-              height={31}
-            />
-          </Link>
-        </div>
-      </header> */}
-
       {/* Main Auth Section */}
       <main className="auth-main">
         <div className="container">
