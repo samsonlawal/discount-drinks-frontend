@@ -195,7 +195,7 @@ export default function SignInPage() {
               </div> */}
 
               {/* Divider */}
-              <div className="py-5 flex justify-center items-center">
+              <div className="auth-divider">
                 <span>or</span>
               </div>
 
