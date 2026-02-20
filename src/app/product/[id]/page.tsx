@@ -67,8 +67,8 @@ export default function ProductDetailPage() {
                 <Image
                   src={product.image}
                   alt={product.name}
-                  width={800}
-                  height={1034}
+                  width={400}
+                  height={400}
                   className="product-img"
                   priority
                 />
@@ -99,6 +99,17 @@ export default function ProductDetailPage() {
                   )}
                 </div>
 
+                {/* Tags */}
+                {product.tags && product.tags.length > 0 && (
+                  <div className="product-tags">
+                    {product.tags.map((tag) => (
+                      <span key={tag} className="product-tag">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+
                 <div className="product-description">
                   <p>
                     Premium quality drink sourced from the finest producers.
@@ -108,7 +119,26 @@ export default function ProductDetailPage() {
                   </p>
                 </div>
 
-                <ul className="product-features">
+                {/* Specifications */}
+                {product.specifications &&
+                  Object.keys(product.specifications).length > 0 && (
+                    <div className="product-specs">
+                      <table className="specs-table">
+                        <tbody>
+                          {Object.entries(product.specifications).map(
+                            ([key, value]) => (
+                              <tr key={key} className="specs-row">
+                                <th className="specs-key">{key}</th>
+                                <td className="specs-value">{value}</td>
+                              </tr>
+                            ),
+                          )}
+                        </tbody>
+                      </table>
+                    </div>
+                  )}
+
+                {/* <ul className="product-features">
                   <li className="feature-item">
                     <CheckCircle2 className="feature-icon" />
                     <span>In Stock</span>
@@ -121,23 +151,7 @@ export default function ProductDetailPage() {
                     <CheckCircle2 className="feature-icon" />
                     <span>30 Day Returns Policy</span>
                   </li>
-                </ul>
-
-                <div className="product-actions">
-                  <button
-                    onClick={handleAddToCart}
-                    className={`btn ${
-                      isInCart(product.id) ? "btn-outline" : "btn-primary"
-                    }`}
-                  >
-                    <span className="cart-btn-text">
-                      {isInCart(product.id) ? "Already in Cart" : "Add to Cart"}
-                    </span>
-                  </button>
-                  <button className="btn btn-outline wishlist-btn">
-                    <Heart className="icon" />
-                  </button>
-                </div>
+                </ul> */}
               </div>
             </div>
           </section>

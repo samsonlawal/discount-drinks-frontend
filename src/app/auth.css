@@ -39,6 +39,8 @@
   gap: 60px;
   max-width: 1100px;
   margin: 0 auto;
+  align-items: start;
+
   /* width: 100%; */
 }
 
@@ -129,7 +131,7 @@
    ============================================ */
 
 .auth-form {
-  margin-bottom: 30px;
+  margin-bottom: 0px;
 }
 
 .form-group {
@@ -137,7 +139,7 @@
 }
 
 .form-label {
-  display: block;
+  display: flex;
   color: var(--eerie-black);
   font-size: var(--fs-9);
   font-weight: var(--fw-500);
@@ -158,7 +160,10 @@
 .input-icon {
   position: absolute;
   left: 16px;
-  font-size: 20px;
+  width: 18px;
+  height: 18px;
+  top: 50%;
+  transform: translateY(-50%);
   color: var(--sonic-silver);
   pointer-events: none;
   z-index: 1;
@@ -230,6 +235,7 @@
 /* Form Options */
 .form-options {
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 28px;
@@ -260,6 +266,7 @@
   font-weight: var(--fw-500);
   text-decoration: none;
   transition: var(--transition-1);
+  display: inline;
 }
 
 .link-text:hover {
@@ -337,7 +344,7 @@
 .auth-divider {
   position: relative;
   text-align: center;
-  margin: 30px 0;
+  margin: 10px 0;
 }
 
 .auth-divider::before {
@@ -348,6 +355,7 @@
   right: 0;
   height: 1px;
   background: var(--cultured);
+  background-color: red;
 }
 
 .auth-divider span {
@@ -534,7 +542,8 @@
 
   .input-icon {
     left: 12px;
-    font-size: 18px;
+    width: 16px;
+    height: 16px;
   }
 
   .password-toggle {
@@ -547,7 +556,7 @@
   }
 
   .form-options {
-    flex-direction: column;
+    flex-direction: row;
     align-items: flex-start;
   }
 

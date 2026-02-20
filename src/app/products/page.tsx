@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { products } from "@/data";
 import ProductCard from "@/components/products/ProductCard";
 import FilterSidebar from "@/components/products/FilterSidebar";
 import { SlidersHorizontal } from "lucide-react";
 import Link from "next/link";
+import { useGetProducts } from "@/hooks/api/products";
 
 export default function ProductsPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -25,6 +26,12 @@ export default function ProductsPage() {
     return categoryMatch && badgeMatch && priceMatch;
   });
 
+  const { loading, products: ProductData, fetchProducts } = useGetProducts();
+
+function handleFetch()  {
+fetchProducts();
+}   
+
   return (
     <main>
       <section className="section product">
@@ -42,7 +49,9 @@ export default function ProductsPage() {
                 </li>
               </ol>
             </nav>
-
+              {/* <button onClick={handleFetch} className="bg-[red] text-[red] px-4 py-2">
+                products
+              </button> */}
             {/* Icon-only filter toggle */}
             <button
               onClick={toggleSidebar}
@@ -50,7 +59,7 @@ export default function ProductsPage() {
               aria-label={isSidebarOpen ? "Close filters" : "Open filters"}
               title={isSidebarOpen ? "Close filters" : "Open filters"}
             >
-              <SlidersHorizontal size={20} />
+              <SlidersHorizontal size={16} />
             </button>
           </div>
 
@@ -71,6 +80,7 @@ export default function ProductsPage() {
 
             {/* Products Area */}
             <div className="products-main">
+
               <ul className="product-list">
                 {filteredProducts.map((product) => (
                   <li key={product.id}>

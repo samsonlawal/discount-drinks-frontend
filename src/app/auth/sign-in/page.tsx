@@ -13,9 +13,10 @@ import {
   ShieldCheck,
   CheckCircle,
 } from "lucide-react";
-
+import { showErrorToast, showSuccessToast } from "@/utils/toaster";
 import "../../style.css";
 import "../../auth.css";
+import { useLogin } from "@/hooks/api/auth";
 
 export default function SignInPage() {
   const [formData, setFormData] = useState({
@@ -24,10 +25,21 @@ export default function SignInPage() {
   });
   const [showPassword, setShowPassword] = useState(false);
 
+    const { loading, onLogin } = useLogin();
+  
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Handle sign in logic
-    console.log("Sign in:", formData);
+    onLogin({
+      payload: formData,
+      successCallback: () => {
+        showSuccessToast({ message: "🚀 Sign In Successful!" });
+      },
+      errorCallback: (error: Error | any) => {
+        showErrorToast({ message: error?.message });
+      },
+    });
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -136,7 +148,7 @@ export default function SignInPage() {
                 </div>
 
                 {/* Remember Me & Forgot Password */}
-                <div className="form-options">
+                <div className="form-options w-full">
                   <label className="checkbox-label">
                     <input
                       type="checkbox"
@@ -155,20 +167,24 @@ export default function SignInPage() {
                   type="submit"
                   className="btn btn-primary w-100 btn-submit"
                   data-submit-btn
+                  disabled={loading}
                 >
-                  <span data-submit-text>Sign In</span>
-                  <span
+                  {loading ? (
+                    <span
                     className="btn-loader"
-                    data-submit-loader
-                    style={{ display: "none" }}
+
                   >
-                    <RefreshCw />
+                    <RefreshCw size={16} className="animate-spin" />
                   </span>
+                  ) : (
+                    <span data-submit-text>Sign In</span>
+                  )}
+                  
                 </button>
               </form>
 
               {/* Demo Credentials Info */}
-              <div className="demo-info">
+              {/* <div className="demo-info">
                 <p className="demo-title">Demo Credentials:</p>
                 <p className="demo-text">
                   Email: <strong>demo@discountdrinks.com</strong>
@@ -176,10 +192,10 @@ export default function SignInPage() {
                 <p className="demo-text">
                   Password: <strong>Demo123!</strong>
                 </p>
-              </div>
+              </div> */}
 
               {/* Divider */}
-              <div className="auth-divider">
+              <div className="py-5 flex justify-center items-center">
                 <span>or</span>
               </div>
 

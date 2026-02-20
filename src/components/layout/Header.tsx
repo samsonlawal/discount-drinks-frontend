@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useCart } from "@/contexts/CartContext";
 import { useWishlist } from "@/contexts/WishlistContext";
 import {
+  CircleUser,
   User,
   Search,
   ShoppingCart,
@@ -17,6 +18,8 @@ import {
   BookOpen,
   Mail,
 } from "lucide-react";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
 
 export default function Header() {
   const [isNavOpen, setIsNavOpen] = useState(false);
@@ -25,13 +28,15 @@ export default function Header() {
   const { getWishlistCount, isLoading: isWishlistLoading } = useWishlist();
 
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 0);
+    const handleScroll = (e: any) => setIsScrolled(window.scrollY > 0);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const toggleNav = () => setIsNavOpen(!isNavOpen);
   const closeNav = () => setIsNavOpen(false);
+
+  const { user } = useSelector((state: RootState) => state.auth);
 
   return (
     <header className={`header ${isScrolled ? "active" : ""}`} data-header>
@@ -82,10 +87,20 @@ export default function Header() {
         {/* Action icons */}
         <div className="header-actions">
           {/* User */}
-          <a href="/auth/signin" className="header-action-btn" data-auth-btn>
+          {user ? 
+          
+(            <a href="/user/profile" className="header-action-btn" data-auth-btn>
+            <CircleUser aria-hidden="true" className="icon" />
+  
+          <p className="text-[14px] text-black">{user?.username}</p>
+          </a>  )
+          :
+(          <a href="/auth/sign-in" className="header-action-btn" data-auth-btn>
             <User aria-hidden="true" className="icon" />
-            <p className="header-action-label">Sign in</p>
-          </a>
+          <p className="header-action-label">Sign in</p>
+          </a>)
+        }
+
 
           {/* Search — mobile only */}
           <button className="header-action-btn header-search-btn-mobile">

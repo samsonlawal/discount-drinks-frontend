@@ -7,6 +7,8 @@ export interface Product {
   badge?: "new" | "sale";
   badgeText?: string;
   category?: string;
+  tags?: string[];
+  specifications?: Record<string, string>;
 }
 
 export interface CartItem extends Product {
@@ -39,3 +41,20 @@ export interface User {
   email: string;
   name?: string;
 }
+
+
+export type TRegister = {
+  fullname: string;
+  email: string;
+  username: string;
+  password: string;
+
+  // assignee: TAssignee;
+  // workspace_id: string;
+  // deadline: string;
+};
+
+export type TLogin = {
+  email: string;
+  password: string;
+};

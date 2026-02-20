@@ -14,8 +14,8 @@ export default function Hero() {
 
           <h2 className="h1 hero-title">UK's No.1 Bulk Discount Shop</h2>
 
-          <Link href="/products" className="btn btn-primary">
-            Shop Now
+          <Link href="/products">
+            <button className="btn btn-primary">Shop Now</button>
           </Link>
         </div>
       </div>

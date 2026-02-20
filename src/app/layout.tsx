@@ -2,10 +2,7 @@ import type { Metadata } from "next";
 import { Jost } from "next/font/google";
 import "./globals.css";
 import "./style.css";
-import Header from "@/components/layout/Header";
-import Footer from "@/components/layout/Footer";
-import { CartProvider } from "@/contexts/CartContext";
-import { WishlistProvider } from "@/contexts/WishlistContext";
+import Initializers from "./Initializers";
 
 const jost = Jost({
   subsets: ["latin"],
@@ -26,13 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={jost.variable}>
       <body className="font-jost">
-        <CartProvider>
-          <WishlistProvider>
-            <Header />
-            {children}
-            <Footer />
-          </WishlistProvider>
-        </CartProvider>
+        <Initializers>{children}</Initializers>
       </body>
     </html>
   );
