@@ -1,9 +1,9 @@
 import axios from "axios";
 import env from "@/config/env";
-import { ICategory, IFetchCategoryQuery } from "@/types";
+// import { ICategory, IFetchCategoryQuery } from "@/types";
 
 class Service {
-  fetchCategories(query?: IFetchCategoryQuery) {
+  fetchCategories(query?: any) {
     const { name, search, page, limit } = query || {};
     return axios.get(env.api.categories, {
       params: {
@@ -19,7 +19,7 @@ class Service {
     return axios.get(`${env.api.categories}/${categoryId}`);
   }
 
-  createCategory({ name, description, parent_category_id, status }: ICategory) {
+  createCategory({ name, description, parent_category_id, status }: any) {
     return axios.post(env.api.categories, {
       name,
       description,
@@ -34,7 +34,7 @@ class Service {
     description,
     parent_category_id,
     status,
-  }: ICategory) {
+  }: any) {
     return axios.put(`${env.api.categories}/${id}`, {
       name,
       description,

@@ -1,17 +1,17 @@
 import axios from "axios";
 import env from "@/config/env";
 
-import { IFetchTagQuery, ITag } from "@/types";
+// import { IFetchTagQuery, ITag } from "@/types";
 
 class Service {
-  fetchTags(queries?: IFetchTagQuery) {
+  fetchTags(queries?: any) {
     return axios.get(env.api.tags, {
       params: queries,
       withCredentials: true,
     });
   }
 
-  createTag({ name, status }: ITag) {
+  createTag({ name, status }: any) {
     return axios.post(
       env.api.tags,
       {
@@ -24,7 +24,7 @@ class Service {
     );
   }
 
-  updateTag({ id, name, status }: ITag) {
+  updateTag({ id, name, status }: any) {
     return axios.put(
       env.api.tags + `/` + id,
       {

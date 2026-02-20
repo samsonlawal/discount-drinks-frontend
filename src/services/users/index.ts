@@ -1,10 +1,10 @@
 import axios from "axios";
 import env from "@/config/env";
 
-import { IFetchUserQuery } from "@/types";
+// import { IFetchUserQuery } from "@/types";
 
 class Service {
-  fetchUsers(query?: IFetchUserQuery) {
+  fetchUsers(query?: any) {
     const { search, page, pageSize } = query || {};
     return axios.get(env.api.users, {
       params: {

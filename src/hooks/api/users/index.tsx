@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { showErrorToast, showSuccessToast } from "@/utils/toaster";
 import { AxiosError } from "axios";
-import { IFetchUserQuery } from "@/types";
 import UsersService from "@/services/users";
 
 // Hook for fetching users
@@ -9,10 +8,10 @@ export const useGetUsers = () => {
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState<any[]>([]);
 
-  const fetchUsers = async (query?: IFetchUserQuery) => {
+  const fetchUsers = async () => {
     setLoading(true);
     try {
-      const res = await UsersService.fetchUsers(query || {});
+      const res = await UsersService.fetchUsers();
       setUsers(res?.data?.data || []);
       return res?.data?.data;
     } catch (error: Error | AxiosError | any) {

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { showErrorToast, showSuccessToast } from "@/utils/toaster";
 import { AxiosError } from "axios";
-import { IFetchTagQuery } from "@/types";
 import TagsService from "@/services/tags";
 
 // Hook for fetching tags
@@ -16,10 +15,10 @@ export const useGetTags = () => {
   //    totalRecords: number;
   //  }>();
 
-  const fetchTags = async (queries?: IFetchTagQuery) => {
+  const fetchTags = async () => {
     setLoading(true);
     try {
-      const res = await TagsService.fetchTags(queries);
+      const res = await TagsService.fetchTags();
       const rawData = res?.data?.data || [];
       const mappedData = rawData.map((tag: any) => ({
         ...tag,

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { showErrorToast, showSuccessToast } from "@/utils/toaster";
 import { AxiosError } from "axios";
-import { IFetchCategoryQuery } from "@/types";
+// import { IFetchCategoryQuery } from "@/types";
 import CategoriesService from "@/services/categories";
 
 // Hook for fetching categories
@@ -9,10 +9,10 @@ export const useGetCategories = () => {
   const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState<any[]>([]);
 
-  const fetchCategories = async (query?: IFetchCategoryQuery) => {
+  const fetchCategories = async () => {
     setLoading(true);
     try {
-      const res = await CategoriesService.fetchCategories(query || {});
+      const res = await CategoriesService.fetchCategories();
       // Transform the data to match expected format
       const transformedData = (res?.data?.data || []).map((category: any) => ({
         ...category,
