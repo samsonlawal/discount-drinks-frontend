@@ -2,7 +2,7 @@ import axios from "axios";
 import env from "@/config/env";
 
 class Service {
-  getProducts(query?: any) {
+  getProducts(query?: Record<string, string | number>) {
     return axios.get(env.api.products, {
       params: query,
       withCredentials: true,

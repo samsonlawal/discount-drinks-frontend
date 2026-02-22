@@ -2,11 +2,12 @@ import { useState } from "react";
 import { showErrorToast, showSuccessToast } from "@/utils/toaster";
 import { AxiosError } from "axios";
 import TagsService from "@/services/tags";
+import { Tag } from "@/types";
 
 // Hook for fetching tags
 export const useGetTags = () => {
   const [loading, setLoading] = useState(false);
-  const [tags, setTags] = useState<any[]>([]);
+  const [tags, setTags] = useState<Tag[]>([]);
 
   //  const [meta, setMeta] = useState<{
   //    currentPage: number;
@@ -24,7 +25,7 @@ export const useGetTags = () => {
         ...tag,
         status:
           tag.status?.toLowerCase() || (tag.isActive ? "active" : "inactive"),
-      }));
+      })) as Tag[];
       setTags(mappedData);
       //  setMeta({
       //    currentPage: res?.data?.data?.currentPage,
@@ -51,7 +52,7 @@ export const useGetTags = () => {
 // Hook for fetching a single tag by ID
 export const useGetTagById = () => {
   const [loading, setLoading] = useState(false);
-  const [tag, setTag] = useState<any>(null);
+  const [tag, setTag] = useState<Tag | null>(null);
 
   const fetchTag = async (id: string) => {
     setLoading(true);
@@ -64,7 +65,7 @@ export const useGetTagById = () => {
             status:
               rawData.status?.toLowerCase() ||
               (rawData.isActive ? "active" : "inactive"),
-          }
+          } as Tag
         : null;
       setTag(mappedData);
       return mappedData;
@@ -101,7 +102,7 @@ export const useCreateTag = () => {
         message: res?.data?.message || "Tag created successfully!",
         description: res?.data?.description || "",
       });
-      return res?.data?.data;
+      return res?.data?.data as Tag;
     } catch (error: Error | AxiosError | any) {
       showErrorToast({
         message: error?.response?.data?.message || "Failed to create tag",
@@ -125,7 +126,7 @@ export const useUpdateTag = () => {
     data,
     successCallback,
   }: {
-    data: { id: string; name?: string; status?: string };
+    data: { id: string; name: string; status?: string }; // Made name required
     successCallback?: () => void;
   }) => {
     setLoading(true);
@@ -136,7 +137,7 @@ export const useUpdateTag = () => {
         message: res?.data?.message || "Tag updated successfully!",
         description: res?.data?.description || "",
       });
-      return res?.data?.data;
+      return res?.data?.data as Tag;
     } catch (error: Error | AxiosError | any) {
       showErrorToast({
         message: error?.response?.data?.message || "Failed to update tag",

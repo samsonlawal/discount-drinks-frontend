@@ -18,9 +18,9 @@ const usePersistAppContext = () => {
   useEffect(() => {
     getFromLocalStorage({
       key: PERSIST_AUTH_KEY,
-      cb: (storedState: any) => {
+      cb: (storedState: unknown) => {
         if (storedState) {
-          dispatch(setAuthState(storedState));
+          dispatch(setAuthState(storedState as any));
         }
       },
     });

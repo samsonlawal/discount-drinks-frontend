@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { saveToLocalStorage } from "@/utils/localStorage/AsyncStorage";
 
-interface TaskData {
+export interface TaskData {
   id: string;
   description: string;
   deadline: string;
@@ -20,7 +20,7 @@ interface TaskData {
 
 // Define proper types for your task state
 type taskState = {
-  task: Array<any>;
+  task: Array<TaskData>;
   currentTask: TaskData | null;
 };
 
@@ -39,7 +39,7 @@ const taskSlice = createSlice({
     //   saveToLocalStorage({ key: "WStasks", value: state.task });
     // },
 
-    setTasks: (state, action: PayloadAction<Array<any>>) => {
+    setTasks: (state, action: PayloadAction<Array<TaskData>>) => {
       state.task = action.payload;
       saveToLocalStorage({ key: "WStasks", value: action.payload });
     },

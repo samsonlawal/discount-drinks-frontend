@@ -2,34 +2,20 @@ import { useState } from "react";
 import { showErrorToast, showSuccessToast } from "@/utils/toaster";
 import { AxiosError } from "axios";
 import ProductsService from "@/services/products";
+import { Product } from "@/types";
 
 // Hook for fetching products
 export const useGetProducts = () => {
   const [loading, setLoading] = useState(false);
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
 
-  const fetchProducts = async (query?: any) => {
+  const fetchProducts = async (query?: Record<string, string | number>) => {
     setLoading(true);
     try {
       const res = await ProductsService.getProducts(query || {});
       console.log("res", res)
-      // const transformedData = (res?.data?.data || []).map((product: any) => {
-      //   // const isActive =
-      //   //   product.isActive !== undefined
-      //   //     ? product.isActive
-      //   //     : product.status === "active" || product.status === "Active";
-
-      //   return {
-      //     ...product,
-      //     // isActive,
-      //     // status: isActive ? "Active" : "Inactive",
-      //     createdDate: product.createdAt
-      //       ? new Date(product.createdAt).toLocaleDateString()
-      //       : "",
-      //   };
-      // });
       setProducts(res?.data?.data);
-      return res?.data?.data;
+      return res?.data?.data as Product[];
     } catch (error: Error | AxiosError | any) {
       showErrorToast({
         message: error?.response?.data?.message || "Failed to fetch products",
@@ -47,14 +33,14 @@ export const useGetProducts = () => {
 // Hook for fetching a single product by ID
 export const useGetProductById = () => {
   const [loading, setLoading] = useState(false);
-  const [product, setProduct] = useState<any>(null);
+  const [product, setProduct] = useState<Product | null>(null);
 
   const fetchProduct = async (id: string) => {
     setLoading(true);
     try {
       const res = await ProductsService.getProductById({ productId: id });
       setProduct(res?.data?.data || null);
-      return res?.data?.data;
+      return res?.data?.data as Product;
     } catch (error: Error | AxiosError | any) {
       showErrorToast({
         message: error?.response?.data?.message || "Failed to fetch product",
@@ -68,3 +54,4 @@ export const useGetProductById = () => {
 
   return { loading, product, fetchProduct };
 };
+

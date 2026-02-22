@@ -1,13 +1,17 @@
 export interface Product {
-  id: string;
+  id: string; // or _id depending on backend mapper
+  _id?: string;
   name: string;
   price: number;
+  costPrice?: number;
+  basePrice?: number;
   originalPrice?: number;
   image: string;
-  badge?: "new" | "sale";
+  badge?: string; // "new" | "sale" | etc
   badgeText?: string;
-  category?: string;
+  category?: string; // name or ID
   tags?: string[];
+  brand?: string | Brand;
   specifications?: Record<string, string>;
 }
 
@@ -26,9 +30,30 @@ export interface BlogPost {
 
 export interface Category {
   id: string;
+  _id?: string;
   name: string;
-  image: string;
-  slug: string;
+  image?: string;
+  slug?: string;
+  status?: string;
+  isActive?: boolean;
+}
+
+export interface Brand {
+  id?: string;
+  _id?: string;
+  name: string;
+  description?: string;
+  status?: string;
+  isActive?: boolean;
+  createdAt?: string;
+}
+
+export interface Tag {
+  id?: string;
+  _id?: string;
+  name: string;
+  status?: string;
+  isActive?: boolean;
 }
 
 export interface ServiceFeature {
@@ -40,18 +65,16 @@ export interface ServiceFeature {
 export interface User {
   email: string;
   name?: string;
+  username?: string;
+  role?: string;
+  isActive?: boolean;
 }
-
 
 export type TRegister = {
   fullname: string;
   email: string;
   username: string;
   password: string;
-
-  // assignee: TAssignee;
-  // workspace_id: string;
-  // deadline: string;
 };
 
 export type TLogin = {

@@ -3,15 +3,24 @@ import env from "@/config/env";
 
 // import { IFetchTagQuery, ITag } from "@/types";
 
+interface ICreateTagPayload {
+  name: string;
+  status?: string;
+}
+
+interface IUpdateTagPayload extends ICreateTagPayload {
+  id: string;
+}
+
 class Service {
-  fetchTags(queries?: any) {
+  fetchTags(queries?: Record<string, string | number>) {
     return axios.get(env.api.tags, {
       params: queries,
       withCredentials: true,
     });
   }
 
-  createTag({ name, status }: any) {
+  createTag({ name, status }: ICreateTagPayload) {
     return axios.post(
       env.api.tags,
       {
@@ -24,7 +33,7 @@ class Service {
     );
   }
 
-  updateTag({ id, name, status }: any) {
+  updateTag({ id, name, status }: IUpdateTagPayload) {
     return axios.put(
       env.api.tags + `/` + id,
       {

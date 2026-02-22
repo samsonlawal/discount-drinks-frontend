@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { User } from "@/types";
 
 // Define proper types for your task state
 type memberState = {
-  members: Array<any> | null;
+  members: Array<User> | null;
 };
 
 const initialState: memberState = {
@@ -13,7 +14,7 @@ const memberSlice = createSlice({
   name: "member",
   initialState,
   reducers: {
-    setMembers: (state, action: PayloadAction<Array<any> | null>) => {
+    setMembers: (state, action: PayloadAction<Array<User> | null>) => {
       state.members = action.payload;
     },
   },

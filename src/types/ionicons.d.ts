@@ -1,7 +1,7 @@
 declare namespace JSX {
   interface IntrinsicElements {
     "ion-icon": {
-      icon?: any;
+      icon?: unknown;
       name?: string;
       "aria-hidden"?: string;
       class?: string;

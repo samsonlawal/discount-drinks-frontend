@@ -2,18 +2,19 @@ import { useState } from "react";
 import { showErrorToast, showSuccessToast } from "@/utils/toaster";
 import { AxiosError } from "axios";
 import UsersService from "@/services/users";
+import { User } from "@/types";
 
 // Hook for fetching users
 export const useGetUsers = () => {
   const [loading, setLoading] = useState(false);
-  const [users, setUsers] = useState<any[]>([]);
+  const [users, setUsers] = useState<User[]>([]);
 
   const fetchUsers = async () => {
     setLoading(true);
     try {
       const res = await UsersService.fetchUsers();
       setUsers(res?.data?.data || []);
-      return res?.data?.data;
+      return res?.data?.data as User[];
     } catch (error: Error | AxiosError | any) {
       showErrorToast({
         message: error?.response?.data?.message || "Failed to fetch users",
@@ -31,14 +32,14 @@ export const useGetUsers = () => {
 // Hook for fetching a single user by ID
 export const useGetUserById = () => {
   const [loading, setLoading] = useState(false);
-  const [user, setUser] = useState<any>(null);
+  const [user, setUser] = useState<User | null>(null);
 
   const fetchUser = async (id: string) => {
     setLoading(true);
     try {
       const res = await UsersService.getUserById({ userId: id });
       setUser(res?.data?.data || null);
-      return res?.data?.data;
+      return res?.data?.data as User;
     } catch (error: Error | AxiosError | any) {
       showErrorToast({
         message: error?.response?.data?.message || "Failed to fetch user",
@@ -61,7 +62,7 @@ export const useCreateUser = () => {
     data,
     successCallback,
   }: {
-    data: any;
+    data: { name?: string; email: string; role?: string; status?: string; [key: string]: unknown };
     successCallback?: () => void;
   }) => {
     setLoading(true);
@@ -72,7 +73,7 @@ export const useCreateUser = () => {
         message: res?.data?.message || "User created successfully!",
         description: res?.data?.description || "",
       });
-      return res?.data?.data;
+      return res?.data?.data as User;
     } catch (error: Error | AxiosError | any) {
       showErrorToast({
         message: error?.response?.data?.message || "Failed to create user",
@@ -95,7 +96,7 @@ export const useUpdateUser = () => {
     data,
     successCallback,
   }: {
-    data: { id: string; [key: string]: any };
+    data: { id: string; [key: string]: unknown };
     successCallback?: () => void;
   }) => {
     setLoading(true);
@@ -106,7 +107,7 @@ export const useUpdateUser = () => {
         message: res?.data?.message || "User updated successfully!",
         description: res?.data?.description || "",
       });
-      return res?.data?.data;
+      return res?.data?.data as User;
     } catch (error: Error | AxiosError | any) {
       showErrorToast({
         message: error?.response?.data?.message || "Failed to update user",

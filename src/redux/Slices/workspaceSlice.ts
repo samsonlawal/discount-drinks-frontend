@@ -1,10 +1,18 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { saveToLocalStorage } from "@/utils/localStorage/AsyncStorage";
+import { User } from "@/types";
+
+export interface WorkspaceData {
+  id: string;
+  name: string;
+  description?: string;
+  [key: string]: unknown; // Allow additional properties
+}
 
 // Define proper types for your workspace state
 type WorkspaceState = {
-  workspace: Record<string, any> | null;
-  members: Array<any> | null;
+  workspace: WorkspaceData | null;
+  members: Array<User> | null;
   name: string;
 };
 
@@ -20,7 +28,7 @@ const workspaceSlice = createSlice({
   reducers: {
     setWorkspace: (
       state,
-      action: PayloadAction<Record<string, any> | null>,
+      action: PayloadAction<WorkspaceData | null>,
     ) => {
       state.workspace = action.payload;
       saveToLocalStorage({

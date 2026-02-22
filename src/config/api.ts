@@ -12,6 +12,7 @@ const api = ({ inProduction }: { inProduction: boolean }) => {
     categories: `${BASE_URL_LINK}/categories`,
     tags: `${BASE_URL_LINK}/tags`,
     products: `${BASE_URL_LINK}/products`,
+    brands: `${BASE_URL_LINK}/brands`,
   };
 };
 

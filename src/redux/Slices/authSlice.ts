@@ -6,7 +6,7 @@ interface User {
   username: string;
   name: string;
   // profileImage: string;
-
+  
 }
 
 interface AuthState {
@@ -25,7 +25,7 @@ export const authSlice = createSlice({
   name: "auth",
   initialState: INITIAL_STATE,
   reducers: {
-    setAuthState: (state, action: PayloadAction<any>) => {
+    setAuthState: (state, action: PayloadAction<Partial<AuthState>>) => {
       return { ...state, ...action.payload };
     },
     clearAuthState: () => INITIAL_STATE,

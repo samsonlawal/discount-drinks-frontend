@@ -1,10 +1,21 @@
 import axios from "axios";
 import env from "@/config/env";
 
-// import { IFetchUserQuery } from "@/types";
+interface ICreateUserPayload {
+  name?: string;
+  email: string;
+  role?: string;
+  status?: string;
+  [key: string]: unknown;
+}
+
+interface IUpdateUserPayload {
+  id: string;
+  [key: string]: unknown;
+}
 
 class Service {
-  fetchUsers(query?: any) {
+  fetchUsers(query?: Record<string, string | number>) {
     const { search, page, pageSize } = query || {};
     return axios.get(env.api.users, {
       params: {
@@ -20,11 +31,11 @@ class Service {
     return axios.get(`${env.api.users}/${userId}`);
   }
 
-  createUser(data: any) {
+  createUser(data: ICreateUserPayload) {
     return axios.post(env.api.users, data);
   }
 
-  updateUser({ id, ...data }: { id: string; [key: string]: any }) {
+  updateUser({ id, ...data }: IUpdateUserPayload) {
     return axios.put(`${env.api.users}/${id}`, data);
   }
 

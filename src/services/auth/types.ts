@@ -1,4 +1,5 @@
 import { AxiosResponse } from "axios";
+import { User } from "@/types";
 
 export type TRegisterService = {
   payload: {
@@ -39,7 +40,11 @@ export type TResetPasswordService = {
   };
 };
 
+export interface AuthResponse {
+  accessToken: string;
+  user: User;
+}
 
 export interface AuthInterface {
-  login: ({ payload }: TLoginService) => Promise<AxiosResponse<any, any>>;
+  login: ({ payload }: TLoginService) => Promise<AxiosResponse<AuthResponse>>;
 }

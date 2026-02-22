@@ -1,33 +1,31 @@
 import { useState } from "react";
 import { showErrorToast, showSuccessToast } from "@/utils/toaster";
 import { AxiosError } from "axios";
-// import { IFetchCategoryQuery } from "@/types";
-import CategoriesService from "@/services/categories";
-import { Category } from "@/types";
+import BrandsService from "@/services/brands";
+import { Brand } from "@/types";
 
-// Hook for fetching categories
-export const useGetCategories = () => {
+// Hook for fetching brands
+export const useGetBrands = () => {
   const [loading, setLoading] = useState(false);
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [brands, setBrands] = useState<Brand[]>([]);
 
-  const fetchCategories = async () => {
+  const fetchBrands = async () => {
     setLoading(true);
     try {
-      const res = await CategoriesService.fetchCategories();
+      const res = await BrandsService.fetchBrands();
       // Transform the data to match expected format
-      const transformedData = (res?.data?.data || []).map((category: any) => ({
-        ...category,
-        status: category.isActive ? "Active" : "Inactive",
-        createdDate: category.createdAt
-          ? new Date(category.createdAt).toLocaleDateString()
+      const transformedData = (res?.data?.data || []).map((brand: any) => ({
+        ...brand,
+        status: brand.isActive ? "Active" : "Inactive",
+        createdDate: brand.createdAt
+          ? new Date(brand.createdAt).toLocaleDateString()
           : "",
-      })) as Category[];
-      
-      setCategories(transformedData);
+      })) as Brand[];
+      setBrands(transformedData);
       return transformedData;
     } catch (error: Error | AxiosError | any) {
       showErrorToast({
-        message: error?.response?.data?.message || "Failed to fetch categories",
+        message: error?.response?.data?.message || "Failed to fetch brands",
         description: error?.response?.data?.description || "",
       });
       return [];
@@ -36,23 +34,23 @@ export const useGetCategories = () => {
     }
   };
 
-  return { loading, categories, fetchCategories };
+  return { loading, brands, fetchBrands };
 };
 
-// Hook for fetching a single category by ID
-export const useGetCategoryById = () => {
+// Hook for fetching a single brand by ID
+export const useGetBrandById = () => {
   const [loading, setLoading] = useState(false);
-  const [category, setCategory] = useState<Category | null>(null);
+  const [brand, setBrand] = useState<Brand | null>(null);
 
-  const fetchCategory = async (id: string) => {
+  const fetchBrand = async (id: string) => {
     setLoading(true);
     try {
-      const res = await CategoriesService.getCategoryById({ categoryId: id });
-      setCategory(res?.data?.data || null);
-      return res?.data?.data as Category;
+      const res = await BrandsService.getBrandById({ brandId: id });
+      setBrand(res?.data?.data || null);
+      return res?.data?.data as Brand;
     } catch (error: Error | AxiosError | any) {
       showErrorToast({
-        message: error?.response?.data?.message || "Failed to fetch category",
+        message: error?.response?.data?.message || "Failed to fetch brand",
         description: error?.response?.data?.description || "",
       });
       return null;
@@ -61,37 +59,36 @@ export const useGetCategoryById = () => {
     }
   };
 
-  return { loading, category, fetchCategory };
+  return { loading, brand, fetchBrand };
 };
 
-// Hook for creating a category
-export const useCreateCategory = () => {
+// Hook for creating a brand
+export const useCreateBrand = () => {
   const [loading, setLoading] = useState(false);
 
-  const createCategory = async ({
+  const createBrand = async ({
     data,
     successCallback,
   }: {
     data: {
       name: string;
       description?: string;
-      parent_category_id?: string;
       status?: string;
     };
     successCallback?: () => void;
   }) => {
     setLoading(true);
     try {
-      const res = await CategoriesService.createCategory(data);
+      const res = await BrandsService.createBrand(data);
       successCallback?.();
       showSuccessToast({
-        message: res?.data?.message || "Category created successfully!",
+        message: res?.data?.message || "Brand created successfully!",
         description: res?.data?.description || "",
       });
-      return res?.data?.data as Category;
+      return res?.data?.data as Brand;
     } catch (error: Error | AxiosError | any) {
       showErrorToast({
-        message: error?.response?.data?.message || "Failed to create category",
+        message: error?.response?.data?.message || "Failed to create brand",
         description: error?.response?.data?.description || "",
       });
       return null;
@@ -100,14 +97,14 @@ export const useCreateCategory = () => {
     }
   };
 
-  return { loading, createCategory };
+  return { loading, createBrand };
 };
 
-// Hook for updating a category
-export const useUpdateCategory = () => {
+// Hook for updating a brand
+export const useUpdateBrand = () => {
   const [loading, setLoading] = useState(false);
 
-  const updateCategory = async ({
+  const updateBrand = async ({
     data,
     successCallback,
   }: {
@@ -115,23 +112,22 @@ export const useUpdateCategory = () => {
       id: string;
       name: string; // Made name required
       description?: string;
-      parent_category_id?: string;
       status?: string;
     };
     successCallback?: () => void;
   }) => {
     setLoading(true);
     try {
-      const res = await CategoriesService.updateCategory(data);
+      const res = await BrandsService.updateBrand(data);
       successCallback?.();
       showSuccessToast({
-        message: res?.data?.message || "Category updated successfully!",
+        message: res?.data?.message || "Brand updated successfully!",
         description: res?.data?.description || "",
       });
-      return res?.data?.data as Category;
+      return res?.data?.data as Brand;
     } catch (error: Error | AxiosError | any) {
       showErrorToast({
-        message: error?.response?.data?.message || "Failed to update category",
+        message: error?.response?.data?.message || "Failed to update brand",
         description: error?.response?.data?.description || "",
       });
       return null;
@@ -140,14 +136,14 @@ export const useUpdateCategory = () => {
     }
   };
 
-  return { loading, updateCategory };
+  return { loading, updateBrand };
 };
 
-// Hook for deleting a category
-export const useDeleteCategory = () => {
+// Hook for deleting a brand
+export const useDeleteBrand = () => {
   const [loading, setLoading] = useState(false);
 
-  const deleteCategory = async ({
+  const deleteBrand = async ({
     data,
     successCallback,
   }: {
@@ -156,16 +152,16 @@ export const useDeleteCategory = () => {
   }) => {
     setLoading(true);
     try {
-      const res = await CategoriesService.deleteCategory(data);
+      const res = await BrandsService.deleteBrand(data);
       successCallback?.();
       showSuccessToast({
-        message: res?.data?.message || "Category deleted successfully!",
+        message: res?.data?.message || "Brand deleted successfully!",
         description: res?.data?.description || "",
       });
       return true;
     } catch (error: Error | AxiosError | any) {
       showErrorToast({
-        message: error?.response?.data?.message || "Failed to delete category",
+        message: error?.response?.data?.message || "Failed to delete brand",
         description: error?.response?.data?.description || "",
       });
       return false;
@@ -174,5 +170,5 @@ export const useDeleteCategory = () => {
     }
   };
 
-  return { loading, deleteCategory };
+  return { loading, deleteBrand };
 };

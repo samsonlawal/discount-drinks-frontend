@@ -1,44 +1,70 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { products } from "@/data";
 import ProductCard from "@/components/products/ProductCard";
 import FilterSidebar from "@/components/products/FilterSidebar";
 import { SlidersHorizontal } from "lucide-react";
-import Link from "next/link";
+
 import { useGetProducts } from "@/hooks/api/products";
+import { useGetCategories } from "@/hooks/api/categories";
+import { useGetTags } from "@/hooks/api/tags";
+import { useGetBrands } from "@/hooks/api/brands";
 
 export default function ProductsPage() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedBadge, setSelectedBadge] = useState("All");
+  const [selectedBrand, setSelectedBrand] = useState("All");
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 9999]);
 
   const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
-  const filteredProducts = products.filter((product) => {
+  // Fetch all necessary data
+  const { loading: productsLoading, products: rawProducts, fetchProducts } = useGetProducts();
+  const { categories, fetchCategories } = useGetCategories();
+  const { tags, fetchTags } = useGetTags();
+  const { brands, fetchBrands } = useGetBrands();
+
+  useEffect(() => {
+    fetchProducts();
+    fetchCategories();
+    fetchTags();
+    fetchBrands();
+  }, []);
+
+  const formattedProducts = (rawProducts || []).map((p: any, index: number) => ({
+    ...p,
+    id: p._id || p.id || String(index),
+    image: p.image || `/images/product-${(index % 8) + 1}.jpg`,
+    price: typeof p.price === 'number' ? p.price : parseFloat(p.price) || 0,
+    originalPrice: p.originalPrice ? (typeof p.originalPrice === 'number' ? p.originalPrice : parseFloat(p.originalPrice)) : undefined,
+  }));
+
+  const filteredProducts = formattedProducts.filter((product: any) => {
     const categoryMatch =
-      selectedCategory === "All" || product.category === selectedCategory;
+      selectedCategory === "All" || product.category === selectedCategory || 
+      (product.tags && product.tags.includes(selectedCategory));
+      
+    const productBadge = product.badge || "";
     const badgeMatch =
-      selectedBadge === "All" || product.badge === selectedBadge.toLowerCase();
+      selectedBadge === "All" || productBadge.toLowerCase() === selectedBadge.toLowerCase();
+      
+    // Assuming brand exists on product as string, id, or object with a name
+    const productBrand = product.brand?.name || product.brand || "";
+    const brandMatch = 
+      selectedBrand === "All" || productBrand.toLowerCase() === selectedBrand.toLowerCase();
+      
     const priceMatch =
       product.price >= priceRange[0] && product.price <= priceRange[1];
-    return categoryMatch && badgeMatch && priceMatch;
+      
+    return categoryMatch && badgeMatch && brandMatch && priceMatch;
   });
-
-  const { loading, products: ProductData, fetchProducts } = useGetProducts();
-
-function handleFetch()  {
-fetchProducts();
-}   
 
   return (
     <main>
       <section className="section product">
         <div className="container">
-          {/* Page header row: breadcrumbs + filter toggle */}
           <div className="products-page-header">
-            {/* Breadcrumb */}
             <nav className="breadcrumb" aria-label="Breadcrumb">
               <ol className="breadcrumb-list">
                 <li className="breadcrumb-item">
@@ -49,10 +75,6 @@ fetchProducts();
                 </li>
               </ol>
             </nav>
-              {/* <button onClick={handleFetch} className="bg-[red] text-[red] px-4 py-2">
-                products
-              </button> */}
-            {/* Icon-only filter toggle */}
             <button
               onClick={toggleSidebar}
               className={`filter-icon-btn${isSidebarOpen ? " filter-icon-btn--active" : ""}`}
@@ -63,43 +85,51 @@ fetchProducts();
             </button>
           </div>
 
-          {/* Sidebar + Products side-by-side */}
           <div className="products-layout">
             <FilterSidebar
               isOpen={isSidebarOpen}
               onToggle={toggleSidebar}
+              categories={categories || []}
+              badges={tags || []}
+              brands={brands || []}
               selectedCategory={selectedCategory}
               onCategoryChange={setSelectedCategory}
               selectedBadge={selectedBadge}
               onBadgeChange={setSelectedBadge}
+              selectedBrand={selectedBrand}
+              onBrandChange={setSelectedBrand}
               priceRange={priceRange}
               onPriceRangeChange={setPriceRange}
               filteredCount={filteredProducts.length}
-              totalCount={products.length}
+              totalCount={formattedProducts.length}
             />
 
-            {/* Products Area */}
             <div className="products-main">
+              {productsLoading ? (
+                <p>Loading...</p> 
+              ) : (
+                <> 
+                  <ul className="product-list">
+                    {filteredProducts.map((product: any) => (
+                      <li key={product.id}>
+                        <ProductCard product={product} />
+                      </li>
+                    ))}
+                  </ul>
 
-              <ul className="product-list">
-                {filteredProducts.map((product) => (
-                  <li key={product.id}>
-                    <ProductCard product={product} />
-                  </li>
-                ))}
-              </ul>
-
-              {filteredProducts.length === 0 && (
-                <div style={{ textAlign: "center", padding: "60px 20px" }}>
-                  <p
-                    style={{
-                      color: "var(--sonic-silver)",
-                      fontSize: "var(--fs-6)",
-                    }}
-                  >
-                    No products found matching your filters.
-                  </p>
-                </div>
+                  {filteredProducts.length === 0 && (
+                    <div style={{ textAlign: "center", padding: "60px 20px" }}>
+                      <p
+                        style={{
+                          color: "var(--sonic-silver)",
+                          fontSize: "var(--fs-6)",
+                        }}
+                      >
+                        No products found matching your filters.
+                      </p>
+                    </div>
+                  )}
+                </>
               )}
             </div>
           </div>

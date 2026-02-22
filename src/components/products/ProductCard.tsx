@@ -35,6 +35,9 @@ export default function ProductCard({ product }: ProductCardProps) {
 
   const inWishlist = isInWishlist(product.id);
 
+  // Fallback to price if costPrice is undefined
+  const displayPrice = product.costPrice ?? product.price;
+
   return (
     <div className="product-card">
       <figure className="card-banner">
@@ -53,7 +56,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           <div
             className={`card-badge ${product.badge === "sale" ? "red" : "green"}`}
           >
-            {product.badgeText}
+            {product.badge}
           </div>
         )}
 
@@ -97,10 +100,10 @@ export default function ProductCard({ product }: ProductCardProps) {
         </h3>
 
         <div className="card-price">
-          <data value={product.price}>&pound;{product.price.toFixed(2)}</data>
-          {product.originalPrice && (
-            <data value={product.originalPrice}>
-              &pound;{product.originalPrice.toFixed(2)}
+          <data value={displayPrice}>&pound;{displayPrice.toFixed(2)}</data>
+          {product.basePrice && (
+            <data value={product.basePrice}>
+              &pound;{product.basePrice.toFixed(2)}
             </data>
           )}
         </div>

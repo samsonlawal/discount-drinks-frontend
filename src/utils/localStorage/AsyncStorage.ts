@@ -1,30 +1,30 @@
 "use client";
 const storage = typeof window !== "undefined" ? window.localStorage : null;
 
-interface SaveToLocalStorageProps {
+interface SaveToLocalStorageProps<T> {
   key: string;
-  value: any;
+  value: T;
 }
 
-export const saveToLocalStorage = ({
+export const saveToLocalStorage = <T>({
   key,
   value,
-}: SaveToLocalStorageProps): void => {
+}: SaveToLocalStorageProps<T>): void => {
   try {
     const jsonValue = JSON.stringify(value);
     storage?.setItem(key, jsonValue);
   } catch (e) {}
 };
 
-interface GetFromLocalStorageProps {
+interface GetFromLocalStorageProps<T> {
   key: string;
-  cb?: (value: any) => void;
+  cb?: (value: T) => void;
 }
 
-export const getFromLocalStorage = ({
+export const getFromLocalStorage = <T>({
   key,
   cb = () => null,
-}: GetFromLocalStorageProps): void => {
+}: GetFromLocalStorageProps<T>): void => {
   try {
     const value = storage?.getItem(key);
     if (value) {

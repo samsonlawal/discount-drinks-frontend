@@ -6,26 +6,23 @@ import { X } from "lucide-react";
 interface FilterSidebarProps {
   isOpen: boolean;
   onToggle: () => void;
+  // Dynamic lists from backend
+  categories: any[];
+  badges: any[];
+  brands: any[];
+  
+  // Selected states
   selectedCategory: string;
   onCategoryChange: (category: string) => void;
   selectedBadge: string;
   onBadgeChange: (badge: string) => void;
+  selectedBrand: string;
+  onBrandChange: (brand: string) => void;
   priceRange: [number, number];
   onPriceRangeChange: (range: [number, number]) => void;
   filteredCount: number;
   totalCount: number;
 }
-
-const categories = [
-  "All",
-  "Rum",
-  "Whiskey",
-  "Vodka",
-  "Beer",
-  "Wine",
-  "Tequila",
-];
-const badges = ["All", "Sale", "New", "Hot"];
 
 const priceRanges: { label: string; min: number; max: number }[] = [
   { label: "Under £25", min: 0, max: 25 },
@@ -38,10 +35,15 @@ const priceRanges: { label: string; min: number; max: number }[] = [
 export default function FilterSidebar({
   isOpen,
   onToggle,
+  categories,
+  badges,
+  brands,
   selectedCategory,
   onCategoryChange,
   selectedBadge,
   onBadgeChange,
+  selectedBrand,
+  onBrandChange,
   priceRange,
   onPriceRangeChange,
   filteredCount,
@@ -86,30 +88,71 @@ export default function FilterSidebar({
           <div className="filter-group">
             <h4 className="filter-group__title">Category</h4>
             <ul className="filter-chip-list">
+              <li>
+                <button
+                  onClick={() => onCategoryChange("All")}
+                  className={`filter-chip${selectedCategory === "All" ? " filter-chip--active" : ""}`}
+                >
+                  All
+                </button>
+              </li>
               {categories.map((category) => (
-                <li key={category}>
+                <li key={category._id || category.id || category.name}>
                   <button
-                    onClick={() => onCategoryChange(category)}
-                    className={`filter-chip${selectedCategory === category ? " filter-chip--active" : ""}`}
+                    onClick={() => onCategoryChange(category.name)}
+                    className={`filter-chip${selectedCategory === category.name ? " filter-chip--active" : ""}`}
                   >
-                    {category}
+                    {category.name}
                   </button>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Badges / Type */}
+          {/* Type / Badges */}
           <div className="filter-group">
             <h4 className="filter-group__title">Type</h4>
             <ul className="filter-chip-list">
+              <li>
+                <button
+                  onClick={() => onBadgeChange("All")}
+                  className={`filter-chip${selectedBadge === "All" ? " filter-chip--active" : ""}`}
+                >
+                  All
+                </button>
+              </li>
               {badges.map((badge) => (
-                <li key={badge}>
+                <li key={badge._id || badge.id || badge.name}>
                   <button
-                    onClick={() => onBadgeChange(badge)}
-                    className={`filter-chip${selectedBadge === badge ? " filter-chip--active" : ""}`}
+                    onClick={() => onBadgeChange(badge.name)}
+                    className={`filter-chip${selectedBadge === badge.name ? " filter-chip--active" : ""}`}
                   >
-                    {badge}
+                    {badge.name}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Brands */}
+          <div className="filter-group">
+            <h4 className="filter-group__title">Brands</h4>
+            <ul className="filter-chip-list">
+              <li>
+                <button
+                  onClick={() => onBrandChange("All")}
+                  className={`filter-chip${selectedBrand === "All" ? " filter-chip--active" : ""}`}
+                >
+                  All
+                </button>
+              </li>
+              {brands.map((brand) => (
+                <li key={brand._id || brand.id || brand.name}>
+                  <button
+                    onClick={() => onBrandChange(brand.name)}
+                    className={`filter-chip${selectedBrand === brand.name ? " filter-chip--active" : ""}`}
+                  >
+                    {brand.name}
                   </button>
                 </li>
               ))}
