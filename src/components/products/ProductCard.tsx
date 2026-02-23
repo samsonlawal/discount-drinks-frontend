@@ -47,7 +47,7 @@ export default function ProductCard({ product }: ProductCardProps) {
             alt={product.name}
             loading="lazy"
             width="800"
-            height="1034"
+            height="800"
             className="w-100"
           />
         </a>

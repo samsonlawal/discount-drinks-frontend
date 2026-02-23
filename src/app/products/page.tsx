@@ -32,13 +32,24 @@ export default function ProductsPage() {
     fetchBrands();
   }, []);
 
-  const formattedProducts = (rawProducts || []).map((p: any, index: number) => ({
-    ...p,
-    id: p._id || p.id || String(index),
-    image: p.image || `/images/product-${(index % 8) + 1}.jpg`,
-    price: typeof p.price === 'number' ? p.price : parseFloat(p.price) || 0,
-    originalPrice: p.originalPrice ? (typeof p.originalPrice === 'number' ? p.originalPrice : parseFloat(p.originalPrice)) : undefined,
-  }));
+  const formattedProducts = (rawProducts || []).map((p: any, index: number) => {
+    // Try to find the image in various common backend fields
+    let img = p.image || p.imageUrl || p.thumbnail || p.photoUrl;
+    if (!img && p.images && Array.isArray(p.images) && p.images.length > 0) {
+      img = p.images[0];
+    }
+    if (!img) {
+      img = `/images/product-${(index % 8) + 1}.jpg`;
+    }
+
+    return {
+      ...p,
+      id: p._id || p.id || String(index),
+      image: img,
+      price: typeof p.price === 'number' ? p.price : parseFloat(p.price) || 0,
+      originalPrice: p.originalPrice ? (typeof p.originalPrice === 'number' ? p.originalPrice : parseFloat(p.originalPrice)) : undefined,
+    };
+  });
 
   const filteredProducts = formattedProducts.filter((product: any) => {
     const categoryMatch =
