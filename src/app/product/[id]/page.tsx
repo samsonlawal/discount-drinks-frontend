@@ -46,8 +46,10 @@ export default function ProductDetailPage() {
 
   if (loading && !product) {
     return (
-      <main className="min-h-screen flex items-center justify-center py-20">
-        <p>Loading Product...</p>
+      <main className="min-h-screen flex items-center justify-center py-20 px-4">
+        <div className="text-center">
+          <p className="text-xl md:text-2xl font-medium text-gray-600 animate-pulse">Loading product details...</p>
+        </div>
       </main>
     );
   }
@@ -112,24 +114,23 @@ export default function ProductDetailPage() {
                 
                 {/* Thumbnails */}
                 {galleryImages.length > 1 && (
-                  <div className="flex gap-4 mt-6 overflow-x-auto pb-2 w-full justify-start md:justify-center">
+                  <div className="flex gap-3 mt-8 overflow-x-auto w-full justify-center px-4">
                     {galleryImages.map((img, idx) => (
                       <button
                         key={idx}
                         onClick={() => setActiveImage(img)}
-                        className={`flex-shrink-0 rounded-lg overflow-hidden transition-all duration-200 border-2 ${
+                        className={`relative flex-shrink-0 rounded-md overflow-hidden transition-all duration-200 w-16 h-16 sm:w-20 sm:h-20 ${
                           activeImage === img 
-                            ? "border-black scale-105 shadow-md opacity-100" 
-                            : "border-transparent hover:border-gray-300 opacity-60 hover:opacity-100"
+                            ? "ring-2 ring-black ring-offset-2 opacity-100" 
+                            : "ring-1 ring-gray-200 opacity-70 hover:opacity-100 hover:ring-gray-300"
                         }`}
-                        style={{ width: '80px', height: '80px', flexBasis: '80px' }}
                       >
                         <Image
                           src={img || "/images/product-1.jpg"}
                           alt={`${product.name} thumbnail ${idx + 1}`}
-                          width={80}
-                          height={80}
-                          className="object-cover w-full h-full bg-gray-50"
+                          fill
+                          // sizes="(max-width: 640px) 64px, 80px"
+                          className="object-cover bg-white"
                         />
                       </button>
                     ))}
@@ -145,7 +146,7 @@ export default function ProductDetailPage() {
                       product.badge === "sale" ? "red" : "green"
                     }`}
                   >
-                    {product.badgeText}
+                    {product.badge}
                   </span>
                 )}
 
@@ -174,12 +175,16 @@ export default function ProductDetailPage() {
                 )}
 
                 <div className="product-description">
-                  <p>
-                    Premium quality drink sourced from the finest producers.
-                    Perfect for any occasion, whether you&apos;re celebrating or
-                    just enjoying a quiet evening. Our bulk discount prices
-                    ensure you get the best value for your money.
-                  </p>
+                  {product.description ? (
+                    <div 
+                      className="w-full text-gray-700" 
+                      dangerouslySetInnerHTML={{ __html: product.description }} 
+                    />
+                  ) : (
+                    <p className="w-full text-gray-500 italic">
+                      No description available for this product.
+                    </p>
+                  )}
                 </div>
 
                 {/* Specifications */}

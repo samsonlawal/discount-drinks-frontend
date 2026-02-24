@@ -117,7 +117,9 @@ export default function ProductsPage() {
 
             <div className="products-main">
               {productsLoading ? (
-                <p>Loading...</p> 
+                <div className="flex justify-center items-center py-20 w-full">
+                  <p className="text-xl md:text-2xl font-medium text-gray-600 animate-pulse">Loading products...</p>
+                </div>
               ) : (
                 <> 
                   <ul className="product-list">

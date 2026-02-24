@@ -13,6 +13,7 @@ export interface Product {
   tags?: string[];
   brand?: string | Brand;
   specifications?: Record<string, string>;
+  description?: string;
 }
 
 export interface CartItem extends Product {

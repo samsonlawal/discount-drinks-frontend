@@ -72,18 +72,14 @@ export default function CartPage() {
 
         {/* Loading State */}
         {isLoading ? (
-          <div className="w-[100%]">
-            <div className="cart-items-section">
-              <div className="empty-cart">
-                <div className="empty-cart-icon">
-                  <Loader2
-                    size={50}
-                    className="animate-spin"
-                    style={{ animation: "spin 1s linear infinite" }}
-                  />
-                </div>
-                <h2 className="empty-cart-title">Loading your cart...</h2>
-              </div>
+          <div className="w-[100%] py-20">
+            <div className="flex flex-col justify-center items-center gap-4">
+              <Loader2
+                size={50}
+                className="animate-spin text-gray-400"
+                style={{ animation: "spin 1s linear infinite" }}
+              />
+              <p className="text-xl md:text-2xl font-medium text-gray-600 animate-pulse">Loading your cart...</p>
             </div>
           </div>
         ) : (

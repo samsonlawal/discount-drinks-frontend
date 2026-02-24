@@ -919,18 +919,26 @@ h3 > a {
 
 .product-showcase {
   background: var(--cultured);
-  border-radius: 6px;
+  border-radius: 12px;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
 }
 
 .product-img {
   width: 100%;
+  max-width: 500px;
+  max-height: 500px;
+  object-fit: contain;
   height: auto;
 }
 
 .product-info {
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 .product-badge {
@@ -1258,8 +1266,9 @@ h3 > a {
    */
 
   .product-detail-grid {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 4fr 5fr;
     gap: 50px;
+    align-items: start;
   }
 }
 

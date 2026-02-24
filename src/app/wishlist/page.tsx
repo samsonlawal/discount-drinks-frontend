@@ -14,9 +14,11 @@ export default function WishlistPage() {
 
   if (isLoading) {
     return (
-      <div className="container" style={{ padding: "100px 15px" }}>
-        <p>Loading wishlist...</p>
-      </div>
+      <main className="min-h-screen flex items-center justify-center py-20 px-4">
+        <div className="text-center">
+          <p className="text-xl md:text-2xl font-medium text-gray-600 animate-pulse">Loading your wishlist...</p>
+        </div>
+      </main>
     );
   }
 
