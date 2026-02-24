@@ -51,7 +51,18 @@ export function CartProvider({ children }: { children: ReactNode }) {
   // Save cart to localStorage whenever it changes
   useEffect(() => {
     if (!isLoading) {
-      localStorage.setItem("discountdrinks_cart", JSON.stringify(cart));
+      try {
+        const cartToSave = cart.map(item => ({
+          ...item,
+          image: typeof item.image === 'string' && item.image.length > 500 ? '' : item.image
+        }));
+        localStorage.setItem("discountdrinks_cart", JSON.stringify(cartToSave));
+      } catch (error) {
+        console.error("Failed to save cart to localStorage:", error);
+        if (error instanceof DOMException && error.name === 'QuotaExceededError') {
+           localStorage.removeItem("discountdrinks_cart");
+        }
+      }
     }
   }, [cart, isLoading]);
 
@@ -93,7 +104,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   };
 
   const getCartTotal = () => {
-    return cart.reduce((total, item) => total + item.price * item.quantity, 0);
+    return cart.reduce((total, item) => total + (item.costPrice ?? item.price) * item.quantity, 0);
   };
 
   const getCartCount = () => {
@@ -102,7 +113,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
   const getCartTotals = (): CartTotals => {
     const subtotal = cart.reduce(
-      (total, item) => total + item.price * item.quantity,
+      (total, item) => total + (item.costPrice ?? item.price) * item.quantity,
       0,
     );
     const tax = subtotal * 0.2; // 20% VAT

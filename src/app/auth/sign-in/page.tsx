@@ -203,7 +203,7 @@ export default function SignInPage() {
               <div className="auth-footer">
                 <p className="auth-footer-text">
                   Don&apos;t have an account?
-                  <Link href="/auth/signup" className="link-primary">
+                  <Link href="/auth/sign-up" className="link-primary">
                     Sign up
                   </Link>
                 </p>

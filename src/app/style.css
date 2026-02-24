@@ -544,6 +544,12 @@ h3 > a {
   margin-bottom: 20px;
 }
 
+.product-card .card-banner img {
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  width: 100%;
+}
+
 .product-card .card-badge {
   background: var(--eerie-black);
   color: var(--white);

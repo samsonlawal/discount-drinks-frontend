@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { products } from "@/data";
 import ProductCard from "./ProductCard";
+import Link from 'next/link'
 
 const filters = ["Best Seller", "Hot Collection", "Trendy", "New Arrival"];
 
@@ -35,7 +36,7 @@ export default function ProductList() {
           ))}
         </ul>
 
-        <button className="btn btn-outline">View All Products</button>
+        <Link href="/products" className="btn btn-outline">View All Products</Link>
       </div>
     </section>
   );

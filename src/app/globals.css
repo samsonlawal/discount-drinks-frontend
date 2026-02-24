@@ -351,6 +351,21 @@ h3 > a {
   font-weight: var(--fw-600);
 }
 
+.header-action-btn .user-badge {
+  position: absolute;
+  bottom: -5px;
+  right: 0;
+  background: var(--background, var(--eerie-black));
+  width: 10px;
+  height: 10px;
+  display: grid;
+  place-items: center;
+  line-height: 0;
+  font-size: 8px;
+  color: var(--white);
+  border-radius: 50%;
+}
+
 .header-action-btn .btn-badge {
   position: absolute;
   top: -5px;

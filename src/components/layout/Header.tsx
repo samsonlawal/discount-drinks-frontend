@@ -17,6 +17,8 @@ import {
   Info,
   BookOpen,
   Mail,
+  BadgeCheck,
+  Check
 } from "lucide-react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
@@ -92,7 +94,14 @@ export default function Header() {
 (            <a href="/user/profile" className="header-action-btn" data-auth-btn>
             <CircleUser aria-hidden="true" className="icon" />
   
-          <p className="text-[14px] text-black">{user?.username}</p>
+          <p className="text-[14px] text-black hidden md:flex">{user?.username}</p>
+              <div
+                className="absolute bg-black text-white rounded-full flex items-center justify-center md:hidden"
+                style={{ width: '14px', height: '14px', top: '6px', right: '0px' }}
+                aria-hidden="true"
+              >
+                <Check size={10} strokeWidth={4} />
+              </div>
           </a>  )
           :
 (          <a href="/auth/sign-in" className="header-action-btn" data-auth-btn>
@@ -103,9 +112,9 @@ export default function Header() {
 
 
           {/* Search — mobile only */}
-          <button className="header-action-btn header-search-btn-mobile">
+          {/* <button className="header-action-btn header-search-btn-mobile">
             <Search aria-hidden="true" className="icon" />
-          </button>
+          </button> */}
 
           {/* Cart */}
           <a href="/cart" className="header-action-btn">

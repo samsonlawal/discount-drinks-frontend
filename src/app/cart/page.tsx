@@ -100,7 +100,7 @@ export default function CartPage() {
                   <p className="empty-cart-text">
                     Add some drinks to get started!
                   </p>
-                  <a href="/" className="btn btn-primary">
+                  <a href="/products" className="btn btn-primary">
                     Continue Shopping
                   </a>
                 </div>
@@ -145,7 +145,7 @@ export default function CartPage() {
                           <div className="cart-item-content">
                             <h3 className="cart-item-title">{item.name}</h3>
                             <p className="cart-item-price">
-                              {formatPrice(item.price)}
+                              {formatPrice(item.costPrice ?? item.price)}
                             </p>
 
                             {/* Quantity controls */}
@@ -183,7 +183,7 @@ export default function CartPage() {
                           {/* Actions section */}
                           <div className="cart-item-actions">
                             <p className="cart-item-total">
-                              {formatPrice(item.price * item.quantity)}
+                              {formatPrice((item.costPrice ?? item.price) * item.quantity)}
                             </p>
                             <button
                               className="btn-remove"

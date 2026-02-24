@@ -41,7 +41,7 @@ export default function CartItem({
     }
   };
 
-  const itemTotal = item.price * item.quantity;
+  const itemTotal = (item.costPrice ?? item.price) * item.quantity;
 
   return (
     <li className="cart-item" data-product-id={item.id}>
@@ -58,7 +58,7 @@ export default function CartItem({
 
         <div className="cart-item-content">
           <h3 className="cart-item-title">{item.name}</h3>
-          <p className="cart-item-price">£{item.price.toFixed(2)}</p>
+          <p className="cart-item-price">£{(item.costPrice ?? item.price).toFixed(2)}</p>
 
           <div className="quantity-controls">
             <button
