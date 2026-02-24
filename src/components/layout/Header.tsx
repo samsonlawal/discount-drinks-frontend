@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useCart } from "@/contexts/CartContext";
 import { useWishlist } from "@/contexts/WishlistContext";
+import { useLogout } from "@/hooks/api/auth";
 import {
   CircleUser,
   User,
@@ -26,6 +27,7 @@ import { RootState } from "@/redux/store";
 export default function Header() {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const { getCartCount, isLoading } = useCart();
   const { getWishlistCount, isLoading: isWishlistLoading } = useWishlist();
 
@@ -38,7 +40,32 @@ export default function Header() {
   const toggleNav = () => setIsNavOpen(!isNavOpen);
   const closeNav = () => setIsNavOpen(false);
 
+  const toggleProfile = () => setIsProfileOpen(!isProfileOpen);
+  const closeProfile = () => setIsProfileOpen(false);
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest('.profile-dropdown-container')) {
+        closeProfile();
+      }
+    };
+    if (isProfileOpen) {
+      document.addEventListener('click', handleClickOutside);
+    }
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, [isProfileOpen]);
+
   const { user } = useSelector((state: RootState) => state.auth);
+  const { onLogout } = useLogout();
+  
+  const handleLogout = () => {
+    onLogout();
+    closeProfile();
+    // Redirect handled by the application logic or could add router.push('/') if needed.
+    // For now, removing the auth state clears the profile.
+  };
 
   return (
     <header className={`header ${isScrolled ? "active" : ""}`} data-header>
@@ -90,25 +117,64 @@ export default function Header() {
         <div className="header-actions">
           {/* User */}
           {user ? 
-          
-(            <a href="/user/profile" className="header-action-btn" data-auth-btn>
-            <CircleUser aria-hidden="true" className="icon" />
-  
-          <p className="text-[14px] text-black hidden md:flex">{user?.username}</p>
-              <div
-                className="absolute bg-black text-white rounded-full flex items-center justify-center md:hidden"
-                style={{ width: '14px', height: '14px', top: '6px', right: '0px' }}
-                aria-hidden="true"
+            <div className="relative profile-dropdown-container">
+              <button 
+                className="header-action-btn" 
+                onClick={toggleProfile}
+                data-auth-btn
               >
-                <Check size={10} strokeWidth={4} />
-              </div>
-          </a>  )
+                <CircleUser aria-hidden="true" className="icon" />
+      
+                <p className="header-action-label">{user?.username}</p>
+                <div
+                  className="absolute bg-black text-white rounded-full flex items-center justify-center md:hidden"
+                  style={{ width: '14px', height: '14px', top: '6px', right: '0px' }}
+                  aria-hidden="true"
+                >
+                  <Check size={10} strokeWidth={4} />
+                </div>
+              </button>
+
+              {/* Dropdown Menu */}
+              {isProfileOpen && (
+                <div 
+                  className="absolute right-0 top-[110%] w-48 bg-white rounded-xl shadow-lg border border-gray-200 z-50 flex flex-col overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200"
+                  style={{ minWidth: '200px', backgroundColor: '#ffffff', borderRadius: '12px', padding: '8px 0', border: '1px solid #e5e7eb', boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1)' }}
+                >
+                  <Link 
+                    href="/user/profile" 
+                    className="flex items-center gap-3 text-sm text-gray-700 transition-colors"
+                    style={{ padding: '10px 16px', display: 'flex', alignItems: 'center', gap: '12px', color: '#374151', textDecoration: 'none' }}
+                    onClick={closeProfile}
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#f9fafb'}
+                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                  >
+                    <User size={16} style={{ color: '#9ca3af' }} />
+                    <span style={{ fontSize: '14px' }}>My Profile</span>
+                  </Link>
+
+                  <div className="h-px bg-gray-100 my-1" style={{ height: '1px', backgroundColor: '#f3f4f6', margin: '4px 0' }}></div>
+
+                  <button 
+                    onClick={handleLogout}
+                    className="flex items-center gap-3 text-sm font-medium text-red-600 transition-colors w-full text-left"
+                    style={{ padding: '10px 16px', display: 'flex', alignItems: 'center', gap: '12px', color: '#dc2626', width: '100%', background: 'none', border: 'none', cursor: 'pointer' }}
+                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#fef2f2'}
+                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                  >
+                    <X size={16} style={{ color: '#ef4444' }} />
+                    <span style={{ fontSize: '14px', fontWeight: 500 }}>Log out</span>
+                  </button>
+                </div>
+              )}
+            </div>
           :
-(          <a href="/auth/sign-in" className="header-action-btn" data-auth-btn>
-            <User aria-hidden="true" className="icon" />
-          <p className="header-action-label">Sign in</p>
-          </a>)
-        }
+          (
+            <a href="/auth/sign-in" className="header-action-btn" data-auth-btn>
+              <User aria-hidden="true" className="icon" />
+              <p className="header-action-label">Sign in</p>
+            </a>
+          )}
 
 
           {/* Search — mobile only */}
