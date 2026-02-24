@@ -913,6 +913,7 @@ h3 > a {
 
 .product-detail-grid {
   display: grid;
+  grid-template-columns: 1fr;
   gap: 40px;
 }
 
@@ -1143,14 +1144,6 @@ h3 > a {
     width: 100%;
   }
 
-  /**
-   * PRODUCT DETAIL
-   */
-
-  .product-detail-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 60px;
-  }
 }
 
 /**
@@ -1258,6 +1251,15 @@ h3 > a {
     justify-content: center;
     align-items: center;
     gap: 25px 50px;
+  }
+
+  /**
+   * PRODUCT DETAIL
+   */
+
+  .product-detail-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 50px;
   }
 }
 

@@ -1,19 +1,56 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { products } from "@/data";
+import { products } from "@/data"; // still used for related products fallback
 import { useCart } from "@/contexts/CartContext";
 import ProductCard from "@/components/products/ProductCard";
 import { CheckCircle2, Heart } from "lucide-react";
+import { useGetProductById } from "@/hooks/api/products";
 
 export default function ProductDetailPage() {
   const params = useParams();
-  const productId = params.id as string;
-  const product = products.find((p) => p.id === productId);
+  const productId = params?.id as string;
   const { addToCart, isInCart } = useCart();
+  
+  const { product: apiProduct, loading, fetchProduct } = useGetProductById();
+
+  // Try to find in mock if API fails/isn't set up yet, to avoid totally breaking
+  const mockFallback = products.find((p) => p.id === productId || p._id === productId);
+  const product = apiProduct || mockFallback;
+
+  const [activeImage, setActiveImage] = useState("");
+  const [galleryImages, setGalleryImages] = useState<string[]>([]);
+
+  useEffect(() => {
+    // Prevent fetching mock products (prod_xxx) from the database since MongoDB uses 24-char ObjectIds
+    if (productId && !productId.startsWith("prod_") && productId.length === 24) {
+      fetchProduct(productId);
+    }
+  }, [productId]);
+
+  useEffect(() => {
+    if (product) {
+      const productImage = product.image || (product as any).imageUrl || (product as any).thumbnail || (product as any).images?.[0] || "/images/product-1.jpg";
+      setActiveImage(productImage);
+      
+      const imagesList = (product as any).images && Array.isArray((product as any).images) && (product as any).images.length > 0 
+        ? (product as any).images 
+        : [productImage, "/images/product-1.jpg", "/images/product-2.jpg", "/images/product-4.jpg"];
+      
+      setGalleryImages(Array.from(new Set(imagesList as string[])));
+    }
+  }, [product]);
+
+  if (loading && !product) {
+    return (
+      <main className="min-h-screen flex items-center justify-center py-20">
+        <p>Loading Product...</p>
+      </main>
+    );
+  }
 
   if (!product) {
     return (
@@ -65,13 +102,39 @@ export default function ProductDetailPage() {
               {/* Product Image */}
               <div className="product-showcase">
                 <Image
-                  src={product.image}
-                  alt={product.name}
+                  src={activeImage || product.image || "/images/product-1.jpg"}
+                  alt={product.name || "Product"}
                   width={400}
                   height={400}
                   className="product-img"
                   priority
                 />
+                
+                {/* Thumbnails */}
+                {galleryImages.length > 1 && (
+                  <div className="flex gap-4 mt-6 overflow-x-auto pb-2 w-full justify-start md:justify-center">
+                    {galleryImages.map((img, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => setActiveImage(img)}
+                        className={`flex-shrink-0 rounded-lg overflow-hidden transition-all duration-200 border-2 ${
+                          activeImage === img 
+                            ? "border-black scale-105 shadow-md opacity-100" 
+                            : "border-transparent hover:border-gray-300 opacity-60 hover:opacity-100"
+                        }`}
+                        style={{ width: '80px', height: '80px', flexBasis: '80px' }}
+                      >
+                        <Image
+                          src={img || "/images/product-1.jpg"}
+                          alt={`${product.name} thumbnail ${idx + 1}`}
+                          width={80}
+                          height={80}
+                          className="object-cover w-full h-full bg-gray-50"
+                        />
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* Product Info */}
@@ -89,12 +152,12 @@ export default function ProductDetailPage() {
                 <h1 className="h2 product-title">{product.name}</h1>
 
                 <div className="price-wrapper">
-                  <data className="price" value={product.price}>
-                    £{product.price.toFixed(2)}
+                  <data className="price" value={(product.costPrice ?? product.price) || 0}>
+                    £{Number((product.costPrice ?? product.price) || 0).toFixed(2)}
                   </data>
                   {product.originalPrice && (
                     <data className="price-old" value={product.originalPrice}>
-                      £{product.originalPrice.toFixed(2)}
+                      £{Number(product.originalPrice).toFixed(2)}
                     </data>
                   )}
                 </div>
