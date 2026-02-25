@@ -243,7 +243,7 @@ export default function CartPage() {
                     Proceed to Checkout
                   </button>
 
-                  <a href="/" className="btn-text btn-continue-shopping">
+                  <a href="/products" className="btn-text btn-continue-shopping">
                     <ArrowLeft />
                     Continue Shopping
                   </a>
