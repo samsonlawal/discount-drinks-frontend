@@ -6,7 +6,7 @@ export interface Product {
   costPrice?: number;
   basePrice?: number;
   originalPrice?: number;
-  image: string;
+  images: string[];
   badge?: string; // "new" | "sale" | etc
   badgeText?: string;
   category?: string; // name or ID
@@ -18,6 +18,8 @@ export interface Product {
 
 export interface CartItem extends Product {
   quantity: number;
+  image: string;
+
 }
 
 export interface BlogPost {
