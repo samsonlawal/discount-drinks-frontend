@@ -104,7 +104,7 @@ export default function ProductDetailPage() {
               {/* Product Image */}
               <div className="product-showcase">
                 <Image
-                  src={activeImage || product.image || "/images/product-1.jpg"}
+                  src={activeImage || product.image || (product as any).imageUrl || (product as any).thumbnail || (product as any).images?.[0] || "/images/product-1.jpg"}
                   alt={product.name || "Product"}
                   width={400}
                   height={400}

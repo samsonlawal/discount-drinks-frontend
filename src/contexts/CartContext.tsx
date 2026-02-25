@@ -67,18 +67,27 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [cart, isLoading]);
 
   const addToCart = (product: Product) => {
+    // Determine the best image string to save to prevent undefined src in Next.js Image component
+    const productImage = product.image || (product as any).imageUrl || (product as any).thumbnail || (product as any).images?.[0] || "/images/product-1.jpg";
+    
+    // Ensure the product we store has a valid image string
+    const productToSave = {
+      ...product,
+      image: typeof productImage === 'string' ? productImage : "/images/product-1.jpg"
+    };
+
     setCart((prevCart) => {
       const existingItem = prevCart.find((item) => item.id === product.id);
 
       if (existingItem) {
         return prevCart.map((item) =>
           item.id === product.id
-            ? { ...item, quantity: item.quantity + 1 }
+            ? { ...item, quantity: item.quantity + 1, image: productToSave.image }
             : item,
         );
       }
 
-      return [...prevCart, { ...product, quantity: 1 }];
+      return [...prevCart, { ...productToSave, quantity: 1 }];
     });
   };
 
