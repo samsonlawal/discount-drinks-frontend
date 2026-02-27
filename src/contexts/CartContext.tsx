@@ -67,13 +67,22 @@ export function CartProvider({ children }: { children: ReactNode }) {
   }, [cart, isLoading]);
 
   const addToCart = (product: Product) => {
-    // Determine the best image string to save to prevent undefined src in Next.js Image component
-    const productImage = product.images || (product as any).imageUrl || (product as any).thumbnail || (product as any).images?.[0] || "/images/product-1.jpg";
+    // Try to get the most appropriate image string
+    let extractedImage = product.image;
     
-    // Ensure the product we store has a valid image string
+    if (!extractedImage || typeof extractedImage !== 'string') {
+      const potentialImages = [
+        (product as any).imageUrl,
+        (product as any).thumbnail,
+        Array.isArray(product.images) ? product.images[0] : typeof product.images === 'string' ? product.images : null,
+        Array.isArray((product as any).images) ? (product as any).images[0] : null
+      ];
+      extractedImage = potentialImages.find(img => typeof img === 'string' && img.trim() !== '') || "";
+    }
+
     const productToSave = {
       ...product,
-      image: typeof productImage === 'string' ? productImage : "/images/product-1.jpg"
+      image: extractedImage
     };
 
     setCart((prevCart) => {

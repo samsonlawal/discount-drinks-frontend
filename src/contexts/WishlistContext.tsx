@@ -49,13 +49,31 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
   }, [wishlist, isLoading]);
 
   const addToWishlist = (product: Product) => {
+    // Try to get the most appropriate image string
+    let extractedImage = product.image;
+    
+    if (!extractedImage || typeof extractedImage !== 'string') {
+      const potentialImages = [
+        (product as any).imageUrl,
+        (product as any).thumbnail,
+        Array.isArray(product.images) ? product.images[0] : typeof product.images === 'string' ? product.images : null,
+        Array.isArray((product as any).images) ? (product as any).images[0] : null
+      ];
+      extractedImage = potentialImages.find(img => typeof img === 'string' && img.trim() !== '') || "";
+    }
+
+    const productToSave = {
+      ...product,
+      id: product.id || (product as any)._id,
+      image: extractedImage
+    };
+
     setWishlist((prevWishlist) => {
-      const productId = product.id || (product as any)._id;
-      const exists = prevWishlist.find((item) => (item.id || (item as any)._id) === productId);
+      const exists = prevWishlist.find((item) => (item.id || (item as any)._id) === productToSave.id);
       if (exists) {
         return prevWishlist;
       }
-      return [...prevWishlist, { ...product, id: productId }];
+      return [...prevWishlist, productToSave];
     });
   };
 

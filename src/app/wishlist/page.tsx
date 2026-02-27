@@ -35,7 +35,11 @@ export default function WishlistPage() {
         <p style={{ marginBottom: "30px", color: "var(--sonic-silver)" }}>
           Save your favorite products to your wishlist and shop them later!
         </p>
-        <Link href="/products" className="btn btn-primary">
+        <Link 
+          href="/products" 
+          className="btn btn-primary"
+          style={{ width: "fit-content", margin: "0 auto" }}
+        >
           Continue Shopping
         </Link>
       </div>
