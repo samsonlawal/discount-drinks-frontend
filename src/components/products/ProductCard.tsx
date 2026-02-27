@@ -13,7 +13,7 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
-  const { addToCart } = useCart();
+  const { addToCart, isInCart } = useCart();
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   const router = useRouter();
 
@@ -33,7 +33,8 @@ export default function ProductCard({ product }: ProductCardProps) {
     router.push(`/product/${product.id}`);
   };
 
-  const inWishlist = isInWishlist(product.id);
+  const inWishlist = product ? isInWishlist(product.id || (product as any)._id) : false;
+  const inCart = product ? isInCart(product.id || (product as any)._id) : false;
 
   // Fallback to price if costPrice is undefined
   const displayPrice = product.costPrice ?? product.price;
@@ -70,21 +71,22 @@ export default function ProductCard({ product }: ProductCardProps) {
           </button>
 
           <button
-            className="card-action-btn cart-btn"
+            className={`card-action-btn cart-btn ${inCart ? "bg-ocean-green! border-ocean-green! text-white!" : ""}`}
             onClick={handleAddToCart}
+            disabled={inCart}
             aria-label={`Add ${product.name} to cart`}
           >
             <ShoppingCart className="icon" aria-hidden="true" />
-            <p className="cart-btn-text">Add to Cart</p>
+            <p className="cart-btn-text">{inCart ? "In Cart" : "Add to Cart"}</p>
           </button>
 
           <button
             className="card-action-btn"
             onClick={handleWishlistToggle}
             aria-label={inWishlist ? "Remove from Wishlist" : "Add to Wishlist"}
-            style={{
-              color: inWishlist ? "var(--candy-pink)" : "inherit",
-            }}
+            style={inWishlist ? {
+              color: "var(--candy-pink)"
+            } : undefined}
           >
             <Heart
               className="icon"

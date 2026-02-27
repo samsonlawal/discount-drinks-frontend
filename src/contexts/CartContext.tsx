@@ -77,22 +77,23 @@ export function CartProvider({ children }: { children: ReactNode }) {
     };
 
     setCart((prevCart) => {
-      const existingItem = prevCart.find((item) => item.id === product.id);
+      const productId = product.id || (product as any)._id;
+      const existingItem = prevCart.find((item) => (item.id || (item as any)._id) === productId);
 
       if (existingItem) {
         return prevCart.map((item) =>
-          item.id === product.id
+          (item.id || (item as any)._id) === productId
             ? { ...item, quantity: item.quantity + 1, image: productToSave.image }
             : item,
         );
       }
 
-      return [...prevCart, { ...productToSave, quantity: 1 }];
+      return [...prevCart, { ...productToSave, id: productId, quantity: 1 }];
     });
   };
 
   const removeFromCart = (productId: string) => {
-    setCart((prevCart) => prevCart.filter((item) => item.id !== productId));
+    setCart((prevCart) => prevCart.filter((item) => (item.id || (item as any)._id) !== productId));
   };
 
   const updateQuantity = (productId: string, quantity: number) => {
@@ -103,7 +104,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
     setCart((prevCart) =>
       prevCart.map((item) =>
-        item.id === productId ? { ...item, quantity } : item,
+        (item.id || (item as any)._id) === productId ? { ...item, quantity } : item,
       ),
     );
   };
@@ -138,7 +139,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   };
 
   const isInCart = (productId: string): boolean => {
-    return cart.some((item) => item.id === productId);
+    return cart.some((item) => (item.id || (item as any)._id) === productId);
   };
 
   return (

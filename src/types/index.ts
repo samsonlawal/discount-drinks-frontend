@@ -1,5 +1,5 @@
 export interface Product {
-  id: string; // or _id depending on backend mapper
+  id: string;
   _id?: string;
   name: string;
   price: number;
@@ -9,9 +9,9 @@ export interface Product {
   image: string;
   images?: string;
 
-  badge?: string; // "new" | "sale" | etc
+  badge?: string;
   badgeText?: string;
-  category?: string; // name or ID
+  category?: string;
   tags?: string[];
   brand?: string | Brand;
   specifications?: Record<string, string>;

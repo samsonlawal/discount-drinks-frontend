@@ -131,12 +131,12 @@ export default function WishlistPage() {
                       <a href={`/product/${product.id}`}>{product.name}</a>
                     </h3>
                     <div className="card-price">
-                      <data value={product.price}>
-                        £{product.price.toFixed(2)}
+                      <data value={(product.costPrice ?? product.price) || 0}>
+                        £{Number((product.costPrice ?? product.price) || 0).toFixed(2)}
                       </data>
                       {product.originalPrice && (
                         <data value={product.originalPrice}>
-                          £{product.originalPrice.toFixed(2)}
+                          £{Number(product.originalPrice).toFixed(2)}
                         </data>
                       )}
                     </div>

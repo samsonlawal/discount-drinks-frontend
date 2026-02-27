@@ -32,7 +32,8 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
     const savedWishlist = localStorage.getItem("discountdrinks_wishlist");
     if (savedWishlist) {
       try {
-        setWishlist(JSON.parse(savedWishlist));
+        const parsed = JSON.parse(savedWishlist);
+        setWishlist(parsed);
       } catch (error) {
         console.error("Failed to parse wishlist from localStorage:", error);
       }
@@ -49,22 +50,23 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
 
   const addToWishlist = (product: Product) => {
     setWishlist((prevWishlist) => {
-      const exists = prevWishlist.find((item) => item.id === product.id);
+      const productId = product.id || (product as any)._id;
+      const exists = prevWishlist.find((item) => (item.id || (item as any)._id) === productId);
       if (exists) {
         return prevWishlist;
       }
-      return [...prevWishlist, product];
+      return [...prevWishlist, { ...product, id: productId }];
     });
   };
 
   const removeFromWishlist = (productId: string) => {
     setWishlist((prevWishlist) =>
-      prevWishlist.filter((item) => item.id !== productId),
+      prevWishlist.filter((item) => (item.id || (item as any)._id) !== productId),
     );
   };
 
   const isInWishlist = (productId: string): boolean => {
-    return wishlist.some((item) => item.id === productId);
+    return wishlist.some((item) => (item.id || (item as any)._id) === productId);
   };
 
   const getWishlistCount = () => {

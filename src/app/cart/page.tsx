@@ -1,9 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useCart } from "@/contexts/CartContext";
+import { Modal, ModalType } from "@/components/ui/Modal";
 import {
   ShoppingCart,
   ArrowLeft,
@@ -26,13 +27,37 @@ export default function CartPage() {
     isLoading,
   } = useCart();
 
+  const [modalConfig, setModalConfig] = useState<{
+    isOpen: boolean;
+    type: ModalType;
+    title: string;
+    message: string;
+    onConfirm?: () => void;
+    confirmText?: string;
+  }>({
+    isOpen: false,
+    type: "alert",
+    title: "",
+    message: "",
+  });
+
+  const closeModal = () => setModalConfig((prev) => ({ ...prev, isOpen: false }));
+
   const totals = getCartTotals();
   const isEmpty = cart.length === 0;
 
   const handleClearCart = () => {
-    if (confirm("Are you sure you want to clear your entire cart?")) {
-      clearCart();
-    }
+    setModalConfig({
+      isOpen: true,
+      type: "confirm",
+      title: "Clear Cart",
+      message: "Are you sure you want to clear your entire cart?",
+      confirmText: "Clear Cart",
+      onConfirm: () => {
+        clearCart();
+        closeModal();
+      },
+    });
   };
 
   const formatPrice = (price: number) => {
@@ -40,21 +65,41 @@ export default function CartPage() {
   };
 
   const handleRemoveItem = (productId: string, productName: string) => {
-    if (confirm(`Remove ${productName} from cart?`)) {
-      removeFromCart(productId);
-    }
+    setModalConfig({
+      isOpen: true,
+      type: "confirm",
+      title: "Remove Item",
+      message: `Remove ${productName} from cart?`,
+      confirmText: "Remove",
+      onConfirm: () => {
+        removeFromCart(productId);
+        closeModal();
+      },
+    });
   };
 
   const handleCheckout = () => {
     if (cart.length === 0) {
-      alert("Your cart is empty");
+      setModalConfig({
+        isOpen: true,
+        type: "alert",
+        title: "Cart Empty",
+        message: "Your cart is empty",
+      });
       return;
     }
-    alert("Proceeding to checkout...");
+    setModalConfig({
+      isOpen: true,
+      type: "alert",
+      title: "Checkout",
+      message: "Proceeding to checkout...",
+    });
   };
 
   return (
-    <main className="cart-main">
+    <>
+      <Modal {...modalConfig} onClose={closeModal} />
+      <main className="cart-main">
       <div className="container">
         {/* Breadcrumb */}
         <nav className="breadcrumb" aria-label="Breadcrumb">
@@ -83,7 +128,7 @@ export default function CartPage() {
             </div>
           </div>
         ) : (
-          <div className="cart-layout">
+          <div className={`cart-layout ${isEmpty ? 'cart-layout--empty' : ''}`}>
             {/* Cart Items Section */}
             <div className="cart-items-section">
               {/* Empty Cart State */}
@@ -266,5 +311,6 @@ export default function CartPage() {
         )}
       </div>
     </main>
+    </>
   );
 }

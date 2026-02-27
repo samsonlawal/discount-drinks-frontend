@@ -65,8 +65,7 @@
 
 /* Breadcrumb */
 .breadcrumb {
-  /* margin-bottom: 30px; */
-
+  margin-bottom: 30px;
 }
 
 .breadcrumb-list {
@@ -129,6 +128,7 @@
   padding: 80px 20px;
   background: var(--cultured);
   border-radius: 12px;
+  width: 100%;
 }
 
 .empty-cart-icon {
@@ -513,6 +513,10 @@
 @media (min-width: 768px) {
   .cart-layout {
     grid-template-columns: 1fr 380px;
+  }
+
+  .cart-layout--empty {
+    grid-template-columns: 1fr;
   }
 
   .cart-notification {

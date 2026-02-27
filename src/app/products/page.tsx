@@ -117,8 +117,8 @@ export default function ProductsPage() {
 
             <div className="products-main">
               {productsLoading ? (
-                <div className="flex justify-center items-center py-20 w-full">
-                  <p className="text-xl md:text-2xl font-medium text-gray-600 animate-pulse">Loading products...</p>
+                <div className="flex justify-center items-center py-20 w-full h-[70vh]">
+                  <p className="text-xl md:text-2xl text-gray-600 animate-pulse">Loading products...</p>
                 </div>
               ) : (
                 <> 
@@ -131,14 +131,14 @@ export default function ProductsPage() {
                   </ul>
 
                   {filteredProducts.length === 0 && (
-                    <div style={{ textAlign: "center", padding: "60px 20px" }}>
+                    <div style={{ textAlign: "center", padding: "20px 20px" }} className="flex justify-center items-center py-20 w-full h-[60vh]">
                       <p
                         style={{
                           color: "var(--sonic-silver)",
                           fontSize: "var(--fs-6)",
                         }}
                       >
-                        No products found matching your filters.
+                        No products found.
                       </p>
                     </div>
                   )}

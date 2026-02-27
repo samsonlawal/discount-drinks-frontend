@@ -7,13 +7,15 @@ import Link from "next/link";
 import { products } from "@/data"; // still used for related products fallback
 import { useCart } from "@/contexts/CartContext";
 import ProductCard from "@/components/products/ProductCard";
-import { CheckCircle2, Heart } from "lucide-react";
+import { CheckCircle2, Heart, ShoppingCart } from "lucide-react";
+import { useWishlist } from "@/contexts/WishlistContext";
 import { useGetProductById } from "@/hooks/api/products";
 
 export default function ProductDetailPage() {
   const params = useParams();
   const productId = params?.id as string;
   const { addToCart, isInCart } = useCart();
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   
   const { product: apiProduct, loading, fetchProduct } = useGetProductById();
 
@@ -77,6 +79,19 @@ export default function ProductDetailPage() {
     addToCart(product);
   };
 
+  const isProductInCart = product ? isInCart(product.id || (product as any)._id) : false;
+  const inWishlist = product ? isInWishlist(product.id || (product as any)._id) : false;
+
+  const handleWishlistToggle = () => {
+    if (!product) return;
+    const pId = product.id || (product as any)._id;
+    if (inWishlist) {
+      removeFromWishlist(pId);
+    } else {
+      addToWishlist(product);
+    }
+  };
+
   return (
     <main>
       {/* <article> */}
@@ -102,8 +117,43 @@ export default function ProductDetailPage() {
           <section className="section product-detail">
             <div className="product-detail-grid">
               {/* Product Image */}
-              <div className="product-showcase">
-                <Image
+              <div className="product-showcase gap-3 flex-col-reverse md:flex-row bg-[red]">
+               
+                
+                {/* Thumbnails */}
+                <div className="flex flex-row md:flex-col gap-2 md:gap-4 mt-8 h-fit w-fit justify-center py-4px-2">
+                  {Array.from({ length: 5 }).map((_, idx) => {
+                    const img = galleryImages[idx];
+                    const hasImage = !!img && !(typeof img === 'string' && (img.trim() === '' || img === 'null' || img === 'undefined'));
+                    const isActive = activeImage === img;
+
+                    return (
+                      <button
+                        key={idx}
+                        onClick={() => hasImage && setActiveImage(img)}
+                        disabled={!hasImage}
+                        className={`relative flex-shrink-0 rounded-md overflow-hidden transition-all duration-200 w-8 h-8 sm:w-12 sm:h-12 ${
+                          isActive
+                            ? "ring-2 ring-black ring-offset-1 opacity-100"
+                            : hasImage
+                            ? "ring-1 ring-gray-200 hover:ring-gray-300 cursor-pointer"
+                            : "bg-gray-200 cursor-not-allowed"
+                        }`}
+                        aria-label={hasImage ? `${product.name} thumbnail ${idx + 1}` : "Empty image slot"}
+                      >
+                        {hasImage ? (
+                          <img
+                            src={typeof img === 'string' ? img : (img as any)?.src || img}
+                            alt=""
+                            className="w-full h-full object-cover bg-white block"
+                          />
+                        ) : null}
+                      </button>
+                    );
+                  })}
+                </div>
+
+                 <Image
                   src={activeImage || product.image || (product as any).imageUrl || (product as any).thumbnail || (product as any).images?.[0] || "/images/product-1.jpg"}
                   alt={product.name || "Product"}
                   width={400}
@@ -111,31 +161,6 @@ export default function ProductDetailPage() {
                   className="product-img"
                   priority
                 />
-                
-                {/* Thumbnails */}
-                {galleryImages.length > 1 && (
-                  <div className="flex gap-3 mt-8 overflow-x-auto w-full justify-center px-4">
-                    {galleryImages.map((img, idx) => (
-                      <button
-                        key={idx}
-                        onClick={() => setActiveImage(img)}
-                        className={`relative flex-shrink-0 rounded-md overflow-hidden transition-all duration-200 w-16 h-16 sm:w-20 sm:h-20 ${
-                          activeImage === img 
-                            ? "ring-2 ring-black ring-offset-2 opacity-100" 
-                            : "ring-1 ring-gray-200 opacity-70 hover:opacity-100 hover:ring-gray-300"
-                        }`}
-                      >
-                        <Image
-                          src={img || "/images/product-1.jpg"}
-                          alt={`${product.name} thumbnail ${idx + 1}`}
-                          fill
-                          // sizes="(max-width: 640px) 64px, 80px"
-                          className="object-cover bg-white"
-                        />
-                      </button>
-                    ))}
-                  </div>
-                )}
               </div>
 
               {/* Product Info */}
@@ -156,23 +181,12 @@ export default function ProductDetailPage() {
                   <data className="price" value={(product.costPrice ?? product.price) || 0}>
                     £{Number((product.costPrice ?? product.price) || 0).toFixed(2)}
                   </data>
-                  {product.originalPrice && (
-                    <data className="price-old" value={product.originalPrice}>
-                      £{Number(product.originalPrice).toFixed(2)}
+                  {(product.originalPrice || product.basePrice) && (
+                    <data className="price-old" value={product.originalPrice || product.basePrice}>
+                      £{Number(product.originalPrice || product.basePrice).toFixed(2)}
                     </data>
                   )}
                 </div>
-
-                {/* Tags */}
-                {product.tags && product.tags.length > 0 && (
-                  <div className="product-tags">
-                    {product.tags.map((tag) => (
-                      <span key={tag} className="product-tag">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                )}
 
                 <div className="product-description">
                   {product.description ? (
@@ -187,6 +201,40 @@ export default function ProductDetailPage() {
                   )}
                 </div>
 
+                
+
+                {/* Tags */}
+                {product.tags && product.tags.length > 0 && (
+                  <div className="product-tags">
+                    {product.tags.map((tag) => (
+                      <span key={tag} className="product-tag">
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
+                )}
+
+                <div className="product-actions mt-4">
+                  <button 
+                    className="btn btn-primary flex gap-2" 
+                    onClick={handleAddToCart}
+                    disabled={isProductInCart}
+                  >
+                    <ShoppingCart className="w-5 h-5" />
+                    <span>{isProductInCart ? "In Cart" : "Add to Cart"}</span>
+                  </button>
+                  <button 
+                    className={`btn btn-outline flex gap-2 wishlist-detail-btn ${inWishlist ? "active" : ""}`}
+                    onClick={handleWishlistToggle}
+                    aria-label={inWishlist ? "Remove from Wishlist" : "Add to Wishlist"}
+                  >
+                    <Heart className="w-5 h-5 shrink-0" fill={inWishlist ? "currentColor" : "none"} />
+                    <span className="wishlist-text">{inWishlist ? "In Wishlist" : "Wishlist"}</span>
+                  </button>
+                </div>
+
+
+
                 {/* Specifications */}
                 {product.specifications &&
                   Object.keys(product.specifications).length > 0 && (
@@ -196,7 +244,7 @@ export default function ProductDetailPage() {
                           {Object.entries(product.specifications).map(
                             ([key, value]) => (
                               <tr key={key} className="specs-row">
-                                <th className="specs-key">{key}</th>
+                                <th className="specs-key uppercase w-[50%] md:w-[30%]">{key}</th>
                                 <td className="specs-value">{value}</td>
                               </tr>
                             ),
