@@ -54,14 +54,6 @@
  * #RESET
 \*-----------------------------------*/
 
-*,
-*::before,
-*::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 li {
   list-style: none;
 }
@@ -71,21 +63,12 @@ a {
   color: var(--eerie-black);
 }
 
-a,
-img,
-span,
-input,
-button,
-.icon {
-  display: block;
-}
-
-input,
+/* input,
 button {
   background: none;
   border: none;
   font: inherit;
-}
+} */
 
 button {
   text-align: left;
