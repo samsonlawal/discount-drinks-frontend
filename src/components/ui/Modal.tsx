@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { X } from "lucide-react";
+import { X, Trash } from "lucide-react";
 
 export type ModalType = "alert" | "confirm";
 
@@ -49,7 +49,7 @@ export function Modal({
 
   return (
     <div
-      className={`fixed inset-0 z-[1000] flex items-center justify-center p-4 sm:p-6 transition-all duration-300 ${
+      className={`fixed inset-0 z-[1000] flex items-center justify-center p-4 py-10 sm:px-6 transition-all duration-300 ${
         isOpen
           ? "bg-black/50 backdrop-blur-sm opacity-100"
           : "bg-black/0 opacity-0 pointer-events-none"
@@ -57,47 +57,49 @@ export function Modal({
       onClick={onClose}
     >
       <div
-        className={`bg-white rounded-2xl flex flex-col gap-10 w-[90%] max-w-md transition-all duration-300 transform ${
+        className={`bg-white h-fit px-[28px] py-10 rounded-2xl flex flex-col gap-4 w-[90%] max-w-md transition-all duration-300 transform justify-center items-center ${
           isOpen
             ? "scale-100 translate-y-0 opacity-100"
             : "scale-95 translate-y-4 opacity-0"
         }`}
-        style={{ padding: "24px" }}
+        // style={{ padding: "24px" }}
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-title"
       >
 
-        <div className="flex flex-col gap-2 items-start justify-between w-[100%]">
+        <Trash size={60} className="text-[var(--eerie-black)] font-400 color-[red]" strokeWidth={1.5}/>
 
-        <div className="flex items-center justify-between w-[100%]">
-          <h2 id="modal-title" className="h3" style={{ fontSize: "1.25rem", margin: 0 }}>
+        <div className="flex flex-col items-center justify-between gap-4 w-[100%]">
+
+        <div className="flex flex-col items-center justify-between w-[100%] text-center">
+          <h2 className="text-center w-full font-500 text-[var(--eerie-black)]" style={{ fontSize: "1.25rem"}}>
             {title}
           </h2>
-          <button
+          {/* <button
             onClick={onClose}
             className="p-2 -mr-2 rounded-full text-gray-400 hover:text-gray-800 hover:bg-gray-100 transition-colors"
             aria-label="Close modal"
           >
             <X size={20} />
-          </button>
+          </button> */}
 
-
-        </div>
-                          <div className="text-gray-600 text-[15px] leading-relaxed whitespace-pre-line">
+        <div className="text-gray-600 text-[15px] leading-relaxed whitespace-pre-line">
           {message}
         </div>
         </div>
+  
+        </div>
 
 
 
 
-        <div className="flex items-center justify-end gap-3 pt-4 ">
+        <div className="flex flex-row w-[100%] items-center justify-end gap-3 pt-4">
           {type === "confirm" && (
             <button
               onClick={onClose}
-              className="btn btn-outline py-3 px-4 !h-[50px]"
+              className="py-2 rounded-sm text-[14px] text-[var(--eerie-black)] hover:bg-[var(--eerie-black)] hover:text-white transition-all duration-300 px-4 border border-[var(--eerie-black)]"
             >
               {cancelText}
             </button>
@@ -107,7 +109,7 @@ export function Modal({
               if (onConfirm) onConfirm();
               if (type === "alert") onClose();
             }}
-            className="btn btn-primary py-3 px-4 !h-[50px]"
+            className="py-2 px-4 bg-[var(--eerie-black)] border border-[var(--eerie-black)] rounded-sm text-white text-[14px] hover:bg-[var(--eerie-black)]/90"
           >
             {type === "alert" ? "OK" : confirmText}
           </button>
