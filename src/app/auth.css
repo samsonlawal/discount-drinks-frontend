@@ -355,7 +355,6 @@
   right: 0;
   height: 1px;
   background: var(--cultured);
-  background-color: red;
 }
 
 .auth-divider span {

@@ -1,48 +1,73 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { MapPin, Plus, MoreVertical, Edit2, Trash2 } from "lucide-react";
 import MobileBackButton from "../MobileBackButton";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { setAuthState } from "@/redux/Slices/authSlice";
+import { useUpdateUser } from "@/hooks/api/users";
 
-interface Address {
+export interface Address {
   id: string;
-  firstName: string;
-  lastName: string;
+  // firstName: string;
+  // lastName: string;
   addressLine1: string;
   addressLine2?: string;
   city: string;
-  county: string;
-  postcode: string;
+  state: string;
+  postCode: string;
   phone: string;
   isDefault: boolean;
 }
 
 export default function ProfileAddressesPage() {
-  const [addresses, setAddresses] = useState<Address[]>([
-    {
-      id: "1",
-      firstName: "John",
-      lastName: "Doe",
-      addressLine1: "123 Main Street",
-      addressLine2: "Apt 4B",
-      city: "London",
-      county: "Greater London",
-      postcode: "SW1A 1AA",
-      phone: "+44 7700 900077",
-      isDefault: true,
-    }
-  ]);
+  const { user } = useSelector((state: RootState) => state.auth);
+  const dispatch = useDispatch();
+  const { updateUser, loading } = useUpdateUser();
+
+  const [addresses, setAddresses] = useState<Address[]>([]);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
 
+  useEffect(() => {
+    if (user && (user as any).addresses) {
+      setAddresses((user as any).addresses);
+    }
+  }, [user]);
+
+  const handleUpdateBackend = async (newAddresses: Address[]) => {
+    let userId = "";
+
+    if (user) {
+      userId = (user as any).id || (user as any)._id || (user as any).userId || "";
+    }
+    
+    // Fallback: try to see if it works without ID (some backends infer from token)
+    // or just pass 'me' if no id is found. We'll pass whatever we have.
+    if (!userId) {
+       userId = "me"; 
+    }
+
+    await updateUser({
+      data: {
+        id: userId,
+        addresses: newAddresses,
+      },
+      successCallback: () => {
+        dispatch(setAuthState({ user: { ...user, addresses: newAddresses } as any }));
+      }
+    });
+  };
+
   const [formData, setFormData] = useState<Omit<Address, "id">>({
-    firstName: "",
-    lastName: "",
+    // firstName: "",
+    // lastName: "",
     addressLine1: "",
     addressLine2: "",
     city: "",
-    county: "",
-    postcode: "",
+    state: "",
+    postCode: "",
     phone: "",
     isDefault: false,
   });
@@ -51,26 +76,26 @@ export default function ProfileAddressesPage() {
     if (address) {
       setEditingId(address.id);
       setFormData({
-        firstName: address.firstName,
-        lastName: address.lastName,
+        // firstName: address.firstName,
+        // lastName: address.lastName,
         addressLine1: address.addressLine1,
         addressLine2: address.addressLine2 || "",
         city: address.city,
-        county: address.county,
-        postcode: address.postcode,
+        state: address.state,
+        postCode: address.postCode,
         phone: address.phone,
         isDefault: address.isDefault,
       });
     } else {
       setEditingId(null);
       setFormData({
-        firstName: "",
-        lastName: "",
+        // firstName: "",
+        // lastName: "",
         addressLine1: "",
         addressLine2: "",
         city: "",
-        county: "",
-        postcode: "",
+        state: "",
+        postCode: "",
         phone: "",
         isDefault: addresses.length === 0, // Auto-default if it's the first one
       });
@@ -119,6 +144,7 @@ export default function ProfileAddressesPage() {
     updatedAddresses.sort((a, b) => (a.isDefault === b.isDefault ? 0 : a.isDefault ? -1 : 1));
 
     setAddresses(updatedAddresses);
+    handleUpdateBackend(updatedAddresses);
     handleCloseForm();
   };
 
@@ -129,6 +155,7 @@ export default function ProfileAddressesPage() {
        newAddresses[0].isDefault = true;
     }
     setAddresses(newAddresses);
+    handleUpdateBackend(newAddresses);
   };
 
   return (
@@ -156,7 +183,7 @@ export default function ProfileAddressesPage() {
           <h3 className="text-lg font-semibold text-gray-900 mb-4">{editingId ? "Edit Address" : "Add New Address"}</h3>
           
           <form onSubmit={handleSubmit} className="space-y-5">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">First Name</label>
                 <input required type="text" name="firstName" value={formData.firstName} onChange={handleInputChange} className="w-full px-4 py-3 bg-white !border !border-solid !border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1a1a1a] focus:!border-transparent outline-none transition-all text-gray-900" />
@@ -165,7 +192,7 @@ export default function ProfileAddressesPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
                 <input required type="text" name="lastName" value={formData.lastName} onChange={handleInputChange} className="w-full px-4 py-3 bg-white !border !border-solid !border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1a1a1a] focus:!border-transparent outline-none transition-all text-gray-900" />
               </div>
-            </div>
+            </div> */}
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Address Line 1</label>
@@ -184,11 +211,11 @@ export default function ProfileAddressesPage() {
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">County / State</label>
-                <input required type="text" name="county" value={formData.county} onChange={handleInputChange} className="w-full px-4 py-3 bg-white !border !border-solid !border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1a1a1a] focus:!border-transparent outline-none transition-all text-gray-900" />
+                <input required type="text" name="state" value={formData.state} onChange={handleInputChange} className="w-full px-4 py-3 bg-white !border !border-solid !border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1a1a1a] focus:!border-transparent outline-none transition-all text-gray-900" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Postcode</label>
-                <input required type="text" name="postcode" value={formData.postcode} onChange={handleInputChange} className="w-full px-4 py-3 bg-white !border !border-solid !border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1a1a1a] focus:!border-transparent outline-none transition-all text-gray-900" />
+                <input required type="text" name="postCode" value={formData.postCode} onChange={handleInputChange} className="w-full px-4 py-3 bg-white !border !border-solid !border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1a1a1a] focus:!border-transparent outline-none transition-all text-gray-900" />
               </div>
             </div>
 
@@ -206,7 +233,9 @@ export default function ProfileAddressesPage() {
 
             <div className="flex flex-col-reverse md:flex-row justify-end gap-3 pt-6 border-t border-gray-100">
               <button type="button" onClick={handleCloseForm} className="flex items-center justify-center px-6 py-2.5 bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 rounded-lg text-sm font-medium transition-colors">Cancel</button>
-              <button type="submit" className="flex items-center justify-center px-6 py-2.5 bg-[#1a1a1a] text-white rounded-lg hover:bg-black text-sm font-medium transition-colors shadow-sm">Save Address</button>
+              <button type="submit" disabled={loading} className="flex items-center justify-center px-6 py-2.5 bg-[#1a1a1a] text-white rounded-lg hover:bg-black text-sm font-medium transition-colors shadow-sm disabled:opacity-50">
+                {loading ? "Saving..." : "Save Address"}
+              </button>
             </div>
           </form>
         </div>
@@ -252,7 +281,7 @@ export default function ProfileAddressesPage() {
                   <div className="text-gray-600 text-sm space-y-1">
                     <p>{address.addressLine1}</p>
                     {address.addressLine2 && <p>{address.addressLine2}</p>}
-                    <p>{address.city}, {address.county} {address.postcode}</p>
+                    <p>{address.city}, {address.state} {address.postCode}</p>
                     {/* <p className="pt-2 flex items-center gap-1">
                       <span className="text-gray-400">T:</span> {address.phone}
                     </p> */}

@@ -36,7 +36,9 @@ class Service {
   }
 
   updateUser({ id, ...data }: IUpdateUserPayload) {
-    return axios.put(`${env.api.users}/${id}`, data);
+    return axios.put(`${env.api.users}/${id}`, data, {
+      withCredentials: true,
+    });
   }
 
   deleteUser({ id }: { id: string }) {

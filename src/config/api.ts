@@ -8,7 +8,7 @@ const api = ({ inProduction }: { inProduction: boolean }) => {
 
   return {
     auth: `${BASE_URL_LINK}/auth`,
-    users: `${BASE_URL_LINK}/users`,
+    users: `${BASE_URL_LINK}/profile`,
     categories: `${BASE_URL_LINK}/categories`,
     tags: `${BASE_URL_LINK}/tags`,
     products: `${BASE_URL_LINK}/products`,
