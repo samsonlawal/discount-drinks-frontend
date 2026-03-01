@@ -133,10 +133,16 @@ export default function ProfileAddressesPage() {
 
   return (
     <div className="animate-in fade-in duration-300">
-      <MobileBackButton title="" />
 
-      <div className="flex justify-between items-center mb-4 hidden md:flex">
-        <h2 className="text-2xl font-semibold text-gray-900">Addresses</h2>
+      <div className="flex justify-between items-center mb-4 md:hidden">
+      <MobileBackButton title="Addresses" />
+      </div>
+
+      <div className="hidden flex-row items-end justify-between mb-4 md:flex w-full">
+        {/* <h2 className="text-2xl font-semibold text-gray-900">Addresses</h2> */}
+                    <div className="hidden md:block">
+        <h2 className="text-2xl mb-2" style={{ fontSize: '24px', fontWeight: 600, color: '#111827' }}>Address</h2>
+      </div>
         {!isFormOpen && (
           <button onClick={() => handleOpenForm()} className="flex items-center justify-center gap-1 px-4 py-2.5 bg-[var(--eerie-black)] text-[white] text-sm font-medium rounded-lg hover:bg-black transition-colors shadow-sm">
             <Plus size={18} />
@@ -205,13 +211,12 @@ export default function ProfileAddressesPage() {
           </form>
         </div>
       ) : (
-        <>
+        <div className='flex flex-col-reverse gap-10'>
           {/* Mobile Add Button */}
           <div className="md:hidden mb-6 flex justify-between items-center">
-             <h2 className="text-2xl font-semibold text-gray-900">Addresses</h2>
-          <button onClick={() => handleOpenForm()} className="flex items-center justify-center gap-1 px-4 py-2.5 bg-[var(--eerie-black)] text-[white] text-sm font-medium rounded-lg hover:bg-black transition-colors shadow-sm">
+          <button onClick={() => handleOpenForm()} className="flex items-center justify-center gap-1 px-4 py-2.5 bg-[var(--eerie-black)] text-[white] text-sm font-medium rounded-lg hover:bg-black transition-colors shadow-sm w-full">
             <Plus size={18} />
-            Add New
+            Add New Address
           </button>
           </div>
 
@@ -256,7 +261,7 @@ export default function ProfileAddressesPage() {
               ))}
             </div>
           )}
-        </>
+        </div>
       )}
     </div>
   );

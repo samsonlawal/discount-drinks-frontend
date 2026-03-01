@@ -7,11 +7,8 @@ import MobileBackButton from "../MobileBackButton";
 export default function ProfileOrdersPage() {
   return (
     <div className="animate-in fade-in duration-300">
-      <MobileBackButton title="" />
+      <MobileBackButton title="Order History" />
 
-                 <div className="flex justify-between items-center mb-4 md:hidden">
-        <h2 className="text-2xl font-semibold text-gray-900">Order History</h2>
-      </div>
       
       <div className="hidden md:block">
         <h2 className="text-2xl mb-6" style={{ fontSize: '24px', fontWeight: 500, marginBottom: '24px', color: '#111827' }}>Order History</h2>

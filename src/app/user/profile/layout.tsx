@@ -41,15 +41,15 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
   const isRootProfilePage = pathname === "/user/profile";
 
   return (
-    <main className="bg-gray-50 min-h-screen pb-10">
-      <div className="container max-w-6xl sm:px-6">
+    <main className="min-h-screen pb-10 bg-[white]">
+      <div className="container max-w-6xl">
         
         {/* Main Interface Wrapper */}
         <div className="bg-white overflow-hidden flex flex-col md:flex-row min-h-[70vh]">
           
           {/* Sidebar Navigation */}
           {/* On mobile: Render only if we're on the root page. On desktop: Always render */}
-          <aside className={`w-full md:w-64 lg:w-72 bg-gray-50/50 md:bg-gray-50 md:border-r md:border-gray-100 flex-shrink-0 flex flex-col ${isRootProfilePage ? 'block' : 'hidden md:flex'}`}>
+          <aside className={`w-full md:w-64 lg:w-72 bg-white/50 md:bg-white/50 flex-shrink-0 flex flex-col ${isRootProfilePage ? 'block' : 'hidden md:flex'}`}>
             
             <div className="py-6 md:px-8 md:pt-8 md:pb-4 flex-shrink-0">
               <h1 className="text-2xl font-semibold text-gray-900">My Account</h1>
@@ -87,7 +87,7 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
 
           {/* Main Content Area */}
           {/* On mobile: Render only if we're NOT on the root page. On desktop: Always render */}
-          <div className={`flex-1 flex flex-col bg-white ${!isRootProfilePage ? 'block' : 'hidden md:block'}`}>
+          <div className={`flex-1 flex flex-col bg-[white] ${!isRootProfilePage ? 'block' : 'hidden md:block'}`}>
             <div className="py-6 px-2 md:p-10 h-full">
               {children}
             </div>

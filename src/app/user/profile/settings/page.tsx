@@ -12,10 +12,10 @@ export default function ProfileSettingsPage() {
 
   return (
     <div className="animate-in fade-in duration-300">
-      <MobileBackButton title="" />
-                 <div className="flex justify-between items-center mb-2 md:hidden">
+      <MobileBackButton title="Account Settings" />
+                 {/* <div className="flex justify-between items-center mb-2 md:hidden">
         <h2 className="text-2xl font-semibold text-gray-900">Account Settings</h2>
-      </div>
+      </div> */}
       <div className="hidden md:block">
         <h2 className="text-2xl mb-2" style={{ fontSize: '24px', fontWeight: 600, color: '#111827' }}>Account Settings</h2>
       </div>

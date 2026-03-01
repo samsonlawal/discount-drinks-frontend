@@ -8,15 +8,17 @@ export default function MobileBackButton({ title }: { title: string }) {
   const router = useRouter();
 
   return (
-    <div className="md:hidden flex items-center mb-6">
+    <div className="flex gap-1 items-center mb-6 md:hidden">
       <button 
         onClick={() => router.push("/user/profile")}
-        className="flex items-center text-gray-600 hover:text-gray-900"
+        className="flex items-center text-gray-600 hover:text-gray-900 hover:bg-black rounded-full p-1 hover:text-white"
       >
-        <ChevronLeft size={20} className="mr-1" />
-        <span>Back to Menu</span>
+        <ChevronLeft size={20} className="" />
       </button>
-      <h2 className="text-xl font-semibold ml-auto text-gray-900">{title}</h2>
+
+        <span>{title}</span>
+
+      {/* <h2 className="text-xl font-semibold ml-auto text-gray-900">{title}</h2> */}
     </div>
   );
 }
