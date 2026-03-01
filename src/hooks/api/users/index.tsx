@@ -54,6 +54,41 @@ export const useGetUserById = () => {
   return { loading, user, fetchUser };
 };
 
+// Hook for fetching a user's addresses
+export const useGetUserAddresses = () => {
+  const [loading, setLoading] = useState(false);
+  const [addresses, setAddresses] = useState<any[]>([]);
+
+  const fetchAddresses = async (userId: string) => {
+    setLoading(true);
+    try {
+      const res = await UsersService.getUserAddresses({ userId });
+      // Depending on the API wrapper response
+      let fetchedAddresses = [];
+      if (res?.data?.data) {
+        fetchedAddresses = Array.isArray(res.data.data) ? res.data.data : [];
+      } else if (res?.data?.addresses) {
+        fetchedAddresses = Array.isArray(res.data.addresses) ? res.data.addresses : [];
+      } else if (Array.isArray(res?.data)) {
+        fetchedAddresses = res.data;
+      }
+      setAddresses(fetchedAddresses);
+      return fetchedAddresses;
+    } catch (error: Error | AxiosError | any) {
+      showErrorToast({
+        message: error?.response?.data?.message || "Failed to fetch addresses",
+        description: error?.response?.data?.description || "",
+      });
+      setAddresses([]);
+      return [];
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { loading, addresses, setAddresses, fetchAddresses };
+};
+
 // Hook for creating a user
 export const useCreateUser = () => {
   const [loading, setLoading] = useState(false);

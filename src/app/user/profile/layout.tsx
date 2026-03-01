@@ -4,7 +4,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { usePathname, useRouter } from "next/navigation";
-import { User, Mail, MapPin, Package, Settings, LogOut } from "lucide-react";
+import { User, Mail, MapPin, Package, Settings, LogOut, ChevronRight } from "lucide-react";
 import { useLogout } from "@/hooks/api/auth";
 import Link from "next/link";
 
@@ -51,7 +51,7 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
           {/* On mobile: Render only if we're on the root page. On desktop: Always render */}
           <aside className={`w-full md:w-64 lg:w-72 bg-white/50 md:bg-white/50 flex-shrink-0 flex flex-col ${isRootProfilePage ? 'block' : 'hidden md:flex'}`}>
             
-            <div className="py-6 md:px-8 md:pt-8 md:pb-4 flex-shrink-0">
+            <div className="py-6 px-2 md:px-8 md:pt-8 md:pb-4 flex-shrink-0">
               <h1 className="text-2xl font-semibold text-gray-900">My Account</h1>
             </div>
 
@@ -62,14 +62,17 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
                   <Link
                     key={item.path}
                     href={item.path}
-                    className={`flex flex-row items-center gap-3 px-4 py-3 rounded-lg text-sm transition-colors ${
+                    className={`flex flex-row items-center justify-between px-2 md:px-4 py-3 rounded-lg text-[16px] transition-colors ${
                       isActive 
                         ? 'bg-gray-200 text-white' 
-                        : 'text-gray-600 hover:bg-gray-200 hover:text-gray-900 bg-transparent'
+                        : 'text-gray-600 hover:bg-gray-200 md:hover:text-gray-900 bg-transparent'
                     }`}
                   >
-                    {item.icon}
-                    <span>{item.name}</span>
+                    <p className="flex items-center gap-3">
+                      {item.icon}
+                      <span>{item.name}</span>
+                    </p>
+                    <ChevronRight size={18} className="flex md:hidden" />
                   </Link>
                 );
               })}
@@ -77,7 +80,7 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
               
               <button 
                 onClick={handleLogout}
-                className="!flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-red-600 hover:bg-red-100 hover:bg-red-100 bg-transparent transition-colors w-full text-left"
+                className="!flex items-center gap-3 px-2 md:px-4 py-3 rounded-lg text-[16px] font-medium text-red-600 hover:bg-red-100 hover:bg-red-100 bg-transparent transition-colors w-full text-left"
               >
                 <LogOut size={18} />
                 <span>Sign Out</span>

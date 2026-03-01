@@ -31,14 +31,18 @@ class Service {
     return axios.get(`${env.api.users}/${userId}`);
   }
 
+  getUserAddresses({ userId }: { userId: string }) {
+    return axios.get(`${env.api.users}/${userId}/addresses`, {
+      withCredentials: true,
+    });
+  }
+
   createUser(data: ICreateUserPayload) {
     return axios.post(env.api.users, data);
   }
 
   updateUser({ id, ...data }: IUpdateUserPayload) {
-    return axios.put(`${env.api.users}/${id}`, data, {
-      withCredentials: true,
-    });
+    return axios.put(`${env.api.users}/${id}`, data);
   }
 
   deleteUser({ id }: { id: string }) {

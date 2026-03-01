@@ -1,14 +1,13 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { useGetUserAddresses } from "@/hooks/api/users";
 import { MapPin, Plus, MoreVertical, Edit2, Trash2 } from "lucide-react";
 import MobileBackButton from "../MobileBackButton";
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
-import { setAuthState } from "@/redux/Slices/authSlice";
-import { useUpdateUser } from "@/hooks/api/users";
 
-export interface Address {
+interface Address {
   id: string;
   // firstName: string;
   // lastName: string;
@@ -22,43 +21,21 @@ export interface Address {
 }
 
 export default function ProfileAddressesPage() {
-  const { user } = useSelector((state: RootState) => state.auth);
-  const dispatch = useDispatch();
-  const { updateUser, loading } = useUpdateUser();
-
+  const user = useSelector((state: RootState) => state.auth.user);
+  // const { loading: isLoading, addresses, setAddresses, fetchAddresses } = useGetUserAddresses();
   const [addresses, setAddresses] = useState<Address[]>([]);
+  
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
 
   useEffect(() => {
-    if (user && (user as any).addresses) {
-      setAddresses((user as any).addresses);
+    if (user?.addresses) {
+      setAddresses(user.addresses);
     }
   }, [user]);
 
-  const handleUpdateBackend = async (newAddresses: Address[]) => {
-    let userId = "";
 
-    if (user) {
-      userId = (user as any).id || (user as any)._id || (user as any).userId || "";
-    }
-    
-    // Fallback: try to see if it works without ID (some backends infer from token)
-    // or just pass 'me' if no id is found. We'll pass whatever we have.
-    if (!userId) {
-       userId = "me"; 
-    }
 
-    await updateUser({
-      data: {
-        id: userId,
-        addresses: newAddresses,
-      },
-      successCallback: () => {
-        dispatch(setAuthState({ user: { ...user, addresses: newAddresses } as any }));
-      }
-    });
-  };
 
   const [formData, setFormData] = useState<Omit<Address, "id">>({
     // firstName: "",
@@ -144,7 +121,6 @@ export default function ProfileAddressesPage() {
     updatedAddresses.sort((a, b) => (a.isDefault === b.isDefault ? 0 : a.isDefault ? -1 : 1));
 
     setAddresses(updatedAddresses);
-    handleUpdateBackend(updatedAddresses);
     handleCloseForm();
   };
 
@@ -155,7 +131,6 @@ export default function ProfileAddressesPage() {
        newAddresses[0].isDefault = true;
     }
     setAddresses(newAddresses);
-    handleUpdateBackend(newAddresses);
   };
 
   return (
@@ -233,9 +208,7 @@ export default function ProfileAddressesPage() {
 
             <div className="flex flex-col-reverse md:flex-row justify-end gap-3 pt-6 border-t border-gray-100">
               <button type="button" onClick={handleCloseForm} className="flex items-center justify-center px-6 py-2.5 bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 rounded-lg text-sm font-medium transition-colors">Cancel</button>
-              <button type="submit" disabled={loading} className="flex items-center justify-center px-6 py-2.5 bg-[#1a1a1a] text-white rounded-lg hover:bg-black text-sm font-medium transition-colors shadow-sm disabled:opacity-50">
-                {loading ? "Saving..." : "Save Address"}
-              </button>
+              <button type="submit" className="flex items-center justify-center px-6 py-2.5 bg-[#1a1a1a] text-white rounded-lg hover:bg-black text-sm font-medium transition-colors shadow-sm">Save Address</button>
             </div>
           </form>
         </div>
@@ -249,12 +222,15 @@ export default function ProfileAddressesPage() {
           </button>
           </div>
 
-          {addresses.length === 0 ? (
+          {!addresses ? (
+            <div className="flex justify-center items-center py-16">
+              <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
+            </div>
+          ) : addresses.length === 0 ? (
             <div className="text-center py-16 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
               <MapPin size={48} className="mx-auto text-gray-300 mb-4" />
               <h3 className="text-lg font-medium text-gray-900 mb-1">No addresses saved</h3>
               <p className="text-gray-500 mb-6">You haven't saved any delivery addresses yet.</p>
-              <button onClick={() => handleOpenForm()} className="btn btn-outline mx-auto text-sm h-10 px-6">Add your first address</button>
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
