@@ -48,10 +48,11 @@ export default function CartItem({
       <article className="cart-item-card">
         <figure className="cart-item-image">
           <Image
-            src={item.image}
+            src={item.image || "/images/product-1.jpg"}
             alt={item.name || "Product"}
             width={120}
             height={155}
+            unoptimized
             className="object-cover"
           />
         </figure>

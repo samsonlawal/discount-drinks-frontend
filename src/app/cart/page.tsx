@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useCart } from "@/contexts/CartContext";
 import { Modal, ModalType } from "@/components/ui/Modal";
@@ -26,6 +27,7 @@ export default function CartPage() {
     getCartTotals,
     isLoading,
   } = useCart();
+  const router = useRouter();
 
   const [modalConfig, setModalConfig] = useState<{
     isOpen: boolean;
@@ -88,12 +90,7 @@ export default function CartPage() {
       });
       return;
     }
-    setModalConfig({
-      isOpen: true,
-      type: "alert",
-      title: "Checkout",
-      message: "Proceeding to checkout...",
-    });
+    router.push("/checkout");
   };
 
   return (
@@ -259,7 +256,7 @@ export default function CartPage() {
                       </span>
                     </div>
 
-                    <div className="summary-row">
+                    {/* <div className="summary-row">
                       <span className="summary-label">VAT (20%):</span>
                       <span className="summary-value">
                         {formatPrice(totals.tax)}
@@ -278,7 +275,7 @@ export default function CartPage() {
                       <span className="summary-value">
                         {formatPrice(totals.total)}
                       </span>
-                    </div>
+                    </div> */}
                   </div>
 
                   <button

@@ -81,6 +81,41 @@ export type TRegister = {
 };
 
 export type TLogin = {
-  email: string;
   password: string;
 };
+
+export interface OrderItemPayload {
+  product: string;
+  quantity: number;
+  price: number;
+  image?: string;
+  name: string;
+}
+
+export interface ShippingAddressPayload {
+  addressLine1: string;
+  addressLine2?: string;
+  street: string;
+  city: string;
+  state: string;
+  postCode: string;
+  country: string;
+}
+
+export interface OrderPayload {
+  items: OrderItemPayload[];
+  shippingAddress?: ShippingAddressPayload;
+  paymentMethod: "card" | "cash" | "transfer" | string;
+  totalAmount: number;
+  shippingCost?: number;
+  taxRate?: number;
+  discount?: number;
+  notes?: string;
+  coupon?: string | null
+}
+
+export interface OrderResponse {
+  message: string;
+  orderId?: string;
+  order?: any;
+}
