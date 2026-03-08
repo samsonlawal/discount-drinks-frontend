@@ -1,14 +1,8 @@
 import type { Metadata } from "next";
-import { Jost } from "next/font/google";
 import "./globals.css";
 import "./style.css";
 import Initializers from "./Initializers";
-
-const jost = Jost({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-jost",
-});
+import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
   title: "Discount Drinks - No 1 in UK",
@@ -21,9 +15,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={jost.variable}>
+    <html lang="en">
       <body className="font-jost">
         <Initializers>{children}</Initializers>
+        <Analytics />
       </body>
     </html>
   );

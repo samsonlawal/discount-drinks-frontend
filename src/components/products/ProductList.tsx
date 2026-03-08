@@ -36,7 +36,9 @@ export default function ProductList() {
           ))}
         </ul>
 
-        <Link href="/products" className="btn btn-outline">View All Products</Link>
+        <div className="flex justify-center">
+          <Link href="/products" className="btn btn-primary w-max">View All Products</Link>
+        </div>
       </div>
     </section>
   );
