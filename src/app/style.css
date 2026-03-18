@@ -213,7 +213,7 @@ h3 > a {
   background: var(--white);
   width: 100%;
   padding-block: 20px;
-  z-index: 100;
+  z-index: 1000;
   transition: var(--transition-1);
 }
 
@@ -1426,7 +1426,7 @@ h3 > a {
 
   .navbar {
     position: absolute;
-    top: calc(100% + 1px);
+    top: 100%;
     left: 0;
     width: 100%;
     max-width: none;
@@ -1440,10 +1440,12 @@ h3 > a {
   }
 
   .header.active .navbar {
-    position: absolute;
-    top: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
     box-shadow: 0 2px 20px hsla(0, 0%, 0%, 0.1);
-    z-index: 150;
+    z-index: 1000;
   }
 
   .navbar-list {
