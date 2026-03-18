@@ -44,12 +44,12 @@ export default function ProductCard({ product }: ProductCardProps) {
       <figure className="card-banner">
         <a href={`/product/${product.id}`}>
           <img
-            src={product.image}
+            src={product.image || (product as any).images?.[0] || "/images/placeholder.jpg"}
             alt={product.name}
             loading="lazy"
             width="800"
             height="800"
-            className="w-100"
+            className="w-full object-cover aspect-square"
           />
         </a>
 

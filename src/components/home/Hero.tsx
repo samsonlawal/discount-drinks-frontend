@@ -8,7 +8,7 @@ export default function Hero() {
 
   return (
     <section
-      className="hero flex-col justify-between items-stretch"
+      className="hero flex-col justify-between items-start"
       id="home"
       style={{ backgroundImage: "url('/images/hero-banner.jpg')" }}
     >
@@ -34,7 +34,7 @@ export default function Hero() {
 
           <h2 className="h1 hero-title">UK's No.1 Bulk Discount Shop</h2>
 
-          <Link href="/products" className="w-fit">
+          <Link href="/products" className="inline-block w-max">
             <button className="btn btn-primary">Shop Now</button>
           </Link>
         </div>

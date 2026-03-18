@@ -423,6 +423,7 @@ h3 > a {
   justify-content: flex-start;
   align-items: center;
   gap: 20px;
+  padding-block: 20px;
 }
 
 .service-item-icon {
@@ -509,22 +510,37 @@ h3 > a {
 }
 
 .product-list {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  display: flex !important;
+  flex-wrap: wrap !important;
+  justify-content: center !important;
   gap: 30px 15px;
   margin-bottom: 60px;
 }
 
 @media (min-width: 768px) {
   .product-list {
-    grid-template-columns: repeat(4, 1fr);
     gap: 40px 25px;
   }
 }
 
 @media (min-width: 1200px) {
-  .product-list {
-    grid-template-columns: repeat(5, 1fr);
+  /* No change needed, flex-wrap will handle it */
+}
+
+.product-list > li {
+  width: calc(50% - 8px); /* 2 per row mobile */
+  max-width: 250px;
+}
+
+@media (min-width: 768px) {
+  .product-list > li {
+    width: calc(25% - 20px); /* 4 per row tablet */
+  }
+}
+
+@media (min-width: 1200px) {
+  .product-list > li {
+    width: calc(20% - 20px); /* 5 per row desktop */
   }
 }
 

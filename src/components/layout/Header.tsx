@@ -48,6 +48,17 @@ export default function Header() {
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 0);
     window.addEventListener("scroll", handleScroll);
+    
+    // Prefetch products for search
+    const prefetch = async () => {
+      const data = await fetchProducts();
+      if (data) {
+        allProductsRef.current = data;
+        hasFetchedRef.current = true;
+      }
+    };
+    prefetch();
+
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -82,7 +93,7 @@ export default function Header() {
     setIsSearching(true);
     setShowDropdown(true);
 
-    // Fetch all products once
+    // Data is now prefetched on mount, but we add a fallback just in case
     if (!hasFetchedRef.current) {
       const data = await fetchProducts();
       if (data) {
@@ -178,7 +189,7 @@ export default function Header() {
 
           {/* Search Dropdown */}
           {showDropdown && (
-            <div className="absolute top-[calc(100%+8px)] left-0 w-98 bg-white border border-black/10 rounded-md p-2 shadow-2xl z-100 min-h-60 max-h-100 overflow-y-auto overflow-x-hidden">
+            <div className="absolute top-[calc(100%+8px)] left-0 w-98 bg-white border border-black/10 rounded-md p-2 shadow-2xl z-[1500] min-h-60 max-h-100 overflow-y-auto overflow-x-hidden">
               {isSearching && hasFetchedRef.current ? (
                 <div className="p-4 text-center text-gray-500 text-sm italic">Filtering list...</div>
               ) : isSearching ? (
