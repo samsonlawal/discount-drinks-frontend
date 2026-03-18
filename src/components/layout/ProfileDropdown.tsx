@@ -36,7 +36,7 @@ export default function ProfileDropdown({ user, onLogout }: ProfileDropdownProps
 
         <DropdownMenu.Portal>
           <DropdownMenu.Content 
-            className="min-w-[220px] bg-white rounded-xl shadow-lg border border-gray-100 p-2 text-sm z-50 animate-in fade-in zoom-in-95 duration-200 mt-2"
+            className="min-w-[220px] bg-white rounded-xl shadow-lg border border-gray-100 p-2 text-sm z-[1100] animate-in fade-in zoom-in-95 duration-200 mt-2"
             sideOffset={5}
             align="end"
           >

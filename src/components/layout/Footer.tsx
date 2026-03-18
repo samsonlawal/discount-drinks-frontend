@@ -87,9 +87,9 @@ export default function Footer() {
             </li>
 
             <li>
-              <a href="#" className="footer-link">
+              <Link href="/about" className="footer-link">
                 About Us
-              </a>
+              </Link>
             </li>
 
                         <li>
@@ -105,23 +105,23 @@ export default function Footer() {
             </li>
 
             <li>
-              <a href="#" className="footer-link">
+              <Link href="/" className="footer-link">
                 Terms & Conditions
-              </a>
+              </Link>
             </li>
 
             <li>
-              <a href="#" className="footer-link">
+              <Link href="/" className="footer-link">
                 Privacy Policy
-              </a>
+              </Link>
             </li>
 
 
 
             <li>
-              <a href="#" className="footer-link">
+              <Link href="/" className="footer-link">
                 Shipping & Delivery
-              </a>
+              </Link>
             </li>
 
 
@@ -133,39 +133,39 @@ export default function Footer() {
             </li>
 
             <li>
-              <a href="#" className="footer-link">
+              <Link href="/products?category=Rum" className="footer-link">
                 Rum
-              </a>
+              </Link>
             </li>
 
             <li>
-              <a href="#" className="footer-link">
+              <Link href="/products?category=Whiskey" className="footer-link">
                 Whiskey
-              </a>
+              </Link>
             </li>
 
             <li>
-              <a href="#" className="footer-link">
+              <Link href="/products?category=Vodka" className="footer-link">
                 Vodka
-              </a>
+              </Link>
             </li>
 
             <li>
-              <a href="#" className="footer-link">
+              <Link href="/products?category=Spirit" className="footer-link">
                 Spirit
-              </a>
+              </Link>
             </li>
 
             <li>
-              <a href="#" className="footer-link">
+              <Link href="/products?category=Beer" className="footer-link">
                 Beer
-              </a>
+              </Link>
             </li>
 
             <li>
-              <a href="#" className="footer-link">
+              <Link href="/products?category=Tequila" className="footer-link">
                 Tequila
-              </a>
+              </Link>
             </li>
           </ul>
         </div>
@@ -174,7 +174,7 @@ export default function Footer() {
       <div className="footer-bottom">
         <div className="container">
           <p className="copyright">
-            &copy; 2025 <a href="#">DiscountDrinks</a>. All Rights Reserved
+            &copy; 2025 <Link href="/">DiscountDrinks</Link>. All Rights Reserved
           </p>
 
           <ul className="footer-bottom-list">

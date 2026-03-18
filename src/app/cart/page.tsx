@@ -5,7 +5,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useCart } from "@/contexts/CartContext";
-import { Modal, ModalType } from "@/components/ui/Modal";
 import {
   ShoppingCart,
   ArrowLeft,
@@ -15,7 +14,14 @@ import {
   Plus,
   Trash2,
   Loader2,
+  AlertCircle,
 } from "lucide-react";
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { AgeDisclaimerModal } from "@/components/modals/AgeDisclaimerModal";
+import { AddressRequiredModal } from "@/components/modals/AddressRequiredModal";
+import { ConfirmationModal } from "@/components/modals/ConfirmationModal";
+import { BaseModal } from "@/components/modals/BaseModal";
 import "../../app/cart.css";
 
 export default function CartPage() {
@@ -28,74 +34,122 @@ export default function CartPage() {
     isLoading,
   } = useCart();
   const router = useRouter();
+  const user = useSelector((state: RootState) => state.auth.user);
 
-  const [modalConfig, setModalConfig] = useState<{
-    isOpen: boolean;
-    type: ModalType;
-    title: string;
-    message: string;
-    onConfirm?: () => void;
-    confirmText?: string;
-  }>({
-    isOpen: false,
-    type: "alert",
-    title: "",
-    message: "",
-  });
+  const [activeModal, setActiveModal] = useState<"none" | "clear_cart" | "remove_item" | "age_verification" | "address_required" | "empty_cart">("none");
+  const [selectedItem, setSelectedItem] = useState<{ id: string; name: string } | null>(null);
 
-  const closeModal = () => setModalConfig((prev) => ({ ...prev, isOpen: false }));
+  const closeModal = () => setActiveModal("none");
 
   const totals = getCartTotals();
   const isEmpty = cart.length === 0;
 
-  const handleClearCart = () => {
-    setModalConfig({
-      isOpen: true,
-      type: "confirm",
-      title: "Clear Cart",
-      message: "Are you sure you want to clear your entire cart?",
-      confirmText: "Clear Cart",
-      onConfirm: () => {
-        clearCart();
-        closeModal();
-      },
-    });
-  };
+  const handleClearCart = () => setActiveModal("clear_cart");
 
   const formatPrice = (price: number) => {
     return `£${parseFloat(price.toString()).toFixed(2)}`;
   };
 
-  const handleRemoveItem = (productId: string, productName: string) => {
-    setModalConfig({
-      isOpen: true,
-      type: "confirm",
-      title: "Remove Item",
-      message: `Remove ${productName} from cart?`,
-      confirmText: "Remove",
-      onConfirm: () => {
-        removeFromCart(productId);
-        closeModal();
-      },
-    });
+  const handleRemoveItem = (id: string, name: string) => {
+    setSelectedItem({ id, name });
+    setActiveModal("remove_item");
   };
 
   const handleCheckout = () => {
     if (cart.length === 0) {
-      setModalConfig({
-        isOpen: true,
-        type: "alert",
-        title: "Cart Empty",
-        message: "Your cart is empty",
-      });
+      setActiveModal("empty_cart");
       return;
     }
+
+    // 1. Logged In Check
+    if (!user) {
+      router.push(`/auth/sign-in?redirect=/cart`);
+      return;
+    }
+
+    // 2. Age Disclaimer Check
+    const ageStatus = localStorage.getItem("age_verified");
+    const isAgeVerified = ageStatus === "true" || ageStatus === "yes";
+    
+    // Show popup if not verified (including "no", "false", null, empty strings)
+    if (!isAgeVerified) {
+      setActiveModal("age_verification");
+      return;
+    }
+
+    proceedToAddressCheck();
+  };
+
+  const proceedToAddressCheck = () => {
+    // 3. Address Check
+    const hasAddress = user?.addresses && user.addresses.length > 0;
+    if (!hasAddress) {
+      setActiveModal("address_required");
+      return;
+    }
+
     router.push("/checkout");
   };
 
   return (
     <>
-      <Modal {...modalConfig} onClose={closeModal} />
+      <ConfirmationModal
+        isOpen={activeModal === "clear_cart"}
+        onClose={closeModal}
+        onConfirm={() => {
+          clearCart();
+          closeModal();
+        }}
+        title="Clear Cart"
+        message="Are you sure you want to clear your entire cart?"
+        confirmText="Clear Cart"
+        type="danger"
+      />
+
+      <ConfirmationModal
+        isOpen={activeModal === "remove_item"}
+        onClose={closeModal}
+        onConfirm={() => {
+          if (selectedItem) removeFromCart(selectedItem.id);
+          closeModal();
+        }}
+        title="Remove Item"
+        message={`Remove ${selectedItem?.name} from cart?`}
+        confirmText="Remove"
+        type="danger"
+      />
+
+      <AgeDisclaimerModal
+        isOpen={activeModal === "age_verification"}
+        onClose={closeModal}
+        onConfirm={() => {
+          localStorage.setItem("age_verified", "true");
+          closeModal();
+          proceedToAddressCheck();
+        }}
+        onReject={() => {
+          localStorage.setItem("age_verified", "no");
+          closeModal();
+        }}
+      />
+
+      <AddressRequiredModal
+        isOpen={activeModal === "address_required"}
+        onClose={closeModal}
+        onConfirm={() => {
+          closeModal();
+          router.push("/user/profile/addresses");
+        }}
+      />
+
+      <BaseModal isOpen={activeModal === "empty_cart"} onClose={closeModal}>
+        <div className="text-center py-4">
+          <AlertCircle size={48} className="mx-auto text-amber-500 mb-4" />
+          <h2 className="text-xl font-bold mb-2">Cart Empty</h2>
+          <p className="text-gray-500 mb-6">Your cart is empty</p>
+          <button onClick={closeModal} className="btn btn-primary w-full">OK</button>
+        </div>
+      </BaseModal>
       <main className="cart-main">
       <div className="container">
         {/* Breadcrumb */}

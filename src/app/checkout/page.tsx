@@ -6,8 +6,10 @@ import Image from "next/image";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useCart } from "@/contexts/CartContext";
-import { ShieldCheck, MapPin, Truck, Store, CreditCard, Wallet, ChevronRight, Check } from "lucide-react";
-import { Modal, ModalType } from "@/components/ui/Modal";
+import { ShieldCheck, MapPin, Truck, Store, CreditCard, Wallet, ChevronRight, Check, AlertCircle } from "lucide-react";
+import { AddressRequiredModal } from "@/components/modals/AddressRequiredModal";
+import { OrderSuccessModal } from "@/components/modals/OrderSuccessModal";
+import { BaseModal } from "@/components/modals/BaseModal";
 import { OrderPayload } from "@/types";
 import { useCreateOrder } from "@/hooks/api/orders";
 
@@ -37,21 +39,10 @@ export default function CheckoutPage() {
   const [selectedAddressId, setSelectedAddressId] = useState<string | null>(null);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("card");
 
-  const [modalConfig, setModalConfig] = useState<{
-    isOpen: boolean;
-    type: ModalType;
-    title: string;
-    message: string;
-    onConfirm?: () => void;
-    confirmText?: string;
-  }>({
-    isOpen: false,
-    type: "alert",
-    title: "",
-    message: "",
-  });
+  const [activeModal, setActiveModal] = useState<"none" | "address_required" | "order_success" | "missing_info">("none");
+  const [successMessage, setSuccessMessage] = useState("");
 
-  const closeModal = () => setModalConfig((prev) => ({ ...prev, isOpen: false }));
+  const closeModal = () => setActiveModal("none");
 
   // Load user addresses
   useEffect(() => {
@@ -68,12 +59,32 @@ export default function CheckoutPage() {
     console.log(user)
   }, [user]);
 
-  // Redirect if cart is empty
+  // 1. Redirect if not logged in
   useEffect(() => {
-    if (!cartLoading && cart.length === 0) {
+    if (!user) {
+      router.push("/auth/sign-in?redirect=/checkout");
+    }
+  }, [user, router]);
+
+  // 2. Redirect if age not verified
+  useEffect(() => {
+    const ageStatus = localStorage.getItem("age_verified");
+    const isAgeVerified = ageStatus === "true" || ageStatus === "yes";
+    if (!isAgeVerified) {
       router.push("/cart");
     }
-  }, [cart, cartLoading, router]);
+  }, [router]);
+
+  // 3. Redirect if cart is empty OR no address
+  useEffect(() => {
+    if (!cartLoading) {
+      if (cart.length === 0) {
+        router.push("/cart");
+      } else if (!user?.addresses || user.addresses.length === 0) {
+        router.push("/user/profile/addresses");
+      }
+    }
+  }, [cart, cartLoading, user, router]);
 
   const totals = getCartTotals();
 
@@ -83,12 +94,7 @@ export default function CheckoutPage() {
 
   const handlePlaceOrder = () => {
     if (deliveryMethod === "home" && !selectedAddressId) {
-      setModalConfig({
-        isOpen: true,
-        type: "alert",
-        title: "Missing Information",
-        message: "Please select a delivery address.",
-      });
+      setActiveModal("missing_info");
       return;
     }
 
@@ -140,16 +146,8 @@ export default function CheckoutPage() {
       payload,
       successCallback: (data) => {
         clearCart();
-        setModalConfig({
-          isOpen: true,
-          type: "alert",
-          title: "Order Placed",
-          message: data?.message || "Your order has been placed successfully!",
-          onConfirm: () => {
-            closeModal();
-            router.push("/user/profile/orders"); // Or wherever the user should go
-          }
-        });
+        setSuccessMessage(data?.message || "Your order has been placed successfully!");
+        setActiveModal("order_success");
       }
     });
   };
@@ -167,7 +165,32 @@ export default function CheckoutPage() {
 
   return (
     <div className="min-h-screen pt-14 pb-12" style={{ background: "white" }}>
-      <Modal {...modalConfig} onClose={closeModal} />
+      <AddressRequiredModal
+        isOpen={activeModal === "address_required"}
+        onClose={closeModal}
+        onConfirm={() => {
+          closeModal();
+          router.push("/user/profile/addresses");
+        }}
+      />
+
+      <OrderSuccessModal
+        isOpen={activeModal === "order_success"}
+        onClose={() => {
+          closeModal();
+          router.push("/user/profile/orders");
+        }}
+        message={successMessage}
+      />
+
+      <BaseModal isOpen={activeModal === "missing_info"} onClose={closeModal}>
+        <div className="text-center py-4">
+          <AlertCircle size={48} className="mx-auto text-amber-500 mb-4" />
+          <h2 className="text-xl font-bold mb-2">Missing Information</h2>
+          <p className="text-gray-500 mb-6">Please select a delivery address.</p>
+          <button onClick={closeModal} className="btn btn-primary w-full">OK</button>
+        </div>
+      </BaseModal>
 
       <div className="container mx-auto px-4 max-w-6xl">
         <h1

@@ -23,11 +23,17 @@ export default function ProductList({ loading = false }: ProductListProps) {
               </li>
             ))
           ) : (
-            products.map((product: any) => (
-              <li key={product.id}>
-                <ProductCard product={product} />
-              </li>
-            ))
+            products
+              .filter((product: any) => 
+                product.tags?.some((tag: string) => 
+                  tag.toLowerCase().includes("best-seller")
+                )
+              )
+              .map((product: any) => (
+                <li key={product.id}>
+                  <ProductCard product={product} />
+                </li>
+              ))
           )}
         </ul>
 

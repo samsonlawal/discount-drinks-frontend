@@ -241,7 +241,7 @@ export default function SignUpPage() {
                 <div className="form-options">
                   <label className="checkbox-label w-full">
                     <input type="checkbox" required />
-                    <span className="w-full flex flex-row flex-1">
+                    <span className="w-full">
                       I agree to the{" "}
                       <Link href="/terms" className="link-text">
                         Terms of Service

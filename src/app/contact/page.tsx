@@ -1,38 +1,18 @@
 "use client";
 
-import React, { useState } from "react";
-import { Mail, Phone, MapPin, Send } from "lucide-react";
+import React from "react";
+import { Mail, Phone, MapPin, Send, AlertCircle } from "lucide-react";
+import { useContact } from "@/hooks/api/useContact";
 
 export default function ContactPage() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-  });
-
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsSubmitting(true);
-    
-    // Simulate API call
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setSubmitted(true);
-      setFormData({ name: "", email: "", subject: "", message: "" });
-      
-      // Reset success message after 5 seconds
-      setTimeout(() => setSubmitted(false), 5000);
-    }, 1500);
-  };
+  const {
+    formData,
+    isSubmitting,
+    submitted,
+    error,
+    handleChange,
+    handleSubmit
+  } = useContact();
 
   return (
     <main className="pt-[80px] pb-24 px-4 min-h-screen bg-[var(--white)]">
@@ -78,6 +58,12 @@ export default function ContactPage() {
                 </div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-6">
+                  {error && (
+                    <div className="bg-red-50 border border-red-200 rounded-lg p-4 flex items-center gap-3 text-red-700">
+                      <AlertCircle className="w-5 h-5 flex-shrink-0" />
+                      <p className="text-sm font-medium">{error}</p>
+                    </div>
+                  )}
                   {/* <div className="grid grid-cols-1 md:grid-cols-2 gap-6"> */}
                     <div className="space-y-2">
                       <label htmlFor="name" className="block text-sm font-medium text-[var(--eerie-black)]">

@@ -10,7 +10,7 @@ export const products: Product[] = [
     badge: "sale",
     badgeText: "-25%",
     category: "Wine",
-    tags: ["wine", "red-wine", "premium", "french", "bordeaux"],
+    tags: ["wine", "red-wine", "premium", "french", "bordeaux", "best-seller"],
     specifications: {
       Volume: "750ml",
       "Alcohol Content": "13.5%",
@@ -44,7 +44,7 @@ export const products: Product[] = [
     price: 32.0,
     image: "/images/product-3.jpg",
     category: "Spirits",
-    tags: ["spirits", "whiskey", "aged", "scottish", "single-malt"],
+    tags: ["spirits", "whiskey", "aged", "scottish", "single-malt", "best-seller"],
     specifications: {
       Volume: "700ml",
       "Alcohol Content": "40%",
@@ -76,7 +76,7 @@ export const products: Product[] = [
     price: 45.0,
     image: "/images/product-5.jpg",
     category: "Spirits",
-    tags: ["spirits", "cognac", "luxury", "french", "vsop"],
+    tags: ["spirits", "cognac", "luxury", "french", "vsop", "best-seller"],
     specifications: {
       Volume: "700ml",
       "Alcohol Content": "40%",
@@ -125,7 +125,7 @@ export const products: Product[] = [
     originalPrice: 99.0,
     image: "/images/product-8.jpg",
     category: "Bundles",
-    tags: ["bundle", "party", "spirits", "value", "gift"],
+    tags: ["bundle", "party", "spirits", "value", "gift", "best-seller"],
     specifications: {
       "Total Volume": "3 Liters",
       "Number of Bottles": "4",

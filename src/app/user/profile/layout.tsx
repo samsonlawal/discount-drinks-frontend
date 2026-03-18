@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, {useEffect} from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { usePathname, useRouter } from "next/navigation";
@@ -14,13 +14,16 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
   const pathname = usePathname();
   const { onLogout } = useLogout();
 
+  useEffect(() => {
+    if (!user) {
+      router.push("/auth/sign-in?redirect=" + pathname);
+    }
+  }, [user, router, pathname]);
+
   if (!user) {
     return (
       <main className="section flex flex-col items-center justify-center min-h-[60vh]">
-        <h2 className="h2 mb-4">You are not logged in</h2>
-        <button onClick={() => router.push("/auth/sign-in")} className="btn btn-primary">
-          Sign In
-        </button>
+        <div className="animate-pulse text-gray-400 font-medium">Redirecting to sign in...</div>
       </main>
     );
   }
