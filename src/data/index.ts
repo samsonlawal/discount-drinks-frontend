@@ -177,9 +177,9 @@ export const categories: Category[] = [
   },
   {
     id: "cat_002",
-    name: "Party Liquour",
+    name: "Rum",
     image: "/images/category-2.jpg",
-    slug: "party-liquour",
+    slug: "rum",
   },
   {
     id: "cat_003",
@@ -189,21 +189,21 @@ export const categories: Category[] = [
   },
   {
     id: "cat_004",
-    name: "Scotch Whiskey",
+    name: "Vodka",
     image: "/images/category-4.jpg",
-    slug: "scotch-whiskey",
+    slug: "vodka",
   },
   {
     id: "cat_005",
-    name: "Vintage Whiskey",
+    name: "Lager",
     image: "/images/category-5.jpg",
-    slug: "vintage-whiskey",
+    slug: "lager",
   },
   {
     id: "cat_006",
-    name: "Distilled Whiskey",
+    name: "Tequila",
     image: "/images/category-6.jpg",
-    slug: "distilled-whiskey",
+    slug: "tequila",
   },
 ];
 

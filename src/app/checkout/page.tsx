@@ -486,7 +486,7 @@ export default function CheckoutPage() {
                 </div>
                 <div className="flex justify-between" style={{ color: "var(--sonic-silver)" }}>
                   <span>Shipping</span>
-                  <span>{deliveryMethod === "collect" ? "Free" : "Calculated at next step"}</span>
+                  <span style={{ color: "var(--ocean-green)", fontWeight: 600 }}>Free</span>
                 </div>
 
                 <div className="border-t pt-3 mt-3" style={{ borderColor: "var(--cultured)" }}>
@@ -504,10 +504,7 @@ export default function CheckoutPage() {
               <button
                 onClick={handlePlaceOrder}
                 disabled={orderLoading}
-                className="w-full rounded-xl py-4 mt-6 flex items-center justify-center gap-2 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-                style={{ background: "var(--eerie-black)", color: "var(--white)" }}
-                onMouseEnter={(e) => { if (!orderLoading) e.currentTarget.style.opacity = "0.9" }}
-                onMouseLeave={(e) => { if (!orderLoading) e.currentTarget.style.opacity = "1" }}
+                className="btn-dark w-full rounded-xl py-4 mt-6 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {orderLoading ? "Processing..." : "Place Order"}
                 {!orderLoading && <ChevronRight size={20} />}

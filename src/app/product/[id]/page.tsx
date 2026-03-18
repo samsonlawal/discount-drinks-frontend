@@ -7,6 +7,7 @@ import Link from "next/link";
 import { products } from "@/data"; // still used for related products fallback
 import { useCart } from "@/contexts/CartContext";
 import ProductCard from "@/components/products/ProductCard";
+import ProductCardSkeleton from "@/components/products/ProductCardSkeleton";
 import { CheckCircle2, Heart, ShoppingCart } from "lucide-react";
 import { useWishlist } from "@/contexts/WishlistContext";
 import { useGetProductById } from "@/hooks/api/products";
@@ -132,7 +133,7 @@ export default function ProductDetailPage() {
                         key={idx}
                         onClick={() => hasImage && setActiveImage(img)}
                         disabled={!hasImage}
-                        className={`relative flex-shrink-0 rounded-md overflow-hidden transition-all duration-200 w-8 h-8 sm:w-12 sm:h-12 ${
+                        className={`relative shrink-0 rounded-md overflow-hidden transition-all duration-200 w-8 h-8 sm:w-12 sm:h-12 ${
                           isActive
                             ? "ring-2 ring-black ring-offset-1 opacity-100"
                             : hasImage
@@ -276,11 +277,19 @@ export default function ProductDetailPage() {
           <section className="section">
             <h2 className="h2 section-title">Related Products</h2>
             <ul className="product-list">
-              {relatedProducts.map((relatedProduct) => (
-                <li key={relatedProduct.id}>
-                  <ProductCard product={relatedProduct} />
-                </li>
-              ))}
+              {loading ? (
+                Array.from({ length: 4 }).map((_, index) => (
+                  <li key={index}>
+                    <ProductCardSkeleton />
+                  </li>
+                ))
+              ) : (
+                relatedProducts.map((relatedProduct: any) => (
+                  <li key={relatedProduct.id}>
+                    <ProductCard product={relatedProduct} />
+                  </li>
+                ))
+              )}
             </ul>
           </section>
         </div>

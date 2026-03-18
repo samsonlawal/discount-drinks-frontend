@@ -261,7 +261,7 @@ export default function CartPage() {
                       <span className="summary-value">
                         {formatPrice(totals.tax)}
                       </span>
-                    </div>
+                    </div> */}
 
                     <div className="summary-row">
                       <span className="summary-label">Shipping:</span>
@@ -275,7 +275,7 @@ export default function CartPage() {
                       <span className="summary-value">
                         {formatPrice(totals.total)}
                       </span>
-                    </div> */}
+                    </div>
                   </div>
 
                   <button

@@ -61,7 +61,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           </div>
         )}
 
-        <div className="card-actions">
+        {/* <div className="card-actions">
           <button
             className="card-action-btn card-eye-btn"
             onClick={handleQuickView}
@@ -93,11 +93,12 @@ export default function ProductCard({ product }: ProductCardProps) {
               fill={inWishlist ? "currentColor" : "none"}
             />
           </button>
-        </div>
+        </div> */}
       </figure>
 
-      <div className="card-content">
-        <h3 className="h4 card-title">
+      <div className="card-content flex flex-row justify-between">
+          <div className="flex flex-col">
+                    <h3 className="h5 card-title">
           <a href={`/product/${product.id}`}>{product.name}</a>
         </h3>
 
@@ -109,6 +110,19 @@ export default function ProductCard({ product }: ProductCardProps) {
             </data>
           )}
         </div>
+          </div>
+
+            <button
+            className={`card-action-btn cart-btn group ${inCart ? "text-(--ocean-green)!" : ""}`}
+            onClick={handleAddToCart}
+            disabled={inCart}
+            aria-label={`Add ${product.name} to cart`}
+          >
+            <ShoppingCart
+              className={`icon transition-all duration-200 ${inCart ? "fill-current stroke-(--ocean-green)" : "group-hover:fill-current group-hover:stroke-(--ocean-green) group-hover:text-(--ocean-green)"}`}
+              aria-hidden="true"
+            />
+          </button>
       </div>
     </div>
   );

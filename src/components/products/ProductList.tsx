@@ -1,39 +1,34 @@
 "use client";
 
-import React, { useState } from "react";
 import { products } from "@/data";
 import ProductCard from "./ProductCard";
+import ProductCardSkeleton from "./ProductCardSkeleton";
 import Link from 'next/link'
 
-const filters = ["Best Seller", "Hot Collection", "Trendy", "New Arrival"];
+interface ProductListProps {
+  loading?: boolean;
+}
 
-export default function ProductList() {
-  const [activeFilter, setActiveFilter] = useState("Best Seller");
-
+export default function ProductList({ loading = false }: ProductListProps) {
   return (
     <section className="section product">
       <div className="container">
-        <h2 className="h2 section-title">Products of the week</h2>
-
-        <ul className="filter-list">
-          {filters.map((filter) => (
-            <li key={filter}>
-              <button
-                className={`filter-btn ${activeFilter === filter ? "active" : ""}`}
-                onClick={() => setActiveFilter(filter)}
-              >
-                {filter}
-              </button>
-            </li>
-          ))}
-        </ul>
+        <h2 className="h2 section-title">Best Sellers</h2>
 
         <ul className="product-list">
-          {products.map((product) => (
-            <li key={product.id}>
-              <ProductCard product={product} />
-            </li>
-          ))}
+          {loading ? (
+            Array.from({ length: 10 }).map((_, index) => (
+              <li key={index}>
+                <ProductCardSkeleton />
+              </li>
+            ))
+          ) : (
+            products.map((product: any) => (
+              <li key={product.id}>
+                <ProductCard product={product} />
+              </li>
+            ))
+          )}
         </ul>
 
         <div className="flex justify-center">

@@ -32,10 +32,9 @@ function Initializers({ children }: { children: ReactNode }) {
             {/* {hideNavbar ? null : <Navbar />} */}
             <CartProvider>
               <WishlistProvider>
-                <Header />
+                {hideNavbar ? null : <Header />}
                 {children}
-                <Footer />
-                {/* {hideFooter ? null : <Footer />} */}
+                {hideFooter ? null : <Footer />}
                 <Toaster richColors />
               </WishlistProvider>
             </CartProvider>

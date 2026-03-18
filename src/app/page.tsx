@@ -11,9 +11,9 @@ export default function Home() {
       <article>
         <Hero />
         <ServiceFeatures />
-        <CategorySection />
+        {/* <CategorySection /> */}
         <ProductList />
-        <BlogSection />
+        {/* <BlogSection /> */}
         <Newsletter />
       </article>
     </main>

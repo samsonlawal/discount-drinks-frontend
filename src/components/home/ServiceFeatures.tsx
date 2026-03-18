@@ -15,7 +15,7 @@ export default function ServiceFeatures() {
             <div className="service-content">
               <p className="service-item-title">Free Shipping</p>
 
-              <p className="service-item-text">On All Order Over $599</p>
+              <p className="service-item-text">On All Orders</p>
             </div>
           </li>
 

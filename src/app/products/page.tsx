@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import ProductCard from "@/components/products/ProductCard";
+import ProductCardSkeleton from "@/components/products/ProductCardSkeleton";
 import FilterSidebar from "@/components/products/FilterSidebar";
 import { SlidersHorizontal } from "lucide-react";
 
@@ -117,9 +118,13 @@ export default function ProductsPage() {
 
             <div className="products-main">
               {productsLoading ? (
-                <div className="flex justify-center items-center py-20 w-full h-[70vh]">
-                  <p className="text-xl md:text-2xl text-gray-600 animate-pulse">Loading products...</p>
-                </div>
+                <ul className="product-list">
+                  {Array.from({ length: 10 }).map((_, index) => (
+                    <li key={index}>
+                      <ProductCardSkeleton />
+                    </li>
+                  ))}
+                </ul>
               ) : (
                 <> 
                   <ul className="product-list">
