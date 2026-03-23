@@ -12,6 +12,10 @@ import { OrderSuccessModal } from "@/components/modals/OrderSuccessModal";
 import { BaseModal } from "@/components/modals/BaseModal";
 import { OrderPayload } from "@/types";
 import { useCreateOrder } from "@/hooks/api/orders";
+// import { getStripe, createCheckoutSession } from "@/utils/stripe";
+import { showErrorToast } from "@/utils/toaster";
+  import { stripePromise } from "@/lib/stripe";
+
 
 type DeliveryMethod = "collect" | "home";
 type PaymentMethod = "card" | "paypal" | "apple_pay";
@@ -38,6 +42,7 @@ export default function CheckoutPage() {
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [selectedAddressId, setSelectedAddressId] = useState<string | null>(null);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("card");
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const [activeModal, setActiveModal] = useState<"none" | "address_required" | "order_success" | "missing_info">("none");
   const [successMessage, setSuccessMessage] = useState("");
@@ -92,65 +97,7 @@ export default function CheckoutPage() {
     return `£${parseFloat(price.toString()).toFixed(2)}`;
   };
 
-  const handlePlaceOrder = () => {
-    if (deliveryMethod === "home" && !selectedAddressId) {
-      setActiveModal("missing_info");
-      return;
-    }
 
-    // Construct the payload
-    const items = cart.map(item => ({
-      product: item.id || (item as any)._id,
-      quantity: item.quantity,
-      price: item.costPrice ?? item.price,
-      name: item.name,
-      image: typeof item.image === "string" ? item.image : ""
-    }));
-    
-    // In actual implementation shipping cost might be calculated, setting to 0 for now as per previous mock (or 0 for collect)
-    const shippingCost = deliveryMethod === "collect" ? 0 : 0; 
-
-    let shippingAddressPayload = undefined;
-    if (deliveryMethod === "home" && selectedAddressId) {
-      const selectedAddress = addresses.find(a => (a._id || a.id) === selectedAddressId);
-      if (selectedAddress) {
-        shippingAddressPayload = {
-          addressLine1: selectedAddress.addressLine1,
-          addressLine2: selectedAddress.addressLine2 || "",
-          street: selectedAddress.addressLine1, // Using addressLine1 as fallback for street
-          city: selectedAddress.city,
-          state: selectedAddress.state,
-          postCode: selectedAddress.postCode,
-          country: "United Kingdom", // Default/fallback for country
-        };
-      }
-    }
-
-    let mappedPaymentMethod = paymentMethod;
-    if (paymentMethod === "paypal" || paymentMethod === "apple_pay") {
-      mappedPaymentMethod = "card"; // Fallback to valid enum if necessary, or we handle it on backend
-    }
-
-    const payload: OrderPayload = {
-      items,
-      shippingAddress: shippingAddressPayload,
-      paymentMethod: mappedPaymentMethod,
-      totalAmount: totals.total + shippingCost,
-      shippingCost: shippingCost,
-      taxRate: totals.tax,
-      // coupon: 0,
-      // discount: 0,
-    };
-
-    onCreateOrder({
-      payload,
-      successCallback: (data) => {
-        clearCart();
-        setSuccessMessage(data?.message || "Your order has been placed successfully!");
-        setActiveModal("order_success");
-      }
-    });
-  };
 
   if (cartLoading || cart.length === 0) {
     return (
@@ -162,6 +109,39 @@ export default function CheckoutPage() {
       </div>
     );
   }
+
+
+
+
+  // Handle Checkout
+  
+  const handleCheckout = async () => {
+    // 1. call backend to create session (service for axios - for later)
+    const res = await fetch("/api/create-checkout-session", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        // items: cartItems, // your cart
+        // userId: user.id
+      }),
+    });
+  
+    const data = await res.json();
+  
+    // 2. redirect to Stripe Checkout
+    const stripe = await stripePromise;
+
+    if(!stripe) {
+      console.log("Stripe failed to load")
+      return;
+    }
+  
+    await (stripe as any).redirectToCheckout({
+      sessionId: data.sessionId,
+    });
+  };
 
   return (
     <div className="min-h-screen pt-14 pb-12" style={{ background: "white" }}>
@@ -252,7 +232,7 @@ export default function CheckoutPage() {
                   )}
                 </button>
 
-                <button
+                {/* <button
                   onClick={() => setDeliveryMethod("collect")}
                   className="p-4 rounded-xl border text-left flex items-start gap-4 transition-all"
                   style={
@@ -280,7 +260,7 @@ export default function CheckoutPage() {
                       <Check size={20} />
                     </div>
                   )}
-                </button>
+                </button> */}
               </div>
             </section>
 
@@ -424,7 +404,7 @@ export default function CheckoutPage() {
                   </div>
                 </button>
 
-                <button
+                {/* <button
                   onClick={() => setPaymentMethod("paypal")}
                   className="w-full p-4 rounded-xl border text-left flex items-center gap-4 transition-all"
                   style={
@@ -450,7 +430,7 @@ export default function CheckoutPage() {
                       <div className="w-2.5 h-2.5 rounded-full" style={{ background: "var(--ocean-green)" }} />
                     )}
                   </div>
-                </button>
+                </button> */}
               </div>
             </section>
 
@@ -525,12 +505,12 @@ export default function CheckoutPage() {
               </div>
 
               <button
-                onClick={handlePlaceOrder}
-                disabled={orderLoading}
+                onClick={handleCheckout}
+                disabled={orderLoading || isProcessing}
                 className="btn-dark w-full rounded-xl py-4 mt-6 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {orderLoading ? "Processing..." : "Place Order"}
-                {!orderLoading && <ChevronRight size={20} />}
+                {orderLoading || isProcessing ? "Processing..." : "Proceed to Payment"}
+                {!orderLoading && !isProcessing && <ChevronRight size={20} />}
               </button>
 {/* 
               <div className="mt-6">
