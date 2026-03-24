@@ -80,6 +80,7 @@ export const useLogin = () => {
 export const useRegister = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const dispatch = useDispatch();
+  const router = useRouter(); // <-- Added missing router initialization
 
   const onRegister = async ({
     payload,
@@ -99,24 +100,26 @@ export const useRegister = () => {
 
     try {
       const res = await AuthService.register({ payload });
-      // console.log(register_res?.data?.message);
       successCallback?.(res?.data?.message);
       router.push("/auth/sign-in");
     } catch (error: Error | any) {
+      // If Next.js throws a redirect error, don't show it as an error toast
+      if (error?.message === "NEXT_REDIRECT") return;
+      
       let message = "An error occured!";
-
-      // console.log("error?.response?.data", error?.response?.data);
-      if (typeof error?.response?.data === "string") message = error?.response;
 
       if (typeof error?.response?.data === "string")
         message = error?.response?.data;
-      if (
+      else if (
         typeof error?.response?.data === "object" &&
         Object.keys(error?.response?.data)?.length
       ) {
         message =
           error?.response?.data[Object.keys(error?.response?.data)?.[0]];
+      } else if (error?.message) {
+        message = error.message;
       }
+      
       errorCallback?.({ message });
     } finally {
       setLoading(false);

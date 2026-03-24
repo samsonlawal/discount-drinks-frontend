@@ -13,6 +13,8 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  margin-top: -70px;
+  margin-bottom: -70px;
 }
 
 .auth-header {
@@ -654,11 +656,16 @@
     padding: 20px 0;
   }
 
+  /* Remove side padding from the container so the card spans edge-to-edge */
+  .auth-page .auth-main .container {
+    padding-inline: 0;
+  }
+
   .auth-card {
-    padding: 20px 15px;
-    border-radius: 12px;
+    padding: 30px 20px;
+    border-radius: 0;
     box-shadow: none;
-    border: 1px solid var(--cultured);
+    border: none;
   }
 
   .auth-title {
@@ -703,21 +710,6 @@
     width: 28px;
     height: 28px;
     font-size: 11px;
-  }
-}
-
-/* Extra Small */
-@media (max-width: 400px) {
-  .auth-card {
-    padding: 25px 16px;
-  }
-
-  .form-group {
-    margin-bottom: 20px;
-  }
-
-  .auth-page .auth-main .container {
-    width: 100%;
   }
 }
 
