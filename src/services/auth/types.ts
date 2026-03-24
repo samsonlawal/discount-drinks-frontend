@@ -32,11 +32,19 @@ export type TForgotPasswordService = {
   };
 };
 
+export type TVerifyCodeService = {
+  payload: {
+    email: string;
+    code: string;
+  };
+};
+
 export type TResetPasswordService = {
   payload: {
+    email: string;
+    code: string;
     new_password: string;
     confirm_new_password: string;
-    otp: number | null;
   };
 };
 
@@ -46,5 +54,9 @@ export interface AuthResponse {
 }
 
 export interface AuthInterface {
-  login: ({ payload }: TLoginService) => Promise<AxiosResponse<AuthResponse>>;
+  login: ({ payload }: TLoginService) => Promise<AxiosResponse<any>>;
+  register: ({ payload }: TRegisterService) => Promise<AxiosResponse<any>>;
+  forgotPassword: ({ payload }: TForgotPasswordService) => Promise<AxiosResponse<any>>;
+  verifyCode: ({ payload }: TVerifyCodeService) => Promise<AxiosResponse<any>>;
+  resetPassword: ({ payload }: TResetPasswordService) => Promise<AxiosResponse<any>>;
 }

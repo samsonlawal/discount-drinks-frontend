@@ -139,110 +139,97 @@ export const useLogout = () => {
   return { onLogout };
 };
 
-// export const useForgotPassword = () => {
-//   const [loading, setLoading] = useState<boolean>(false);
+export const useForgotPassword = () => {
+  const [loading, setLoading] = useState<boolean>(false);
 
-//   const onForgotPassword = async ({
-//     payload,
-//     successCallback,
-//     errorCallback,
-//   }: {
-//     payload: string;
-//     successCallback?: (message: string) => void;
-//     errorCallback?: (message?: string) => void;
-//   }) => {
-//     setLoading(true);
+  const onForgotPassword = async ({
+    payload,
+    successCallback,
+    errorCallback,
+  }: {
+    payload: { email: string };
+    successCallback?: (message: string) => void;
+    errorCallback?: (props: { message?: string }) => void;
+  }) => {
+    setLoading(true);
 
-//     try {
-//       const res = await AuthService.forgotPassword({
-//         payload: { email: payload },
-//       });
-//       console.log(res?.data?.message);
-//       successCallback?.(res?.data?.message);
-//     } catch (error: Error | any) {
-//       showErrorToast({
-//         message:
-//           error?.response?.data?.message || typeof error?.message === "string"
-//             ? error?.message
-//             : "An error occured!",
-//         description: error?.response?.data?.description || "",
-//       });
-//       errorCallback?.(error?.message);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
+    try {
+      const res = await AuthService.forgotPassword({ payload });
+      successCallback?.(res?.data?.message);
+    } catch (error: Error | any) {
+      const message =
+        error?.response?.data?.message || "An error occurred!";
+      showErrorToast({ message });
+      errorCallback?.({ message });
+    } finally {
+      setLoading(false);
+    }
+  };
 
-//   return { onForgotPassword, loading };
-// };
+  return { onForgotPassword, loading };
+};
 
-// export const useResetPassword = () => {
-//   const [loading, setLoading] = useState<boolean>(false);
+export const useVerifyCode = () => {
+  const [loading, setLoading] = useState<boolean>(false);
 
-//   const onResetPassword = async ({
-//     payload,
-//     successfulCallback,
-//   }: {
-//     payload: {
-//       new_password: string;
-//       confirm_new_password: string;
-//       otp: number | null;
-//     };
-//     successfulCallback?: (message: string) => void;
-//   }) => {
-//     setLoading(true);
-//     try {
-//       const res = await AuthService.resetPassword({
-//         payload,
-//       });
-//       successfulCallback?.(res?.data?.message);
-//     } catch (error: Error | any) {
-//       showErrorToast({
-//         message:
-//           error?.response?.data?.message || typeof error?.message === "string"
-//             ? error?.message
-//             : "An error occured!",
-//         description: error?.response?.data?.description || "",
-//       });
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
+  const onVerifyCode = async ({
+    payload,
+    successCallback,
+    errorCallback,
+  }: {
+    payload: { email: string; code: string };
+    successCallback?: (message: string) => void;
+    errorCallback?: (props: { message?: string }) => void;
+  }) => {
+    setLoading(true);
 
-//   return { onResetPassword, loading };
-// };
+    try {
+      const res = await AuthService.verifyCode({ payload });
+      successCallback?.(res?.data?.message);
+    } catch (error: Error | any) {
+      const message =
+        error?.response?.data?.message || "An error occurred!";
+      showErrorToast({ message });
+      errorCallback?.({ message });
+    } finally {
+      setLoading(false);
+    }
+  };
 
-// export const useActivateUser = () => {
-//   const [loading, setLoading] = useState<boolean>(false);
+  return { onVerifyCode, loading };
+};
 
-//   const onActivateUser = async ({
-//     token,
-//     successCallback,
-//     errorCallback,
-//   }: {
-//     token: string;
-//     successCallback?: (message: string) => void;
-//     errorCallback?: (message?: string) => void;
-//   }) => {
-//     setLoading(true);
+export const useResetPassword = () => {
+  const [loading, setLoading] = useState<boolean>(false);
 
-//     try {
-//       const res = await AuthService.activateAccount(token);
-//       console.log(res?.data?.message);
-//       successCallback?.(res?.data?.message);
-//     } catch (error: Error | any) {
-//       showErrorToast({
-//         message:
-//           error?.response?.data?.message || typeof error?.message === "string"
-//             ? error?.message
-//             : "An error occured!",
-//         description: error?.response?.data?.description || "",
-//       });
-//       errorCallback?.(error?.message);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
+  const onResetPassword = async ({
+    payload,
+    successCallback,
+    errorCallback,
+  }: {
+    payload: {
+      email: string;
+      code: string;
+      new_password: string;
+      confirm_new_password: string;
+    };
+    successCallback?: (message: string) => void;
+    errorCallback?: (props: { message?: string }) => void;
+  }) => {
+    setLoading(true);
 
-//   return { onActivateUser, loading };
-// };
+    try {
+      const res = await AuthService.resetPassword({ payload });
+      successCallback?.(res?.data?.message);
+    } catch (error: Error | any) {
+      const message =
+        error?.response?.data?.message || "An error occurred!";
+      showErrorToast({ message });
+      errorCallback?.({ message });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { onResetPassword, loading };
+};

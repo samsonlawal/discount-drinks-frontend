@@ -10,7 +10,7 @@ import {
 } from "./types";
 
 class Service implements AuthInterface {
- login({ payload }: TLoginService) {
+  login({ payload }: TLoginService) {
     return axios.post(env.api.auth + "/login", payload, {
       withCredentials: true,
     });

@@ -116,35 +116,96 @@ export default function CheckoutPage() {
   // Handle Checkout
   
   const handleCheckout = async () => {
-    // 1. call backend to create session (service for axios - for later)
-    const res = await fetch("/api/create-checkout-session", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        // items: cartItems, // your cart
-        // userId: user.id
-      }),
-    });
-  
-    const data = await res.json();
-  
-    // 2. redirect to Stripe Checkout
-    const stripe = await stripePromise;
-
-    if(!stripe) {
-      console.log("Stripe failed to load")
+    if (deliveryMethod === "home" && !selectedAddressId) {
+      setActiveModal("missing_info");
       return;
     }
-  
-    await (stripe as any).redirectToCheckout({
-      sessionId: data.sessionId,
-    });
+
+    setIsProcessing(true);
+
+    try {
+      // Find the exact address object the user selected
+      const selectedAddress = addresses.find(
+        (a) => (a._id || a.id) === selectedAddressId
+      );
+
+      // Create a simplified payload exactly matching your old snippet
+      const formattedItems = cart.map((item: any) => ({
+        product: item._id || item.id,
+        quantity: item.quantity,
+        name: item.name,
+        image: item.images && item.images.length > 0 ? item.images[0] : (item.image || ""),
+        price: item.price
+      }));
+
+      const payload: any = {
+        items: formattedItems,
+        shippingAddress: deliveryMethod === "home" ? selectedAddress : undefined,
+        paymentMethod: "card", // Changed from "stripe" to "card" per snippet
+        
+        // Keeping these just in case the backend still wants them
+        totalAmount: totals.total,
+        shippingCost: 0,
+        taxRate: totals.tax,
+      };
+
+      // Call our robust axios API hook
+      onCreateOrder({
+        payload,
+        successCallback: async (response) => {
+          // If the backend returns a direct URL (as per your snippet)
+          if (response?.url || response?.data?.url) {
+            window.location.href = response.url || response.data.url;
+            return;
+          }
+
+          // If it returns a sessionId (our previous assumption)
+          const sessionId = response?.sessionId || response?.data?.sessionId || response?.paymentSession?.id;
+
+          if (sessionId) {
+            const stripe = await stripePromise;
+            if (!stripe) {
+              console.error("Stripe failed to load");
+              setIsProcessing(false);
+              return;
+            }
+            await (stripe as any).redirectToCheckout({ sessionId });
+            return;
+          }
+
+          // If neither exists
+          showErrorToast({
+            message: "Payment initialization failed",
+            description: "Backend did not return a Stripe URL or session ID.",
+          });
+          setIsProcessing(false);
+        },
+        errorCallback: () => {
+          setIsProcessing(false);
+        },
+      });
+    } catch (error) {
+      console.error("Checkout error:", error);
+      setIsProcessing(false);
+    }
   };
 
   return (
     <div className="min-h-screen pt-14 pb-12" style={{ background: "white" }}>
+      {/* Processing Overlay */}
+      {isProcessing && (
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm transition-opacity duration-300">
+          <div className="bg-white p-8 rounded-2xl flex flex-col items-center shadow-2xl transform scale-100 animate-[scaleIn_0.3s_ease-out]">
+            <div className="w-12 h-12 border-4 rounded-full border-t-[var(--ocean-green)] border-l-[var(--ocean-green)] border-r-transparent border-b-transparent animate-spin mb-4" />
+            <h2 className="text-xl font-bold mb-2" style={{ color: "var(--eerie-black)" }}>
+              Processing Order...
+            </h2>
+            <p className="text-sm" style={{ color: "var(--sonic-silver)" }}>
+              Please do not close or refresh this window.
+            </p>
+          </div>
+        </div>
+      )}
       <AddressRequiredModal
         isOpen={activeModal === "address_required"}
         onClose={closeModal}

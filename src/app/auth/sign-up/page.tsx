@@ -75,6 +75,20 @@ export default function SignUpPage() {
       {/* Main Auth Section */}
       <main className="auth-main">
         <div className="container">
+          {/* Logo Navigation */}
+          <div className="flex justify-center mb-6">
+            <Link href="/">
+              <Image 
+                src="/images/logo.svg" 
+                alt="Discount Drinks Logo" 
+                width={180} 
+                height={50} 
+                priority 
+                className="h-10 sm:h-12 w-auto" 
+              />
+            </Link>
+          </div>
+
           <div className="auth-container">
             {/* Sign Up Card */}
             <div className="auth-card">
