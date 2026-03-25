@@ -424,7 +424,7 @@
 
 .side-title {
   font-size: var(--fs-2);
-  margin-bottom: 20px;
+  margin-bottom: 0px;
   font-weight: var(--fw-600);
 }
 

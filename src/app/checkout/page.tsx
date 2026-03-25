@@ -129,6 +129,20 @@ export default function CheckoutPage() {
         (a) => (a._id || a.id) === selectedAddressId
       );
 
+      // The backend strictly requires street and country, so we must map your address object
+      let shippingAddressPayload = undefined;
+      if (deliveryMethod === "home" && selectedAddress) {
+        shippingAddressPayload = {
+          addressLine1: selectedAddress.addressLine1,
+          addressLine2: selectedAddress.addressLine2 || "",
+          street: selectedAddress.addressLine1 || selectedAddress.street, // Fallback mapping for backend
+          city: selectedAddress.city,
+          state: selectedAddress.state,
+          postCode: selectedAddress.postCode || selectedAddress.zipCode,
+          country: selectedAddress.country || "United Kingdom", // Backend requires country
+        };
+      }
+
       // Create a simplified payload exactly matching your old snippet
       const formattedItems = cart.map((item: any) => ({
         product: item._id || item.id,
@@ -140,7 +154,7 @@ export default function CheckoutPage() {
 
       const payload: any = {
         items: formattedItems,
-        shippingAddress: deliveryMethod === "home" ? selectedAddress : undefined,
+        shippingAddress: shippingAddressPayload, // send the cleanly mapped address
         paymentMethod: "card", // Changed from "stripe" to "card" per snippet
         
         // Keeping these just in case the backend still wants them
@@ -194,8 +208,8 @@ export default function CheckoutPage() {
     <div className="min-h-screen pt-14 pb-12" style={{ background: "white" }}>
       {/* Processing Overlay */}
       {isProcessing && (
-        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/60 backdrop-blur-sm transition-opacity duration-300">
-          <div className="bg-white p-8 rounded-2xl flex flex-col items-center shadow-2xl transform scale-100 animate-[scaleIn_0.3s_ease-out]">
+        <div className="fixed inset-0 z-1000 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm transition-opacity duration-300">
+          <div className="p-8 rounded-2xl flex flex-col items-center shadow-2xl transform scale-100 animate-[scaleIn_0.3s_ease-out]">
             <div className="w-12 h-12 border-4 rounded-full border-t-[var(--ocean-green)] border-l-[var(--ocean-green)] border-r-transparent border-b-transparent animate-spin mb-4" />
             <h2 className="text-xl font-bold mb-2" style={{ color: "var(--eerie-black)" }}>
               Processing Order...
@@ -500,7 +514,7 @@ export default function CheckoutPage() {
           {/* Sidebar / Order Summary */}
           <div className="lg:w-1/3">
             <div
-              className="bg-white rounded-2xl border p-6 sticky top-24"
+              className="bg-(--cultured) rounded-2xl border p-6 sticky top-24"
               style={{ borderColor: "var(--cultured)" }}
             >
               <h2

@@ -12,7 +12,7 @@ import {
   AlertCircle,
   RefreshCw,
   ShieldCheck,
-  CheckCircle,
+  CircleCheck,
 } from "lucide-react";
 import { showErrorToast, showSuccessToast } from "@/utils/toaster";
 import { useRegister } from "@/hooks/api/auth";
@@ -316,19 +316,19 @@ export default function SignUpPage() {
 
                 <ul className="feature-list">
                   <li className="feature-item">
-                    <CheckCircle />
+                    <CircleCheck />
                     <span>Exclusive member discounts</span>
                   </li>
                   <li className="feature-item">
-                    <CheckCircle />
+                    <CircleCheck />
                     <span>Order tracking & history</span>
                   </li>
                   <li className="feature-item">
-                    <CheckCircle />
+                    <CircleCheck />
                     <span>Faster checkout process</span>
                   </li>
                   <li className="feature-item">
-                    <CheckCircle />
+                    <CircleCheck />
                     <span>Personalized recommendations</span>
                   </li>
                 </ul>

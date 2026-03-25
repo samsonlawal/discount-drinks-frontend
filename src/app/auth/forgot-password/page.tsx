@@ -12,7 +12,7 @@ import {
   AlertCircle,
   RefreshCw,
   ShieldCheck,
-  CheckCircle,
+  CircleCheck,
   ArrowLeft,
 } from "lucide-react";
 import { showErrorToast, showSuccessToast } from "@/utils/toaster";
@@ -195,7 +195,7 @@ export default function ForgotPasswordPage() {
                         }`}
                       >
                         {i < stepIndex ? (
-                          <CheckCircle size={16} />
+                          <CircleCheck size={16} />
                         ) : (
                           <span>{i + 1}</span>
                         )}
@@ -415,7 +415,7 @@ export default function ForgotPasswordPage() {
               {step === "success" && (
                 <div className="success-view">
                   <div className="success-icon-wrapper">
-                    <CheckCircle size={48} />
+                    <CircleCheck size={48} />
                   </div>
                   <p className="success-message">
                     Your password has been changed. You can now sign in with your
@@ -464,20 +464,20 @@ export default function ForgotPasswordPage() {
                 </p>
 
                 <ul className="feature-list">
-                  <li className="feature-item">
-                    <CheckCircle />
-                    <span>Quick 3-step process</span>
+                  <li className="feature-item ">
+                    {/* <CircleCheck /> */}
+                    <span >Quick 3-step process</span>
                   </li>
                   <li className="feature-item">
-                    <CheckCircle />
+                    <CircleCheck />
                     <span>Secure email verification</span>
                   </li>
                   <li className="feature-item">
-                    <CheckCircle />
+                    <CircleCheck />
                     <span>Encrypted password storage</span>
                   </li>
                   <li className="feature-item">
-                    <CheckCircle />
+                    <CircleCheck />
                     <span>24/7 account protection</span>
                   </li>
                 </ul>
