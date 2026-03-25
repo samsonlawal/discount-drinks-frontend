@@ -25,9 +25,12 @@ interface Address {
   _id?: string;
   addressLine1: string;
   addressLine2?: string;
+  street?: string;
   city: string;
   state: string;
   postCode: string;
+  zipCode?: string;
+  country?: string;
   phone: string;
   isDefault: boolean;
 }

@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import ProductCard from "@/components/products/ProductCard";
 import ProductCardSkeleton from "@/components/products/ProductCardSkeleton";
 import FilterSidebar from "@/components/products/FilterSidebar";
@@ -11,9 +12,20 @@ import { useGetCategories } from "@/hooks/api/categories";
 import { useGetTags } from "@/hooks/api/tags";
 import { useGetBrands } from "@/hooks/api/brands";
 
-export default function ProductsPage() {
+function ProductsContent() {
+  const searchParams = useSearchParams();
+  const categoryParam = searchParams.get("category");
+
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("All");
+
+  useEffect(() => {
+    if (categoryParam) {
+      setSelectedCategory(categoryParam);
+    } else {
+      setSelectedCategory("All");
+    }
+  }, [categoryParam]);
   const [selectedBadge, setSelectedBadge] = useState("All");
   const [selectedBrand, setSelectedBrand] = useState("All");
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 9999]);
@@ -53,9 +65,11 @@ export default function ProductsPage() {
   });
 
   const filteredProducts = formattedProducts.filter((product: any) => {
+    const isAll = selectedCategory.toLowerCase() === "all";
     const categoryMatch =
-      selectedCategory === "All" || product.category === selectedCategory || 
-      (product.tags && product.tags.includes(selectedCategory));
+      isAll || 
+      (product.category && product.category.toLowerCase() === selectedCategory.toLowerCase()) || 
+      (product.tags && product.tags.some((tag: string) => tag.toLowerCase() === selectedCategory.toLowerCase()));
       
     const productBadge = product.badge || "";
     const badgeMatch =
@@ -154,5 +168,13 @@ export default function ProductsPage() {
         </div>
       </section>
     </main>
+  );
+}
+
+export default function ProductsPage() {
+  return (
+    <Suspense fallback={<div className="min-h-[60vh] flex items-center justify-center">Loading...</div>}>
+      <ProductsContent />
+    </Suspense>
   );
 }
