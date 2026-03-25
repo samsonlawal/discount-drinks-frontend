@@ -24,7 +24,7 @@ export default function ProductList({ loading: manualLoading = false }: ProductL
       <div className="container">
         <h2 className="h2 section-title">Best Sellers</h2>
 
-        <ul className="product-list flex flex-row flex-wrap justify-center items-center">
+        <ul className="product-list flex flex-row flex-wrap !justify-center items-center">
           {isLoading ? (
             Array.from({ length: 10 }).map((_, index) => (
               <li key={index}>

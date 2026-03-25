@@ -8,6 +8,12 @@ class Service implements OrderInterface {
       withCredentials: true,
     });
   }
+
+  createCheckout(payload: any) {
+    return axios.post(env.api.checkout, payload, {
+      withCredentials: true,
+    })
+  }
 }
 
 const OrderService = new Service();

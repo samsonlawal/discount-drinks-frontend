@@ -14,6 +14,7 @@ const api = ({ inProduction }: { inProduction: boolean }) => {
     products: `${BASE_URL_LINK}/products`,
     brands: `${BASE_URL_LINK}/brands`,
     orders: `${BASE_URL_LINK}/orders`,
+    checkout: `${BASE_URL_LINK}/checkout`,
     contact: `${BASE_URL_LINK}/contact`,
   };
 };

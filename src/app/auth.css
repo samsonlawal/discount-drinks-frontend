@@ -13,6 +13,8 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
+  margin-top: -70px;
+  margin-bottom: -70px;
 }
 
 .auth-header {
@@ -23,7 +25,7 @@
   flex: 1;
   display: flex;
   align-items: center;
-  padding: 60px 0;
+  padding: 20px 0;
   /* width: 100%; */
 }
 
@@ -49,7 +51,6 @@
   background: var(--white);
   border-radius: 16px;
   padding: 50px;
-  box-shadow: 0 10px 40px hsla(0, 0%, 0%, 0.08);
   /* max-width: 480px; */
   width: 100%;
   margin: 0 auto;
@@ -423,7 +424,7 @@
 
 .side-title {
   font-size: var(--fs-2);
-  margin-bottom: 20px;
+  margin-bottom: 0px;
   font-weight: var(--fw-600);
 }
 
@@ -489,6 +490,139 @@
 }
 
 /* ============================================
+   STEP INDICATOR (Forgot Password)
+   ============================================ */
+
+.step-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin-bottom: 32px;
+}
+
+.step-dot {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--fs-10);
+  font-weight: var(--fw-600);
+  border: 2px solid var(--cultured);
+  background: var(--white);
+  color: var(--sonic-silver);
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+
+.step-dot.active {
+  border-color: var(--middle-blue-green);
+  background: var(--middle-blue-green);
+  color: var(--white);
+  box-shadow: 0 0 0 4px hsla(353, 42%, 32%, 0.15);
+}
+
+.step-dot.completed {
+  border-color: var(--middle-blue-green);
+  background: var(--middle-blue-green);
+  color: var(--white);
+}
+
+.step-line {
+  width: 48px;
+  height: 2px;
+  background: var(--cultured);
+  transition: background 0.3s ease;
+}
+
+.step-line.completed {
+  background: var(--middle-blue-green);
+}
+
+/* ============================================
+   RESEND CODE SECTION
+   ============================================ */
+
+.resend-section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.resend-text {
+  color: var(--sonic-silver);
+  font-size: var(--fs-9);
+}
+
+.resend-link {
+  background: none;
+  border: none;
+  color: var(--middle-blue-green);
+  font-size: var(--fs-9);
+  font-weight: var(--fw-600);
+  cursor: pointer;
+  padding: 0;
+  transition: var(--transition-1);
+}
+
+.resend-link:hover {
+  text-decoration: underline;
+}
+
+.resend-link:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ============================================
+   SUCCESS VIEW (Password Reset Complete)
+   ============================================ */
+
+.success-view {
+  text-align: center;
+  padding: 20px 0 10px;
+}
+
+.success-icon-wrapper {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: hsla(353, 42%, 32%, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 24px;
+  color: var(--middle-blue-green);
+  animation: scaleIn 0.4s ease;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.success-message {
+  color: var(--sonic-silver);
+  font-size: var(--fs-8);
+  line-height: 1.6;
+  margin-bottom: 28px;
+  max-width: 320px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ============================================
    RESPONSIVE DESIGN
    ============================================ */
 
@@ -496,7 +630,7 @@
 @media (min-width: 992px) {
   .auth-container {
     grid-template-columns: 1fr 1fr;
-    align-items: center;
+    align-items: start; /* Allows sticky positioning to work properly */
   }
 
   .auth-card {
@@ -505,6 +639,9 @@
 
   .auth-side {
     display: block;
+    position: sticky;
+    top: 40px;
+    height: max-content;
   }
 }
 
@@ -521,11 +658,16 @@
     padding: 20px 0;
   }
 
+  /* Remove side padding from the container so the card spans edge-to-edge */
+  .auth-page .auth-main .container {
+    padding-inline: 0;
+  }
+
   .auth-card {
-    padding: 20px 15px;
-    border-radius: 12px;
+    padding: 30px 20px;
+    border-radius: 0;
     box-shadow: none;
-    border: 1px solid var(--cultured);
+    border: none;
   }
 
   .auth-title {
@@ -561,19 +703,15 @@
   .demo-info {
     padding: 12px;
   }
-}
 
-/* Extra Small */
-@media (max-width: 400px) {
-  .auth-card {
-    padding: 25px 16px;
+  .step-line {
+    width: 32px;
   }
 
-  .form-group {
-    margin-bottom: 20px;
-  }
-
-  .auth-page .auth-main .container {
-    width: 100%;
+  .step-dot {
+    width: 28px;
+    height: 28px;
+    font-size: 11px;
   }
 }
+

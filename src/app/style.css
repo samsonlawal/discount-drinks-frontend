@@ -512,7 +512,7 @@ h3 > a {
 .product-list {
   display: flex !important;
   flex-wrap: wrap !important;
-  justify-content: center !important;
+  justify-content: flex-start !important;
   gap: 30px 15px;
   margin-bottom: 60px;
 }

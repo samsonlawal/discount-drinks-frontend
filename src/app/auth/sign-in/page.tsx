@@ -11,7 +11,7 @@ import {
   AlertCircle,
   RefreshCw,
   ShieldCheck,
-  CheckCircle,
+  CircleCheck,
 } from "lucide-react";
 import { showErrorToast, showSuccessToast } from "@/utils/toaster";
 import "../../style.css";
@@ -54,6 +54,20 @@ export default function SignInPage() {
       {/* Main Auth Section */}
       <main className="auth-main">
         <div className="container">
+          {/* Logo Navigation */}
+          <div className="flex justify-center mb-6">
+            <Link href="/">
+              <Image 
+                src="/images/logo.svg" 
+                alt="Discount Drinks Logo" 
+                width={180} 
+                height={50} 
+                priority 
+                className="h-10 sm:h-12 w-auto" 
+              />
+            </Link>
+          </div>
+          
           <div className="auth-container">
             {/* Sign In Card */}
             <div className="auth-card">
@@ -157,7 +171,7 @@ export default function SignInPage() {
                     />
                     <span>Remember me</span>
                   </label>
-                  <Link href="/forgot-password" className="link-text">
+                  <Link href="/auth/forgot-password" className="link-text">
                     Forgot password?
                   </Link>
                 </div>
@@ -227,19 +241,19 @@ export default function SignInPage() {
 
                 <ul className="feature-list">
                   <li className="feature-item">
-                    <CheckCircle />
+                    <CircleCheck />
                     <span>Exclusive member discounts</span>
                   </li>
                   <li className="feature-item">
-                    <CheckCircle />
+                    <CircleCheck />
                     <span>Order tracking & history</span>
                   </li>
                   <li className="feature-item">
-                    <CheckCircle />
+                    <CircleCheck />
                     <span>Faster checkout process</span>
                   </li>
                   <li className="feature-item">
-                    <CheckCircle />
+                    <CircleCheck />
                     <span>Personalized recommendations</span>
                   </li>
                 </ul>
