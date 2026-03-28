@@ -6,6 +6,7 @@ import { RootState } from "@/redux/store";
 import { Package, ChevronRight } from "lucide-react";
 import MobileBackButton from "../MobileBackButton";
 import { useGetUserOrders } from "@/hooks/api/orders";
+import Link from "next/link";
 
 const statusColors: Record<string, string> = {
   pending: "bg-yellow-100 text-yellow-700",
@@ -50,43 +51,79 @@ export default function ProfileOrdersPage() {
       </div>
 
       {loading ? (
-        <div className="space-y-4">
-          {[1, 2, 3].map((i) => (
-            <div key={i} className="h-24 bg-gray-50 animate-pulse rounded-xl" />
+        <div className="rounded-md overflow-hidden divide-y divide-[var(--cultured)]">
+          {[1, 2, 3, 4, 5].map((i) => (
+            <div key={i} className="flex items-center justify-between p-4 bg-white animate-shade h-[88px]" />
           ))}
         </div>
       ) : orders && orders.length > 0 ? (
-        <div className="space-y-4">
+        <div className="rounded-md overflow-hidden divide-y divide-[var(--cultured)] border border-(--cultured)">
           {orders.map((order: any) => {
             const orderId = order._id || order.id || "N/A";
             const status = (order.status || "pending").toLowerCase();
             const statusClass = statusColors[status] || "bg-gray-100 text-gray-700";
+            const items = order.items || [];
+            const productNames = items.slice(0, 3).map((item: any) => item.name).join(" x ") + (items.length > 3 ? "..." : "");
+            
             return (
-              <div
+              <Link
                 key={String(orderId)}
-                className="bg-white border border-gray-100 rounded-xl p-4 flex flex-col sm:flex-row sm:items-center gap-4 hover:border-gray-200 transition-all shadow-sm"
+                href={`/user/profile/orders/${orderId}`}
+                className="flex items-center justify-between p-4 bg-white hover:bg-[var(--cultured)] transition-all cursor-pointer group rounded-md"
               >
-                <div className="flex-1 space-y-1">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-sm font-semibold text-gray-900">
-                      Order #{String(orderId).slice(-8).toUpperCase()}
-                    </span>
-                    <span className={`text-xs px-2 py-0.5 rounded-full font-medium capitalize ${statusClass}`}>
-                      {status}
-                    </span>
+                {/* Left Section: Visual + Details */}
+                <div className="flex items-center gap-4 flex-1 min-w-0">
+                  {/* Order Visual (Single or Mesh/Collage) */}
+                  <div className="w-16 h-16 rounded-lg bg-gray-50 flex-shrink-0 overflow-hidden relative border border-gray-100">
+                    {items.length > 1 ? (
+                      <div className="grid grid-cols-2 grid-rows-2 w-full h-full gap-[1px] bg-gray-100">
+                        {items.slice(0, 4).map((item: any, idx: number) => (
+                          <div key={idx} className="bg-white w-full h-full overflow-hidden">
+                            {item.image ? (
+                              <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                            ) : (
+                              <div className="w-full h-full flex items-center justify-center bg-gray-50">
+                                <Package size={12} className="text-gray-300" />
+                              </div>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      items[0]?.image ? (
+                        <img src={items[0].image} alt={items[0].name} className="w-full h-full object-cover" />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center bg-gray-50">
+                          <Package size={24} className="text-gray-300" />
+                        </div>
+                      )
+                    )}
                   </div>
-                  <p className="text-xs text-gray-400">{formatDate(order.createdAt)}</p>
-                  <p className="text-sm text-gray-500">
-                    {order.items?.length || 0} item{(order.items?.length || 0) !== 1 ? "s" : ""}
-                  </p>
+
+                  {/* Details */}
+                  <div className="flex-1 min-w-0 flex flex-col">
+                    <h4 className="text-[15px] font-medium text-gray-900 truncate group-hover:text-[var(--ocean-green)] transition-colors">
+                      {productNames || "Order Details"}
+                    </h4>
+                    <p className="text-xs text-gray-400 ">Order {String(orderId).slice(-8).toUpperCase()}</p>
+                    <div className="flex items-center gap-1 mt-3 text-[13px] text-gray-500 ">
+                      <span>{items.length} {items.length === 1 ? 'item' : 'items'}</span>
+                      {/* <span className="w-1 h-1 rounded-full bg-gray-300" />
+                      <span>{formatDate(order.createdAt)}</span> */}
+                    </div>
+                  </div>
                 </div>
-                <div className="flex items-center gap-4">
-                  <span className="text-base font-semibold text-gray-900">
+
+                {/* Right Section: Price + Status */}
+                <div className="flex flex-col items-end justify-between gap-2 ml-4 flex-shrink-0">
+                  <span className="text-[14px] font-medium text-gray-900 group-hover:text-[var(--eerie-black)] transition-colors">
                     {formatPrice(order.totalAmount || order.total || 0)}
                   </span>
-                  <ChevronRight size={18} className="text-gray-300" />
+                  <span className={`text-[10px] px-2 py-0.5 rounded-sm uppercase ${statusClass}`}>
+                    {status}
+                  </span>
                 </div>
-              </div>
+              </Link>
             );
           })}
         </div>
