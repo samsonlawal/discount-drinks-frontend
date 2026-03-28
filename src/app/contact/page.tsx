@@ -36,14 +36,14 @@ export default function ContactPage() {
 
                     <p className="text-[var(--ocean-green)] text-lg leading-relaxed">
 
-            For more secure methods of communication, email us at discountdrinks@gmail.com
+            For more secure methods of communication, email us at support@discountdrinksandmoreltd.co.uk
           </p>
         </div>
           </div>
 
           {/* Right Column - Contact Form */}
           <div className="lg:col-span-7">
-            <div className="bg-white border border-[var(--cultured)] rounded-2xl p-8 lg:p-10">
+            <div className="bg-white lg:border lg:border-[var(--cultured)] rounded-2xl lg:p-8 lg:p-10">
               <h3 className="text-2xl font-semibold text-[var(--eerie-black)] mb-8">Send us a Message</h3>
               
               {submitted ? (

@@ -14,6 +14,12 @@ class Service implements OrderInterface {
       withCredentials: true,
     })
   }
+
+  getUserOrders(userId: string) {
+    return axios.get(`${env.api.orders}/user/${userId}`, {
+      withCredentials: true,
+    });
+  }
 }
 
 const OrderService = new Service();

@@ -4,25 +4,31 @@ import React, { useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { CheckCircle2, ShoppingBag } from "lucide-react";
+import { useCart } from "@/contexts/CartContext";
 import "../../style.css";
 
 function SuccessContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { clearCart } = useCart();
   const sessionId = searchParams.get("session_id");
+  const orderId = searchParams.get("order_id") || searchParams.get("orderId");
 
   useEffect(() => {
     // Security Check: If no session_id is present, redirect to checkout or home
-    if (!sessionId) {
+    if (!sessionId && !orderId) {
       router.replace("/");
+    } else {
+      // Clear the cart when order is successful
+      clearCart();
     }
-  }, [sessionId, router]);
+  }, [sessionId, orderId, router, clearCart]);
 
   // Optionally, you can trigger an API call here to verify the session_id with your backend
   // and mark the order as paid in your database. 
   // e.g., verifyPayment(sessionId)
 
-  if (!sessionId) {
+  if (!sessionId && !orderId) {
     return null; // Return null while redirecting to avoid layout flash
   }
 
@@ -40,10 +46,10 @@ function SuccessContent() {
         Thank you for your purchase. Your order has been placed successfully and is being processed.
       </p>
 
-      <div className="flex flex-col sm:flex-row gap-4 w-full max-w-md">
+      <div className="flex flex-col sm:flex-row gap-4 justify-center w-full">
         <Link 
           href="/user/profile/orders" 
-          className="btn btn-primary flex-1 py-4 flex items-center justify-center gap-2"
+          className="h-14 w-full sm:w-56 flex items-center justify-center gap-2 rounded-lg !bg-(--eerie-black) !text-white !border-[#111827] !hover:bg-white !hover:text-[#111827] border transition-all duration-75 font-medium whitespace-nowrap"
         >
           <ShoppingBag size={20} />
           View My Orders
@@ -51,7 +57,7 @@ function SuccessContent() {
         
         <Link 
           href="/products" 
-          className="btn btn-outline flex-1 py-4 flex items-center justify-center"
+          className="h-14 w-full sm:w-56 flex items-center justify-center rounded-lg !bg-white !text-[#111827] !border-[#111827] !hover:bg-[#111827] !hover:text-white border transition-all duration-75 font-medium whitespace-nowrap"
         >
           Continue Shopping
         </Link>

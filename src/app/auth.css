@@ -655,7 +655,8 @@
 /* Mobile */
 @media (max-width: 580px) {
   .auth-main {
-    padding: 20px 0;
+    align-items: flex-start;
+    padding: 40px 0 20px;
   }
 
   /* Remove side padding from the container so the card spans edge-to-edge */

@@ -190,3 +190,114 @@ export const useDeleteUser = () => {
 
   return { loading, deleteUser };
 };
+// Hook for deleting a user's address
+export const useDeleteUserAddress = () => {
+  const [loading, setLoading] = useState(false);
+
+  const deleteAddress = async ({
+    userId,
+    addressId,
+    successCallback,
+  }: {
+    userId: string;
+    addressId: string;
+    successCallback?: () => void;
+  }) => {
+    setLoading(true);
+    try {
+      const res = await UsersService.deleteUserAddress({ userId, addressId });
+      successCallback?.();
+      showSuccessToast({
+        message: res?.data?.message || "Address deleted successfully!",
+        description: res?.data?.description || "",
+      });
+      return true;
+    } catch (error: Error | AxiosError | any) {
+      showErrorToast({
+        message: error?.response?.data?.message || "Failed to delete address",
+        description: error?.response?.data?.description || "",
+      });
+      return false;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { loading, deleteAddress };
+};
+
+// Hook for creating a user's address
+export const useCreateUserAddress = () => {
+  const [loading, setLoading] = useState(false);
+
+  const createAddress = async ({
+    userId,
+    data,
+    successCallback,
+  }: {
+    userId: string;
+    data: any;
+    successCallback?: (newAddress: any) => void;
+  }) => {
+    setLoading(true);
+    try {
+      const res = await UsersService.createUserAddress({ userId, data });
+      const newAddress = res?.data?.data || res?.data;
+      successCallback?.(newAddress);
+      showSuccessToast({
+        message: res?.data?.message || "Address created successfully!",
+        description: res?.data?.description || "",
+      });
+      return newAddress;
+    } catch (error: Error | AxiosError | any) {
+      showErrorToast({
+        message: error?.response?.data?.message || "Failed to create address",
+        description: error?.response?.data?.description || "",
+      });
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { loading, createAddress };
+};
+
+// Hook for updating a user's address
+export const useUpdateUserAddress = () => {
+  const [loading, setLoading] = useState(false);
+
+  const updateAddress = async ({
+    userId,
+    addressId,
+    data,
+    successCallback,
+  }: {
+    userId: string;
+    addressId: string;
+    data: any;
+    successCallback?: (updatedAddress: any) => void;
+  }) => {
+    setLoading(true);
+    try {
+      const res = await UsersService.updateUserAddress({ userId, addressId, data });
+      const updatedAddress = res?.data?.data || res?.data;
+      successCallback?.(updatedAddress);
+      showSuccessToast({
+        message: res?.data?.message || "Address updated successfully!",
+        description: res?.data?.description || "",
+      });
+      return updatedAddress;
+    } catch (error: Error | AxiosError | any) {
+      showErrorToast({
+        message: error?.response?.data?.message || "Failed to update address",
+        description: error?.response?.data?.description || "",
+      });
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { loading, updateAddress };
+};

@@ -1,15 +1,13 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { OrderPayload } from "@/types";
 import { showErrorToast, showSuccessToast } from "@/utils/toaster";
 import OrderService from "@/services/orders";
 import { AxiosError } from "axios";
 
-
-
 export const useCreateOrder = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
-  const onCreateOrder = async ({
+  const onCreateOrder = useCallback(async ({
     payload,
     successCallback,
     errorCallback,
@@ -20,12 +18,9 @@ export const useCreateOrder = () => {
   }) => {
     setLoading(true);
     console.log("🚀 [useCreateOrder] Initiating order creation...");
-    console.log("📦 [useCreateOrder] Payload:", JSON.stringify(payload, null, 2));
-
     try {
       const res = await OrderService.createOrder({ payload });
-      console.log("✅ [useCreateOrder] Order created successfully.");
-      console.log("📥 [useCreateOrder] Response:", res.data);
+      console.log("✅ [useCreateOrder] Order created successfully.", res.data);
 
       showSuccessToast({
         message: "Order placed successfully 🚀",
@@ -33,23 +28,47 @@ export const useCreateOrder = () => {
       });
       successCallback?.(res.data);
     } catch (error: Error | AxiosError | any) {
-      console.error("[useCreateOrder] Order creation failed.");
-      if (error?.response) {
-        console.error("[useCreateOrder] Error Response Data:", error.response.data);
-        console.error("[useCreateOrder] Error Response Status:", error.response.status);
-      } else {
-        console.error("[useCreateOrder] Error Object:", error);
-      }
-
+      console.error("[useCreateOrder] Order creation failed.", error);
       errorCallback?.({
         message: error?.response?.data?.message || "Failed to place order!",
         description: error?.response?.data?.message || "",
       });
     } finally {
       setLoading(false);
-      console.log("[useCreateOrder] Request finished.");
     }
-  };
+  }, []);
 
   return { onCreateOrder, loading };
+};
+
+export const useGetUserOrders = () => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [orders, setOrders] = useState<any[]>([]);
+
+  const fetchUserOrders = useCallback(async (userId: string) => {
+    if (!userId) {
+      console.warn("useGetUserOrders: fetch called with empty userId");
+      return;
+    }
+    setLoading(true);
+    console.log("useGetUserOrders: fetching orders for userId", userId);
+    try {
+      const res = await OrderService.getUserOrders(userId);
+      console.log("useGetUserOrders: SUCCESS API Response", res.data);
+      
+      // Extract orders array from various possible backend formats
+      const rawData = res.data?.data || res.data?.orders || res.data?.order || res.data;
+      const finalOrders = Array.isArray(rawData) ? rawData : [];
+      
+      console.log("useGetUserOrders: Final Orders", finalOrders);
+      setOrders(finalOrders);
+    } catch (error: any) {
+      console.error("[useGetUserOrders] Failed to fetch orders:", error);
+      setOrders([]);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  return { fetchUserOrders, orders, loading };
 };

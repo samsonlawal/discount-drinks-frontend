@@ -48,6 +48,24 @@ class Service {
   deleteUser({ id }: { id: string }) {
     return axios.delete(`${env.api.users}/${id}`);
   }
+
+  deleteUserAddress({ userId, addressId }: { userId: string; addressId: string }) {
+    return axios.delete(`${env.api.users}/${userId}/addresses/${addressId}`, {
+      withCredentials: true,
+    });
+  }
+
+  createUserAddress({ userId, data }: { userId: string; data: any }) {
+    return axios.post(`${env.api.users}/${userId}/addresses`, data, {
+      withCredentials: true,
+    });
+  }
+
+  updateUserAddress({ userId, addressId, data }: { userId: string; addressId: string; data: any }) {
+    return axios.put(`${env.api.users}/${userId}/addresses/${addressId}`, data, {
+      withCredentials: true,
+    });
+  }
 }
 
 const UsersService = new Service();

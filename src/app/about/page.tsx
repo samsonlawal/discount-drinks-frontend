@@ -121,7 +121,7 @@ export default function AboutPage() {
 
         {/* "Have more questions?" banner — same as FAQ */}
         <div
-          className="my-20 px-10 py-14 md:py-16 rounded-xl border border-gray-100 bg-[var(--cultured)] bg-cover bg-center bg-no-repeat relative overflow-hidden"
+          className="my-12 px-6 py-10 md:px-10 md:py-14 rounded-xl border border-gray-100 bg-[var(--cultured)] bg-cover bg-center bg-no-repeat relative overflow-hidden"
           style={{ backgroundImage: "url('/images/newsletter-bg.png')" }}
         >
           <div className="relative z-10 flex flex-col md:flex-row justify-between items-center md:items-center gap-6 text-center md:text-left">
@@ -134,7 +134,7 @@ export default function AboutPage() {
               </p>
             </div>
 
-            <a href="/contact" className="btn btn-primary w-max shrink-0">
+            <a href="/contact" className="btn btn-primary w-full md:w-max shrink-0">
               Contact Us
             </a>
           </div>
