@@ -34,9 +34,9 @@ export default function ContactPage() {
             We'd love to hear from you. Fill out the form below and our team will get back to you promptly.
           </p>
 
-                    <p className="text-[var(--ocean-green)] text-lg leading-relaxed">
+                    <p className="text-lg leading-relaxed">
 
-            For more secure methods of communication, email us at support@discountdrinksandmoreltd.co.uk
+            For more secure methods of communication, email us at <span className="font-medium text-[var(--ocean-green)]">support@discountdrinksandmoreltd.co.uk</span>
           </p>
         </div>
           </div>

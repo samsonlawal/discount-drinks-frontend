@@ -35,11 +35,11 @@ export default function AboutPage() {
         {/* Two-column intro — mirrors FAQ / Contact layout */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-12 lg:gap-20 items-start">
           {/* Left Column — sticky heading */}
-          <div className="md:col-span-5 md:sticky md:top-20">
+          <div className="md:col-span-5 md:sticky md:top-20 space-y-2">
             <h1 className="text-4xl lg:text-5xl font-bold text-[var(--eerie-black)] tracking-tight leading-tight">
               About Us
             </h1>
-            <p className="text-[var(--sonic-silver)] text-[16px] mb-8 leading-relaxed">
+            <p className="text-[var(--sonic-silver)] text-lg mb-0 md:mb-8 leading-relaxed">
               Welcome to your one-stop destination for everything refreshingly
               exceptional.
             </p>
@@ -48,9 +48,9 @@ export default function AboutPage() {
           </div>
 
           {/* Right Column — story content */}
-          <div className="md:col-span-7 space-y-6 text-[var(--sonic-silver)] leading-relaxed">
+          <div className="md:col-span-7 space-y-6 text-lg text-[var(--sonic-silver)] leading-relaxed">
             <p>
-              At our core, we are more than just an e-commerce store — we are a
+              At our core, we are more than just an e-commerce store. We are a
               curated experience built around taste, quality, and convenience.
               Whether you're celebrating life's big moments, unwinding after a
               long day, or simply stocking up your home, we bring the world of
@@ -68,7 +68,7 @@ export default function AboutPage() {
               including premium wines, fine spirits, refreshing alcoholic
               beverages, and a wide variety of non-alcoholic options. From
               timeless classics to modern favourites, every product we offer is
-              chosen with one goal in mind — to deliver quality you can trust
+              chosen with one goal in mind, to deliver quality you can trust
               and flavours you'll love.
             </p>
 
@@ -80,30 +80,36 @@ export default function AboutPage() {
               covered.
             </p>
 
-                        <p>
+            <div className="py-8 space-y-6">
+
+
+                        <p className="text-[var(--eerie-black)]">
               What set us apart is our commitment to:
             </p>
 
                         {/* Commitment cards */}
-            <div className="space-y-4">
+            <div className="space-y-6">
               {commitments.map(({ icon: Icon, title, description }) => (
                 <div
                   key={title}
-                  className="flex items-start gap-4 p-4 rounded-xl border border-[var(--cultured)] bg-[var(--white)]"
+                  className="flex items-start gap-4 p-4 rounded-xl border border-[var(--cultured)] bg-[var(--cultured)]"
                 >
-                  <div className="shrink-0 w-9 h-9 rounded-lg bg-[var(--ocean-green)] flex items-center justify-center">
-                    <Icon className="w-5 h-5 text-[var(--white)]" />
+                  <div className="shrink-0 w-fit h-fit p-2 rounded-lg bg-[var(--ocean-green)] flex items-center justify-center">
+                    <Icon className="w-6 h-6 text-[var(--white)]" strokeWidth={1} />
                   </div>
                   <div>
                     <h3 className="font-semibold text-[var(--eerie-black)] mb-0.5">
                       {title}
                     </h3>
-                    <p className="text-sm text-[var(--sonic-silver)] leading-relaxed">
+                    <p className="text-[16px] text-[var(--sonic-silver)] leading-relaxed">
                       {description}
                     </p>
                   </div>
                 </div>
               ))}
+            </div>
+
+
             </div>
 
             <p>
@@ -114,14 +120,15 @@ export default function AboutPage() {
             </p>
 
             <p className="font-medium text-[var(--ocean-green)]">
-              Thank you for choosing us — where every sip tells a story.
+              Thank you for choosing us <br/>
+              Where every sip tells a story.
             </p>
           </div>
         </div>
 
         {/* "Have more questions?" banner — same as FAQ */}
         <div
-          className="my-12 px-6 py-10 md:px-10 md:py-14 rounded-xl border border-gray-100 bg-[var(--cultured)] bg-cover bg-center bg-no-repeat relative overflow-hidden"
+          className="my-16 px-6 py-10 md:px-10 md:py-14 rounded-xl border border-gray-100 bg-[var(--cultured)] bg-cover bg-center bg-no-repeat relative overflow-hidden"
           style={{ backgroundImage: "url('/images/newsletter-bg.png')" }}
         >
           <div className="relative z-10 flex flex-col md:flex-row justify-between items-center md:items-center gap-6 text-center md:text-left">
