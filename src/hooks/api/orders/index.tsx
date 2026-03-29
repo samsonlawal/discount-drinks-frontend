@@ -72,3 +72,25 @@ export const useGetUserOrders = () => {
 
   return { fetchUserOrders, orders, loading };
 };
+
+export const useGetOrderDetails = () => {
+  const [loading, setLoading] = useState<boolean>(false);
+  const [order, setOrder] = useState<any>(null);
+
+  const fetchOrderDetails = useCallback(async (orderId: string) => {
+    if (!orderId) return;
+    setLoading(true);
+    try {
+      const res = await OrderService.getOrderById(orderId);
+      const data = res.data?.data || res.data?.order || res.data;
+      setOrder(data);
+    } catch (error: any) {
+      console.error("[useGetOrderDetails] Failed to fetch order details:", error);
+      setOrder(null);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  return { fetchOrderDetails, order, loading };
+};

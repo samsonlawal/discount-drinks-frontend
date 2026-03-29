@@ -8,4 +8,5 @@ export interface OrderInterface {
   createOrder(data: TCreateOrderService): Promise<{ data: OrderResponse }>;
   createCheckout(payload: any): Promise<any>;
   getUserOrders(userId: string): Promise<any>;
+  getOrderById(orderId: string): Promise<any>;
 }

@@ -20,6 +20,12 @@ class Service implements OrderInterface {
       withCredentials: true,
     });
   }
+
+  getOrderById(orderId: string) {
+    return axios.get(`${env.api.orders}/${orderId}`, {
+      withCredentials: true,
+    });
+  }
 }
 
 const OrderService = new Service();
