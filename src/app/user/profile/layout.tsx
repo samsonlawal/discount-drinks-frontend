@@ -52,7 +52,7 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
           
           {/* Sidebar Navigation */}
           {/* On mobile: Render only if we're on the root page. On desktop: Always render */}
-          <aside className={`rounded-md w-full md:w-64 lg:w-72 bg-white/50 md:bg-(--cultured)/40 h-fit pb-24 flex-shrink-0 flex flex-col ${isRootProfilePage ? 'block' : 'hidden md:flex'}`}>
+          <aside className={`rounded-md w-full md:w-64 lg:w-72 bg-white/50 h-fit pb-24 flex-shrink-0 flex flex-col ${isRootProfilePage ? 'block' : 'hidden md:flex'}`}>
             
             <div className="py-6 px-2 md:px-8 md:pt-8 md:pb-4 flex-shrink-0">
               <h1 className="text-2xl font-semibold text-gray-900">My Account</h1>
