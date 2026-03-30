@@ -15,11 +15,11 @@ const statusColors: Record<string, string> = {
 };
 
 const timelineSteps = [
-  { label: "Payment confirmed", key: "pending" },
-  { label: "Preparing your order", key: "processing" },
-  { label: "Dispatched", key: "shipped" },
-  { label: "On its way", key: "shipped" },
-  { label: "Delivered", key: "delivered" },
+  { label: "Payment Received", status: "pending" },
+  { label: "Preparing Order", status: "processing" },
+  { label: "Dispatched", status: "dispatched" },
+  { label: "On its way", status: "shipped" },
+  { label: "Delivered", status: "delivered" },
 ];
 
 export default function OrderDetailsPage() {
@@ -285,12 +285,14 @@ export default function OrderDetailsPage() {
                   const isPastOrActive = 
                      (status === "delivered") ||
                      (status === "shipped" && index <= 3) ||
+                     (status === "dispatched" && index <= 2) ||
                      (status === "processing" && index <= 1) ||
                      (status === "pending" && index <= 0);
 
                   const isSegmentActive = 
                     (status === "delivered" && index < 4) ||
                     (status === "shipped" && index < 3) ||
+                    (status === "dispatched" && index < 2) ||
                     (status === "processing" && index < 1);
 
                   return (
