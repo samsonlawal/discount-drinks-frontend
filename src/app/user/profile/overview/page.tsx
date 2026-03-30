@@ -110,32 +110,41 @@ export default function ProfileOverviewPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-10 gap-x-12 lg:gap-x-24">
           <div className="pb-1">
             <p className="text-sm text-gray-500 mb-1.5" style={{ fontWeight: 400 }}>Full Name</p>
-            <p className="text-gray-900 font-medium">{user.name || "N/A"}</p>
+            <p className="text-gray-900 font-normal">{user.name || "N/A"}</p>
           </div>
 
           <div className="pb-1">
             <p className="text-sm text-gray-500 mb-1.5" style={{ fontWeight: 400 }}>Username</p>
-            <p className="text-gray-900 font-medium">@{user.username}</p>
+            <p className="text-gray-900 font-normal">@{user.username}</p>
           </div>
 
           <div className="pb-1">
             <p className="text-sm text-gray-500 mb-1.5" style={{ fontWeight: 400 }}>Email Address</p>
-            <p className="text-gray-900 font-medium">{user.email}</p>
+            <p className="text-gray-900 font-normal">{user.email}</p>
           </div>
 
           <div className="pb-1">
             <p className="text-sm text-gray-500 mb-1.5" style={{ fontWeight: 400 }}>Gender</p>
-            <p className="text-gray-900 font-medium capitalize">{user.gender || "N/A"}</p>
+            <p className="text-gray-900 font-normal capitalize">{user.gender || "N/A"}</p>
           </div>      
 
           <div className="pb-1">
             <p className="text-sm text-gray-500 mb-1.5" style={{ fontWeight: 400 }}>Phone</p>
-            <p className="text-gray-900 font-medium">{user.phone || "N/A"}</p>
+            <p className="text-gray-900 font-normal">{user.phone || "N/A"}</p>
           </div>
 
           <div className="pb-1">
             <p className="text-sm text-gray-500 mb-1.5" style={{ fontWeight: 400 }}>Date of Birth</p>
-            <p className="text-gray-900 font-medium">{user.dob || "N/A"}</p>
+            <p className="text-gray-900 font-normal">
+              {user.dob ? (
+                (() => {
+                  const d = new Date(user.dob);
+                  return isNaN(d.getTime()) 
+                    ? user.dob 
+                    : d.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+                })()
+              ) : "N/A"}
+            </p>
           </div>
         </div>
       </div>
