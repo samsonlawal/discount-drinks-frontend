@@ -8,6 +8,7 @@ import { RootState } from "@/redux/store";
 import { useCart } from "@/contexts/CartContext";
 import { ShieldCheck, MapPin, Truck, Store, CreditCard, Wallet, ChevronRight, Check, AlertCircle } from "lucide-react";
 import { AddressRequiredModal } from "@/components/modals/AddressRequiredModal";
+import { AddAddressModal } from "@/components/modals/AddAddressModal";
 import { OrderSuccessModal } from "@/components/modals/OrderSuccessModal";
 import { BaseModal } from "@/components/modals/BaseModal";
 import { OrderPayload } from "@/types";
@@ -47,7 +48,7 @@ export default function CheckoutPage() {
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("card");
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const [activeModal, setActiveModal] = useState<"none" | "address_required" | "order_success" | "missing_info">("none");
+  const [activeModal, setActiveModal] = useState<"none" | "address_required" | "order_success" | "missing_info" | "add_address">("none");
   const [successMessage, setSuccessMessage] = useState("");
 
   const closeModal = () => setActiveModal("none");
@@ -89,7 +90,7 @@ export default function CheckoutPage() {
       if (cart.length === 0) {
         router.push("/cart");
       } else if (!user?.addresses || user.addresses.length === 0) {
-        router.push("/user/profile/addresses");
+        setActiveModal("add_address");
       }
     }
   }, [cart, cartLoading, user, router]);
@@ -190,11 +191,9 @@ export default function CheckoutPage() {
             return;
           }
 
-          // If neither exists
-          showErrorToast({
-            message: "Payment initialization failed",
-            description: "Backend did not return a Stripe URL or session ID.",
-          });
+          // If neither exists, assume it's a successful backend order (e.g. mock or manual) and redirect
+          const orderId = response?.orderId || response?.data?.orderId || response?.order?._id || response?.data?.order?._id || "manual";
+          router.push(`/order/success?order_id=${orderId}`);
           setIsProcessing(false);
         },
         errorCallback: () => {
@@ -229,6 +228,17 @@ export default function CheckoutPage() {
         onConfirm={() => {
           closeModal();
           router.push("/user/profile/addresses");
+        }}
+      />
+
+      <AddAddressModal 
+        isOpen={activeModal === "add_address"}
+        onClose={closeModal}
+        onSuccess={(newAddress) => {
+          const mappedAddress = { ...newAddress, id: newAddress.id || newAddress._id };
+          setAddresses((prev) => [...prev, mappedAddress]);
+          setSelectedAddressId(mappedAddress.id);
+          setActiveModal("none");
         }}
       />
 

@@ -1,11 +1,13 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { useGetUserAddresses } from "@/hooks/api/users";
+import { setAuthState } from "@/redux/Slices/authSlice";
+import { useGetUserAddresses, useDeleteUserAddress, useCreateUserAddress, useUpdateUserAddress } from "@/hooks/api/users";
 import { MapPin, Plus, MoreVertical, Edit2, Trash2 } from "lucide-react";
 import MobileBackButton from "../MobileBackButton";
+import { ConfirmDeleteModal } from "@/components/modals/ConfirmDeleteModal";
 
 interface Address {
   id: string;
@@ -21,18 +23,49 @@ interface Address {
 }
 
 export default function ProfileAddressesPage() {
+  const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
-  // const { loading: isLoading, addresses, setAddresses, fetchAddresses } = useGetUserAddresses();
+  const { loading: isLoading, addresses: apiAddresses, fetchAddresses } = useGetUserAddresses();
+  const { deleteAddress, loading: isDeleting } = useDeleteUserAddress();
+  const { createAddress, loading: isCreating } = useCreateUserAddress();
+  const { updateAddress, loading: isUpdating } = useUpdateUserAddress();
   const [addresses, setAddresses] = useState<Address[]>([]);
   
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [addressToDelete, setAddressToDelete] = useState<string | null>(null);
+
+  // Normalizing the user ID properly
+  const getUserId = () => {
+    return user?.id || (user as any)?._id || (user as any)?.userId || (user as any)?.uid;
+  };
+
+  const userId = getUserId();
+  
+  useEffect(() => {
+    console.log("DEBUG: ProfileAddressesPage userId changed:", userId);
+    
+    if (userId) {
+      console.log("DEBUG: Triggering fetchAddresses for userId:", userId);
+      fetchAddresses(userId);
+    } else {
+      console.warn("DEBUG: No userId found, not fetching addresses");
+    }
+  }, [userId]);
 
   useEffect(() => {
-    if (user?.addresses) {
-      setAddresses(user.addresses);
+    if (apiAddresses) {
+      console.log("DEBUG: apiAddresses updated:", apiAddresses.length);
+      const mappedAddresses = apiAddresses.map((addr: any) => ({
+        ...addr,
+        id: addr.id || addr._id
+      }));
+      setAddresses(mappedAddresses);
+    } else if (user?.addresses) {
+       setAddresses(user.addresses);
     }
-  }, [user]);
+  }, [apiAddresses]);
 
 
 
@@ -93,44 +126,93 @@ export default function ProfileAddressesPage() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    let updatedAddresses = [...addresses];
-
-    // If setting as default, remove default from all others
-    if (formData.isDefault) {
-      updatedAddresses = updatedAddresses.map((addr) => ({ ...addr, isDefault: false }));
+    const userId = getUserId();
+    if (!userId) {
+      console.error("DEBUG: Cannot submit, userId is missing. User object:", user);
+      return;
     }
+
+    const data = {
+      ...formData,
+    };
+
+    console.log("DEBUG: Submitting address form, editingId:", editingId, "userId:", userId, "data:", data);
 
     if (editingId) {
       // Update existing
-      updatedAddresses = updatedAddresses.map((addr) =>
-        addr.id === editingId ? { ...formData, id: editingId } : addr
-      );
+      await updateAddress({
+        userId,
+        addressId: editingId,
+        data,
+        successCallback: (updatedAddress) => {
+          const newAddresses = addresses.map((addr) => 
+            addr.id === editingId ? { ...updatedAddress, id: editingId } : addr
+          );
+          setAddresses(newAddresses);
+          
+          if (user) {
+            dispatch(setAuthState({ 
+              user: { ...user, addresses: newAddresses } 
+            }));
+          }
+          
+          handleCloseForm();
+        },
+      });
     } else {
       // Create new
-      const newAddress: Address = {
-        ...formData,
-        id: Math.random().toString(36).substr(2, 9), // Simple UUID for mock
-      };
-      updatedAddresses.push(newAddress);
+      await createAddress({
+        userId,
+        data,
+        successCallback: (newAddress) => {
+          const mappedNewAddress = { ...newAddress, id: newAddress.id || newAddress._id };
+          const newAddresses = [...addresses, mappedNewAddress];
+          setAddresses(newAddresses);
+          
+          if (user) {
+            dispatch(setAuthState({ 
+              user: { ...user, addresses: newAddresses } 
+            }));
+          }
+          
+          handleCloseForm();
+        },
+      });
     }
-
-    // Sort to keep default at the top
-    updatedAddresses.sort((a, b) => (a.isDefault === b.isDefault ? 0 : a.isDefault ? -1 : 1));
-
-    setAddresses(updatedAddresses);
-    handleCloseForm();
   };
 
   const handleDelete = (id: string) => {
-    const newAddresses = addresses.filter((addr) => addr.id !== id);
-    // If we deleted the default, make the first remaining one default
-    if (newAddresses.length > 0 && addresses.find(a => a.id === id)?.isDefault) {
-       newAddresses[0].isDefault = true;
-    }
-    setAddresses(newAddresses);
+    setAddressToDelete(id);
+    setDeleteModalOpen(true);
+  };
+
+  const confirmDelete = async () => {
+    const userId = getUserId();
+    if (!userId || !addressToDelete) return;
+
+    await deleteAddress({
+      userId,
+      addressId: addressToDelete,
+      successCallback: () => {
+        const newAddresses = addresses.filter((addr) => addr.id !== addressToDelete);
+        // If we deleted the default, make the first remaining one default
+        if (newAddresses.length > 0 && addresses.find((a) => a.id === addressToDelete)?.isDefault) {
+          newAddresses[0].isDefault = true;
+        }
+        setAddresses(newAddresses);
+        
+        if (user) {
+          dispatch(setAuthState({ 
+            user: { ...user, addresses: newAddresses } 
+          }));
+        }
+        
+        setDeleteModalOpen(false);
+        setAddressToDelete(null);
+      },
+    });
   };
 
   return (
@@ -208,7 +290,13 @@ export default function ProfileAddressesPage() {
 
             <div className="flex flex-col-reverse md:flex-row justify-end gap-3 pt-6 border-t border-gray-100">
               <button type="button" onClick={handleCloseForm} className="flex items-center justify-center px-6 py-2.5 bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 rounded-lg text-sm font-medium transition-colors">Cancel</button>
-              <button type="submit" className="flex items-center justify-center px-6 py-2.5 bg-[#1a1a1a] text-white rounded-lg hover:bg-black text-sm font-medium transition-colors shadow-sm">Save Address</button>
+              <button 
+                type="submit" 
+                disabled={isCreating || isUpdating}
+                className="flex items-center justify-center px-6 py-2.5 bg-[#1a1a1a] text-white rounded-lg hover:bg-black text-sm font-medium transition-colors shadow-sm disabled:opacity-50"
+              >
+                {isCreating || isUpdating ? "Saving..." : "Save Address"}
+              </button>
             </div>
           </form>
         </div>
@@ -222,7 +310,7 @@ export default function ProfileAddressesPage() {
           </button>
           </div>
 
-          {!addresses ? (
+          {isLoading ? (
             <div className="flex justify-center items-center py-16">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-gray-900"></div>
             </div>
@@ -247,8 +335,13 @@ export default function ProfileAddressesPage() {
                      <button onClick={() => handleOpenForm(address)} className="p-2 text-gray-400 hover:text-gray-900 rounded-lg hover:bg-gray-100 transition-colors" title="Edit">
                         <Edit2 size={16} />
                      </button>
-                     <button onClick={() => handleDelete(address.id)} className="p-2 text-gray-400 hover:text-red-600 rounded-lg hover:bg-red-50 transition-colors" title="Delete">
-                        <Trash2 size={16} />
+                     <button 
+                        onClick={() => handleDelete(address.id)} 
+                        disabled={isDeleting}
+                        className={`p-2 rounded-lg transition-colors ${isDeleting ? 'text-gray-200 cursor-not-allowed' : 'text-gray-400 hover:text-red-600 hover:bg-red-50'}`} 
+                        title="Delete"
+                      >
+                        <Trash2 size={16} className={isDeleting ? 'animate-pulse' : ''} />
                      </button>
                   </div>
 
@@ -268,6 +361,15 @@ export default function ProfileAddressesPage() {
           )}
         </div>
       )}
+      <ConfirmDeleteModal 
+        isOpen={deleteModalOpen} 
+        onClose={() => {
+          setDeleteModalOpen(false);
+          setAddressToDelete(null);
+        }} 
+        onConfirm={confirmDelete}
+        isLoading={isDeleting}
+      />
     </div>
   );
 }

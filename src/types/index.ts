@@ -66,11 +66,14 @@ export interface ServiceFeature {
 }
 
 export interface User {
+  id?: string;
+  _id?: string;
   email: string;
   name?: string;
   username?: string;
   role?: string;
   isActive?: boolean;
+  addresses?: any[];
 }
 
 export type TRegister = {

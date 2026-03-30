@@ -58,6 +58,15 @@
   --header-height: 71px;
 }
 
+@keyframes shade-pulse {
+  0%, 100% { background-color: var(--cultured); }
+  50% { background-color: hsl(0, 0%, 92%); }
+}
+
+.animate-shade {
+  animation: shade-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
 /*-----------------------------------*\
  * #RESET
 \*-----------------------------------*/
@@ -650,6 +659,7 @@ h3 > a {
   background: var(--ocean-green);
   display: flex;
   align-items: center;
+  justify-content: center;
   padding-block: 8px;
 }
 
@@ -1732,7 +1742,7 @@ h3 > a {
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1.5px solid var(--eerie-black);
+  border: none;
   border-radius: 8px;
   background: transparent;
   color: var(--eerie-black);
