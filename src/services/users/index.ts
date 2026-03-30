@@ -1,5 +1,6 @@
 import axios from "axios";
 import env from "@/config/env";
+import { store } from "@/redux/store";
 
 interface ICreateUserPayload {
   name?: string;
@@ -34,8 +35,10 @@ class Service {
   }
 
   getUserAddresses({ userId }: { userId: string }) {
+    const token = store.getState().auth.accessToken;
     return axios.get(`${env.api.users}/${userId}/addresses`, {
       withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
     });
   }
 
@@ -56,20 +59,26 @@ class Service {
   }
 
   deleteUserAddress({ userId, addressId }: { userId: string; addressId: string }) {
+    const token = store.getState().auth.accessToken;
     return axios.delete(`${env.api.users}/${userId}/addresses/${addressId}`, {
       withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
     });
   }
 
   createUserAddress({ userId, data }: { userId: string; data: any }) {
+    const token = store.getState().auth.accessToken;
     return axios.post(`${env.api.users}/${userId}/addresses`, data, {
       withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
     });
   }
 
   updateUserAddress({ userId, addressId, data }: { userId: string; addressId: string; data: any }) {
+    const token = store.getState().auth.accessToken;
     return axios.put(`${env.api.users}/${userId}/addresses/${addressId}`, data, {
       withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
     });
   }
 

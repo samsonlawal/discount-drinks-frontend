@@ -126,3 +126,10 @@ export interface OrderResponse {
   orderId?: string;
   order?: any;
 }
+
+export interface PaginationMetadata {
+  total: number;
+  page: number;
+  limit: number;
+  pages: number;
+}

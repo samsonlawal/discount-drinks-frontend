@@ -15,8 +15,9 @@ class Service implements OrderInterface {
     })
   }
 
-  getUserOrders(userId: string) {
+  getUserOrders(userId: string, query?: any) {
     return axios.get(`${env.api.orders}/user/${userId}`, {
+      params: query,
       withCredentials: true,
     });
   }
