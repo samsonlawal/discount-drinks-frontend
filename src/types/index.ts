@@ -72,7 +72,11 @@ export interface User {
   name?: string;
   username?: string;
   role?: string;
-  isActive?: boolean;
+  gender?: string;
+  phone?: string;
+  dob?: string;
+  profileImage?: string;
+  image?: string;
   addresses?: any[];
 }
 

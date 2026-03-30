@@ -107,7 +107,7 @@ function ProductsContent() {
               aria-label={isSidebarOpen ? "Close filters" : "Open filters"}
               title={isSidebarOpen ? "Close filters" : "Open filters"}
             >
-              <SlidersHorizontal size={16} />
+              <SlidersHorizontal size={20} />
             </button>
           </div>
 

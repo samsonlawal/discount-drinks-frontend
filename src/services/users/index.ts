@@ -28,7 +28,9 @@ class Service {
   }
 
   getUserById({ userId }: { userId: string }) {
-    return axios.get(`${env.api.users}/${userId}`);
+    return axios.get(`${env.api.users}/${userId}`, {
+      withCredentials: true,
+    });
   }
 
   getUserAddresses({ userId }: { userId: string }) {
@@ -42,11 +44,15 @@ class Service {
   }
 
   updateUser({ id, ...data }: IUpdateUserPayload) {
-    return axios.put(`${env.api.users}/${id}`, data);
+    return axios.put(`${env.api.users}/${id}`, data, {
+      withCredentials: true,
+    });
   }
 
   deleteUser({ id }: { id: string }) {
-    return axios.delete(`${env.api.users}/${id}`);
+    return axios.delete(`${env.api.users}/${id}`, {
+      withCredentials: true,
+    });
   }
 
   deleteUserAddress({ userId, addressId }: { userId: string; addressId: string }) {
@@ -63,6 +69,21 @@ class Service {
 
   updateUserAddress({ userId, addressId, data }: { userId: string; addressId: string; data: any }) {
     return axios.put(`${env.api.users}/${userId}/addresses/${addressId}`, data, {
+      withCredentials: true,
+    });
+  }
+
+  updateProfile({ userId, data }: { userId: string; data: any }) {
+    return axios.put(`${env.api.users}/${userId}`, data, {
+      withCredentials: true,
+    });
+  }
+
+  uploadProfileImage({ userId, formData }: { userId: string; formData: FormData }) {
+    return axios.post(`${env.api.users}/${userId}/avatar`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
       withCredentials: true,
     });
   }

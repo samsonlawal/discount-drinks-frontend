@@ -134,9 +134,18 @@ export const useLogout = () => {
   // const updateAppState = useUpdateAuthContext();
   const dispatch = useDispatch();
 
-  const onLogout = () => {
+  const onLogout = async () => {
+    // 1. Clear Redux state
     dispatch(clearAuthState());
-    deleteFromLocalStorage({ key: env.auth.PERSIST_AUTH_KEY });
+    
+    // 2. Purge persistent storage (Redux Persist)
+    const { persistor } = await import("@/redux/store");
+    if (persistor) {
+      await persistor.purge();
+    }
+
+    // 3. Hard redirect to home to clear all memory states
+    window.location.href = "/";
   };
 
   return { onLogout };

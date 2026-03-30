@@ -21,23 +21,20 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
   }, [user, router, pathname]);
 
   if (!user) {
-    return (
-      <main className="section flex flex-col items-center justify-center min-h-[60vh]">
-        <div className="animate-pulse text-gray-400 font-medium">Redirecting to sign in...</div>
-      </main>
-    );
+    return null;
   }
 
   const handleLogout = () => {
     onLogout();
-    router.push("/");
+    // Use window.location for a hard redirect to avoid the "Redirecting..." flash in the layout
+    window.location.href = "/";
   };
 
   const menuItems = [
-    { name: "Overview", path: "/user/profile/overview", icon: <User size={18} strokeWidth={1.5} /> },
-    { name: "Order History", path: "/user/profile/orders", icon: <Package size={18} strokeWidth={1.5} /> },
-    { name: "Saved Addresses", path: "/user/profile/addresses", icon: <MapPin size={18} strokeWidth={1.5} /> },
-    { name: "Settings", path: "/user/profile/settings", icon: <Settings size={18} strokeWidth={1.5} /> },
+    { name: "Overview", path: "/user/profile/overview", icon: <User size={20} strokeWidth={1.5} /> },
+    { name: "Order History", path: "/user/profile/orders", icon: <Package size={20} strokeWidth={1.5} /> },
+    { name: "Saved Addresses", path: "/user/profile/addresses", icon: <MapPin size={20} strokeWidth={1.5} /> },
+    { name: "Settings", path: "/user/profile/settings", icon: <Settings size={20} strokeWidth={1.5} /> },
   ];
 
   // Determine if we're on the root profile page (which acts as the menu on mobile)
@@ -58,7 +55,7 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
               <h1 className="text-2xl font-semibold text-gray-900">My Account</h1>
             </div>
 
-            <nav className="py-1 md:px-4 md:py-1 flex-grow flex flex-col gap-1">
+            <nav className="py-1 md:px-4 md:py-1 flex-grow flex flex-col gap-2">
               {menuItems.map((item) => {
                 const isActive = pathname === item.path;
                 return (
@@ -73,9 +70,9 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
                   >
                     <p className="flex items-center gap-3">
                       {item.icon}
-                      <span>{item.name}</span>
+                      <span className="text-[16px] font-normal">{item.name}</span>
                     </p>
-                    <ChevronRight size={18} className="flex md:hidden" />
+                    <ChevronRight size={20} className="flex md:hidden text-gray-400" />
                   </Link>
                 );
               })}
@@ -83,10 +80,10 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
               
               <button 
                 onClick={handleLogout}
-                className="!flex items-center gap-3 px-2 md:px-4 py-2 rounded-lg text-[14px] text-red-600 md:hover:bg-red-100 bg-transparent transition-colors w-full text-left"
+                className="!flex items-center gap-3 px-2 md:px-4 py-2 rounded-lg text-[16px] text-red-600 md:hover:bg-red-100 bg-transparent transition-colors w-full md:text-left text-center"
               >
-                <LogOut size={18} />
-                <span>Sign Out</span>
+                <LogOut size={20} strokeWidth={1.5} />
+                <span className="font-normal">Sign Out</span>
               </button>
             </nav>
           </aside>
