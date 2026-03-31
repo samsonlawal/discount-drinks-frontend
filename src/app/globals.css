@@ -114,7 +114,6 @@ html {
 
 body {
   background: var(--white);
-  padding-block: 70px;
 }
 
 /*-----------------------------------*\
@@ -251,20 +250,7 @@ h3 > a {
  * #HEADER
 \*-----------------------------------*/
 
-.header-search {
-  display: none;
-}
-
-.header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  background: var(--white);
-  width: 100%;
-  padding-block: 20px;
-  z-index: 4;
-  transition: var(--transition-1);
-}
+/* Header styles consolidated in style.css */
 
 .header.active {
   position: fixed;
@@ -366,20 +352,7 @@ h3 > a {
   font-weight: var(--fw-600);
 }
 
-.header-action-btn .user-badge {
-  position: absolute;
-  bottom: -5px;
-  right: 0;
-  background: var(--background, var(--eerie-black));
-  width: 10px;
-  height: 10px;
-  display: grid;
-  place-items: center;
-  line-height: 0;
-  font-size: 8px;
-  color: var(--white);
-  border-radius: 50%;
-}
+
 
 
 

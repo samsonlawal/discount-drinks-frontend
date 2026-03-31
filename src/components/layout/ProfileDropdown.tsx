@@ -23,14 +23,14 @@ export default function ProfileDropdown({ user, onLogout }: ProfileDropdownProps
     <div className="hidden md:block">
       <DropdownMenu.Root>
         <DropdownMenu.Trigger asChild>
-          <button className="flex items-center gap-2 group focus:outline-none rounded-sm px-2 py-1.5 hover:bg-(--cultured) transition-colors">
-            <div className="flex items-center justify-center rounded-full text-black transition-colors">
+          <button className="flex items-center gap-1 group focus:outline-none rounded-sm px-3 py-2 hover:bg-(--cultured) transition-colors text-(--eerie-black)/70 hover:text-(--eerie-black)">
+            <div className="flex items-center justify-center rounded-full transition-colors">
               <CircleUser size={20} />
             </div>
-            <span className="text-sm font-medium text-(--eerie-black) group-hover:text-black hidden pr-3 lg:block max-w-[100px] truncate">
+            <span className="text-sm font-medium group-hover:text-black hidden pr-1 lg:block max-w-[100px] truncate">
               {user.username || "Account"}
             </span>
-            <ChevronDown size={14} className="text-gray-500 group-hover:text-black transition-transform duration-200 group-data-[state=open]:rotate-180" />
+            <ChevronDown size={14} className="group-hover:text-black transition-transform duration-200 group-data-[state=open]:rotate-180" />
           </button>
         </DropdownMenu.Trigger>
 

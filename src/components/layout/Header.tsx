@@ -29,6 +29,7 @@ import { Product } from "@/types";
 
 export default function Header() {
   const [isNavOpen, setIsNavOpen] = useState(false);
+  const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const { getCartCount, isLoading } = useCart();
   const { getWishlistCount, isLoading: isWishlistLoading } = useWishlist();
@@ -42,6 +43,7 @@ export default function Header() {
   const allProductsRef = useRef<Product[]>([]);
   const hasFetchedRef = useRef(false);
   const searchWrapperRef = useRef<HTMLDivElement>(null);
+  const mobileSearchRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const { fetchProducts } = useGetProducts();
 
@@ -65,13 +67,19 @@ export default function Header() {
   // Close search dropdown on outside click
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-      if (searchWrapperRef.current && !searchWrapperRef.current.contains(e.target as Node)) {
+      // Check desktop search
+      const outsideDesktop = searchWrapperRef.current && !searchWrapperRef.current.contains(e.target as Node);
+      // Check mobile search
+      const outsideMobile = mobileSearchRef.current && !mobileSearchRef.current.contains(e.target as Node);
+      
+      if (outsideDesktop && outsideMobile) {
         setShowDropdown(false);
+        if (isMobileSearchOpen) setIsMobileSearchOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
+  }, [isMobileSearchOpen]);
 
   // Debounced search effect
   useEffect(() => {
@@ -144,7 +152,16 @@ export default function Header() {
     }
   };
 
-  const toggleNav = () => setIsNavOpen(!isNavOpen);
+  const toggleNav = () => {
+    setIsNavOpen(!isNavOpen);
+    if (isMobileSearchOpen) setIsMobileSearchOpen(false);
+  };
+  
+  const toggleMobileSearch = () => {
+    setIsMobileSearchOpen(!isMobileSearchOpen);
+    if (isNavOpen) setIsNavOpen(false);
+  };
+
   const closeNav = () => setIsNavOpen(false);
 
   const { user } = useSelector((state: RootState) => state.auth);
@@ -187,53 +204,56 @@ export default function Header() {
             <Search size={18} />
           </button>
 
-          {/* Search Dropdown */}
+          {/* Search Dropdown - Desktop */}
           {showDropdown && (
-            <div className="absolute top-[calc(100%+8px)] left-0 w-98 bg-white border border-black/10 rounded-md p-2 shadow-2xl z-[1500] min-h-60 max-h-100 overflow-y-auto overflow-x-hidden">
-              {isSearching && hasFetchedRef.current ? (
-                <div className="p-4 text-center text-gray-500 text-sm italic">Filtering list...</div>
-              ) : isSearching ? (
-                <div className="p-4 text-center text-gray-500 text-sm">Searching products...</div>
-              ) : searchResults.length === 0 ? (
-                <div className="p-4 text-center text-gray-500 text-sm">No products found</div>
-              ) : (
-                searchResults.map((product, index) => {
-                  const productId = product.id || (product as any)._id;
-                  const imageUrl = product.image || (product as any).images?.[0] || "/images/placeholder.jpg";
-                  return (
-                    <button
-                      key={productId}
-                      className={`flex items-center gap-3 w-full p-2.5 text-left transition-all border-b rounded-md border-gray-50 last:border-b-0 hover:bg-gray-200 ${index === activeIndex ? "bg-gray-100" : ""}`}
-                      onClick={() => handleResultClick(productId)}
-                      onMouseEnter={() => setActiveIndex(index)}
-                    >
-                      <div className="w-12 h-12 shrink-0 rounded-md bg-gray-50 overflow-hidden border border-gray-100">
-                        <img
-                          src={imageUrl}
-                          alt={product.name}
-                          className="w-full h-full object-cover"
-                          onError={(e) => {
-                            (e.target as HTMLImageElement).src = "https://placehold.co/400x400/f3f4f6/666666?text=No+Image";
-                          }}
-                        />
-                      </div>
-                      <div className="flex flex-col gap-0.5 flex-1 min-w-0">
-                        <span className="text-sm font-semibold text-(--eerie-black) truncate leading-tight">{product.name}</span>
-                        <div className="flex items-center justify-between">
-                          <span className="text-xs font-medium text-(--ocean-green)">
-                            £{(Number((product as any).costPrice ?? product.price) || 0).toFixed(2)}
-                          </span>
-                          {(product as any).category && (
-                            <span className="text-[10px] text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded uppercase font-medium">
-                              {(product as any).category?.name || (product as any).category}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                    </button>
-                  );
-                })
-              )}
+            <div className="absolute top-[calc(100%+8px)] left-0 w-98 bg-white border border-black/10 rounded-md p-2 shadow-2xl z-[1500] min-h-60 max-h-100 overflow-y-auto overflow-x-hidden hidden lg:block">
+              <SearchResultsList 
+                results={searchResults} 
+                isSearching={isSearching} 
+                hasFetched={hasFetchedRef.current}
+                activeIndex={activeIndex}
+                handleResultClick={handleResultClick}
+                setActiveIndex={setActiveIndex}
+              />
+            </div>
+          )}
+        </div>
+
+        {/* Mobile Search Bar — Expandable */}
+        <div 
+          ref={mobileSearchRef}
+          className={`mobile-search-bar ${isMobileSearchOpen ? "active" : ""} lg:hidden`}
+        >
+          <div className="search-input-wrapper">
+            <input
+              type="search"
+              placeholder="Search products..."
+              className="mobile-search-input"
+              value={searchQuery}
+              onChange={handleSearchChange}
+              onKeyDown={handleSearchKeyDown}
+              autoFocus={isMobileSearchOpen}
+              autoComplete="off"
+            />
+            <button 
+              className="search-close-btn"
+              onClick={() => setIsMobileSearchOpen(false)}
+            >
+              <X size={18} />
+            </button>
+          </div>
+
+          {/* Search Dropdown - Mobile */}
+          {showDropdown && (
+            <div className="mobile-search-results bg-white mt-3 border border-black/10 rounded-md p-2 shadow-xl max-h-80 overflow-y-auto">
+              <SearchResultsList 
+                results={searchResults} 
+                isSearching={isSearching} 
+                hasFetched={hasFetchedRef.current}
+                activeIndex={activeIndex}
+                handleResultClick={handleResultClick}
+                setActiveIndex={setActiveIndex}
+              />
             </div>
           )}
         </div>
@@ -250,6 +270,15 @@ export default function Header() {
 
         {/* Action icons */}
         <div className="header-actions">
+          {/* Search Toggle — mobile only */}
+          <button 
+            className={`header-action-btn md:hidden ${isMobileSearchOpen ? "active" : ""}`}
+            onClick={toggleMobileSearch}
+            aria-label="Toggle Search"
+          >
+            <Search size={22} aria-hidden="true" className="icon" />
+          </button>
+
           {/* User */}
           {user ? 
             <>
@@ -275,21 +304,21 @@ export default function Header() {
             </>
           :
           (
-            <Link 
-                href="/user/profile"
-                className="header-action-btn relative md:!hidden flex!" 
-                data-auth-btn
-              >
-                <CircleUser size={24} aria-hidden="true" className="icon" />
-                <p className="header-action-label">Account</p>
-                <div
-                  className="absolute bg-black text-white rounded-full flex items-center justify-center md:hidden"
-                  style={{ width: '14px', height: '14px', top: '6px', right: '0px' }}
-                  aria-hidden="true"
-                >
-                  <Check size={10} strokeWidth={4} />
-                </div>
-              </Link>
+            <a
+  href="/auth/signin" // or previously /login
+  className="btn-dark"
+  data-auth-btn
+  style={{ 
+    padding: "6px 16px", 
+    borderRadius: "4px", 
+    fontSize: "14px", 
+    fontWeight: 600, 
+    textDecoration: "none" 
+  }}
+>
+  Login
+</a>
+
           )}
 
           {/* Cart */}
@@ -371,3 +400,73 @@ export default function Header() {
     </header>
   );
 }
+
+function SearchResultsList({ 
+  results, 
+  isSearching, 
+  hasFetched, 
+  activeIndex, 
+  handleResultClick, 
+  setActiveIndex 
+}: {
+  results: Product[],
+  isSearching: boolean,
+  hasFetched: boolean,
+  activeIndex: number,
+  handleResultClick: (id: string) => void,
+  setActiveIndex: (index: number) => void
+}) {
+  if (isSearching && hasFetched) {
+    return <div className="p-4 text-center text-gray-500 text-sm italic">Filtering list...</div>;
+  }
+  
+  if (isSearching) {
+    return <div className="p-4 text-center text-gray-500 text-sm">Searching products...</div>;
+  }
+  
+  if (results.length === 0) {
+    return <div className="p-4 text-center text-gray-500 text-sm">No products found</div>;
+  }
+
+  return (
+    <>
+      {results.map((product, index) => {
+        const productId = product.id || (product as any)._id;
+        const imageUrl = product.image || (product as any).images?.[0] || "/images/placeholder.jpg";
+        return (
+          <button
+            key={productId}
+            className={`flex items-center gap-3 w-full p-2.5 text-left transition-all border-b rounded-md border-gray-50 last:border-b-0 hover:bg-gray-200 ${index === activeIndex ? "bg-gray-100" : ""}`}
+            onClick={() => handleResultClick(productId)}
+            onMouseEnter={() => setActiveIndex(index)}
+          >
+            <div className="w-12 h-12 shrink-0 rounded-md bg-gray-50 overflow-hidden border border-gray-100">
+              <img
+                src={imageUrl}
+                alt={product.name}
+                className="w-full h-full object-cover"
+                onError={(e) => {
+                  (e.target as HTMLImageElement).src = "https://placehold.co/400x400/f3f4f6/666666?text=No+Image";
+                }}
+              />
+            </div>
+            <div className="flex flex-col gap-0.5 flex-1 min-w-0">
+              <span className="text-sm font-semibold text-(--eerie-black) truncate leading-tight">{product.name}</span>
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-medium text-(--ocean-green)">
+                  £{(Number((product as any).costPrice ?? product.price) || 0).toFixed(2)}
+                </span>
+                {(product as any).category && (
+                  <span className="text-[10px] text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded uppercase font-medium">
+                    {(product as any).category?.name || (product as any).category}
+                  </span>
+                )}
+              </div>
+            </div>
+          </button>
+        );
+      })}
+    </>
+  );
+}
+

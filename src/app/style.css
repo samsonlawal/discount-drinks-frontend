@@ -212,12 +212,10 @@ h3 > a {
   left: 0;
   background: var(--white);
   width: 100%;
-  padding-block: 20px;
+  padding-block: 10px;
   z-index: 1000;
   transition: var(--transition-1);
 }
-
-
 
 .header.active {
   position: fixed;
@@ -289,27 +287,104 @@ h3 > a {
   color: var(--eerie-black);
 }
 
-    .header-action-btn .btn-badge {
+.mobile-search-bar {
   position: absolute;
-  top: 5px;
-  right: 0;
-  background: var(--background, var(--eerie-black));
-  width: 16px;
-  height: 16px;
-  display: grid;
-  place-items: center;
-  line-height: 0;
-  font-size: 10px;
-  color: var(--white);
-  border-radius: 50%;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: var(--white);
+  padding: 12px 15px;
+  border-bottom: 1px solid var(--cultured);
+  transform: translateY(-100%);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: -1;
 }
 
+.mobile-search-bar.active {
+  transform: translateY(0);
+  opacity: 1;
+  visibility: visible;
+  z-index: 10;
+}
+
+.search-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.mobile-search-input {
+  flex: 1;
+  background: var(--cultured);
+  height: 44px;
+  padding-inline: 15px 40px;
+  border-radius: 8px;
+  font-size: var(--fs-9);
+  border: 1px solid transparent;
+  transition: border-color 0.25s ease;
+}
+
+.mobile-search-input:focus {
+  outline: none;
+  border-color: var(--ocean-green);
+  background: var(--white);
+  box-shadow: 0 0 0 4px hsla(353, 42%, 32%, 0.05);
+}
+
+.search-close-btn {
+  color: var(--sonic-silver);
+  padding: 8px;
+  transition: color 0.2s ease;
+}
+
+.search-close-btn:hover {
+  color: var(--eerie-black);
+}
+
+/* Mobile-only styles for cart badge */
+@media (max-width: 1199px) {
+      .header-action-btn .btn-badge {
+        position: absolute;
+        top: 0px;
+        right: 0;
+        width: 18px;
+        height: 18px;
+        display: grid;
+        place-items: center;
+        line-height: 0;
+        font-size: 12px;
+        border-radius: 50%;
+        color: var(--white);
+        background: var(--background, var(--ocean-green));
+        transition: all 0.2s ease;
+      }
+    }
+
+    /* Account badge (User) - independent style */
+    .header-action-btn .user-badge {
+      position: absolute;
+      top: 6px;
+      right: 0;
+      width: 14px;
+      height: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--background, var(--eerie-black));
+      color: var(--white);
+      border-radius: 50%;
+      font-size: 0;
+    }
 
 
 
-.header-action-btn .btn-badge.green {
+
+/* .header-action-btn .btn-badge.green {
   --background: var(--middle-blue-green);
-}
+} */
 
 .navbar {
   background: var(--white);
@@ -339,7 +414,7 @@ h3 > a {
 }
 
 .nav-close-btn ion-icon {
-  font-size: 23px;
+  font-size: 50px;
 }
 
 .navbar-link {
@@ -379,10 +454,10 @@ h3 > a {
   background-size: cover;
   background-position: left;
   width: 100%;
-  height: calc(80vh - 70px);
-  min-height: 500px;
+  height: calc(90vh - 50px);
+  min-height: 600px;
   display: flex;
-  padding-top: 10px;
+  padding-top:60px; /* Matches header height to reveal ticker */
   overflow: hidden;
 }
 
@@ -550,20 +625,23 @@ h3 > a {
     width: calc(20% - 20px); /* 5 per row desktop */
   }
 
+    /* Desktop-only styles for cart badge */
     .header-action-btn .btn-badge {
-  position: absolute;
-  top: -5px;
-  right: 0;
-  background: var(--background, var(--eerie-black));
-  width: 18px;
-  height: 18px;
-  display: grid;
-  place-items: center;
-  line-height: 0;
-  font-size: 10px;
-  color: var(--white);
-  border-radius: 50%;
-}
+      position: absolute;
+      top: -5px;
+      right: 5px;
+      width: 18px;
+      height: 18px;
+      display: grid;
+      place-items: center;
+      line-height: 0;
+      font-size: 10px;
+      border-radius: 50%;
+      color: var(--white);
+      background: var(--background, var(--ocean-green));
+      transition: all 0.2s ease;
+    }
+
 }
 
 .product-card .card-banner {
