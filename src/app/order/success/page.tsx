@@ -49,17 +49,19 @@ function SuccessContent() {
       <div className="flex flex-col sm:flex-row gap-4 justify-center w-full">
         <Link 
           href="/user/profile/orders" 
-          className="h-14 w-full sm:w-56 flex items-center justify-center gap-2 rounded-lg !bg-(--eerie-black) !text-white !border-[#111827] !hover:bg-white !hover:text-[#111827] border transition-all duration-75 font-medium whitespace-nowrap"
+          className="btn btn-primary w-full sm:w-auto px-6 lg:px-10 h-14 gap-2 !flex !justify-center whitespace-nowrap"
+          style={{ "--height": "56px" } as React.CSSProperties}
         >
           <ShoppingBag size={20} />
-          View My Orders
+          <span>View My Orders</span>
         </Link>
         
         <Link 
           href="/products" 
-          className="h-14 w-full sm:w-56 flex items-center justify-center rounded-lg !bg-white !text-[#111827] !border-[#111827] !hover:bg-[#111827] !hover:text-white border transition-all duration-75 font-medium whitespace-nowrap"
+          className="btn btn-outline w-full sm:w-auto px-6 lg:px-10 h-14 !flex !justify-center whitespace-nowrap"
+          style={{ "--height": "56px" } as React.CSSProperties}
         >
-          Continue Shopping
+          <span>Continue Shopping</span>
         </Link>
       </div>
     </div>

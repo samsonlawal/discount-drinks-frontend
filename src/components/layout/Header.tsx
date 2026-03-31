@@ -161,7 +161,7 @@ export default function Header() {
 
         {/* Hamburger — mobile only */}
         <button
-          className="nav-open-btn"
+          className="pr-1 text-(--eerie-black) md:hidden"
           aria-label="Open Menu"
           onClick={toggleNav}
         >
@@ -259,7 +259,7 @@ export default function Header() {
                 className="header-action-btn relative md:!hidden flex!" 
                 data-auth-btn
               >
-                <CircleUser aria-hidden="true" className="icon" />
+                <CircleUser size={24} aria-hidden="true" className="icon" />
                 <p className="header-action-label">Account</p>
                 <div
                   className="absolute bg-black text-white rounded-full flex items-center justify-center md:hidden"
@@ -275,14 +275,21 @@ export default function Header() {
             </>
           :
           (
-            <a
-              href="/auth/sign-in"
-              className="btn-dark"
-              data-auth-btn
-              style={{ padding: "6px 16px", borderRadius: "4px", fontSize: "14px", fontWeight: 600, textDecoration: "none" }}
-            >
-              Login
-            </a>
+            <Link 
+                href="/user/profile"
+                className="header-action-btn relative md:!hidden flex!" 
+                data-auth-btn
+              >
+                <CircleUser size={24} aria-hidden="true" className="icon" />
+                <p className="header-action-label">Account</p>
+                <div
+                  className="absolute bg-black text-white rounded-full flex items-center justify-center md:hidden"
+                  style={{ width: '14px', height: '14px', top: '6px', right: '0px' }}
+                  aria-hidden="true"
+                >
+                  <Check size={10} strokeWidth={4} />
+                </div>
+              </Link>
           )}
 
           {/* Cart */}

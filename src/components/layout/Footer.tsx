@@ -118,11 +118,7 @@ export default function Footer() {
 
 
 
-            <li>
-              <Link href="/" className="footer-link">
-                Shipping & Delivery
-              </Link>
-            </li>
+
 
 
           </ul>

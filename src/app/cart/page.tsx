@@ -16,8 +16,10 @@ import {
   Loader2,
   AlertCircle,
 } from "lucide-react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
+import { setAuthState } from "@/redux/Slices/authSlice";
+import { useGetUserAddresses } from "@/hooks/api/users";
 import { AgeDisclaimerModal } from "@/components/modals/AgeDisclaimerModal";
 import { AddressRequiredModal } from "@/components/modals/AddressRequiredModal";
 import { ConfirmationModal } from "@/components/modals/ConfirmationModal";
@@ -34,7 +36,9 @@ export default function CartPage() {
     isLoading,
   } = useCart();
   const router = useRouter();
+  const dispatch = useDispatch();
   const user = useSelector((state: RootState) => state.auth.user);
+  const { fetchAddresses } = useGetUserAddresses();
 
   const [activeModal, setActiveModal] = useState<"none" | "clear_cart" | "remove_item" | "age_verification" | "address_required" | "empty_cart">("none");
   const [selectedItem, setSelectedItem] = useState<{ id: string; name: string } | null>(null);
@@ -55,7 +59,7 @@ export default function CartPage() {
     setActiveModal("remove_item");
   };
 
-  const handleCheckout = () => {
+  const handleCheckout = async () => {
     if (cart.length === 0) {
       setActiveModal("empty_cart");
       return;
@@ -77,13 +81,27 @@ export default function CartPage() {
       return;
     }
 
-    proceedToAddressCheck();
+    await proceedToAddressCheck();
   };
 
-  const proceedToAddressCheck = () => {
+  const proceedToAddressCheck = async () => {
     // 3. Address Check
-    const hasAddress = user?.addresses && user.addresses.length > 0;
-    if (!hasAddress) {
+    let addrs = user?.addresses && Array.isArray(user.addresses) ? user.addresses : [];
+
+    // If Redux says we have 0 addresses, let's confidently double check with the backend
+    if (addrs.length === 0) {
+      const userId = user?.id || (user as any)?._id || (user as any)?.userId;
+      if (userId) {
+        addrs = await fetchAddresses(userId);
+        
+        // Update redux so checkout page & profile won't have to fetch again blindly
+        if (addrs.length > 0) {
+          dispatch(setAuthState({ user: { ...user, addresses: addrs } as any }));
+        }
+      }
+    }
+
+    if (addrs.length === 0) {
       setActiveModal("address_required");
       return;
     }
@@ -122,10 +140,10 @@ export default function CartPage() {
       <AgeDisclaimerModal
         isOpen={activeModal === "age_verification"}
         onClose={closeModal}
-        onConfirm={() => {
+        onConfirm={async () => {
           localStorage.setItem("age_verified", "true");
           closeModal();
-          proceedToAddressCheck();
+          await proceedToAddressCheck();
         }}
         onReject={() => {
           localStorage.setItem("age_verified", "no");

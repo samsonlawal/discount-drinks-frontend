@@ -257,11 +257,11 @@ export default function SignUpPage() {
                     <input type="checkbox" required />
                     <span className="w-full">
                       I agree to the{" "}
-                      <Link href="/terms" className="link-text">
+                      <Link href="/legal/terms-and-conditions" className="link-text" target="_blank">
                         Terms of Service
                       </Link>{" "}
                       and{" "}
-                      <Link href="/privacy" className="link-text">
+                      <Link href="/legal/privacy-policy" className="link-text" target="_blank">
                         Privacy Policy
                       </Link>
                     </span>

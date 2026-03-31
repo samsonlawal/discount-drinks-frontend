@@ -342,6 +342,7 @@ h3 > a {
   .header-wishlist-desktop {
     display: none !important;
   }
+
 }
 
 /* Navbar wishlist item — mobile only */
@@ -380,24 +381,9 @@ h3 > a {
   border-radius: 50%;
 }
 
-.header-action-btn .btn-badge {
-  position: absolute;
-  top: -5px;
-  right: 0;
-  background: var(--background, var(--eerie-black));
-  width: 20px;
-  height: 20px;
-  display: grid;
-  place-items: center;
-  line-height: 0;
-  font-size: 13px;
-  color: var(--white);
-  border-radius: 50%;
-}
 
-.header-action-btn .btn-badge.green {
-  --background: var(--middle-blue-green);
-}
+
+
 
 .navbar {
   background: var(--white);

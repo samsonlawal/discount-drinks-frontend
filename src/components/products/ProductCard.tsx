@@ -105,7 +105,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         <div className="card-price">
           <data value={displayPrice}>&pound;{displayPrice.toFixed(2)}</data>
           {product.basePrice && (
-            <data value={product.basePrice}>
+            <data value={product.basePrice} className="text-xs font-normal">
               &pound;{product.basePrice.toFixed(2)}
             </data>
           )}
