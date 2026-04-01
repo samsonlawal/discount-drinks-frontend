@@ -312,11 +312,11 @@ export default function Header() {
           :
           (
             <a
-  href="/auth/signin" // or previously /login
-  className="btn-dark"
+  href="/auth/sign-in" // or previously /login
+  className=""
   data-auth-btn
   style={{ 
-    padding: "6px 16px", 
+    // padding: "6px 16px", 
     borderRadius: "4px", 
     fontSize: "14px", 
     fontWeight: 600, 
