@@ -13,7 +13,7 @@ export const showSuccessToast = ({
    position?: 'bottom-center' | 'bottom-left' | 'bottom-right' | 'top-center' | 'top-left' | 'top-right';
    closeButton?: boolean;
 }) => {
-   return toast(`${message}`, {
+   return toast.success(`${message}`, {
       position,
       description,
       duration,

@@ -29,8 +29,10 @@ export default function ProductCard({ product }: ProductCardProps) {
     }
   };
 
+  const productId = product.id || (product as any)._id;
+
   const handleQuickView = () => {
-    router.push(`/product/${product.id}`);
+    router.push(`/product/${productId}`);
   };
 
   const inWishlist = product ? isInWishlist(product.id || (product as any)._id) : false;
@@ -42,7 +44,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   return (
     <div className="product-card">
       <figure className="card-banner">
-        <a href={`/product/${product.id}`}>
+        <a href={`/product/${productId}`}>
           <img
             src={product.image || (product as any).images?.[0] || "/images/placeholder.jpg"}
             alt={product.name}
@@ -99,7 +101,7 @@ export default function ProductCard({ product }: ProductCardProps) {
       <div className="card-content flex flex-row justify-between">
           <div className="flex flex-col">
                     <h3 className="h5 card-title">
-          <a href={`/product/${product.id}`}>{product.name}</a>
+          <a href={`/product/${productId}`}>{product.name}</a>
         </h3>
 
         <div className="card-price">

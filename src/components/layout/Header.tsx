@@ -272,11 +272,11 @@ export default function Header() {
         <div className="header-actions">
           {/* Search Toggle — mobile only */}
           <button 
-            className={`header-action-btn md:hidden ${isMobileSearchOpen ? "active" : ""}`}
+            className={`header-action-btn lg:!hidden ${isMobileSearchOpen ? "active" : ""}`}
             onClick={toggleMobileSearch}
             aria-label="Toggle Search"
           >
-            <Search size={22} aria-hidden="true" className="icon" />
+            <Search size={20} aria-hidden="true" className="icon" />
           </button>
 
           {/* User */}
@@ -288,15 +288,22 @@ export default function Header() {
                 className="header-action-btn relative md:!hidden flex!" 
                 data-auth-btn
               >
-                <CircleUser size={24} aria-hidden="true" className="icon" />
+               {user && user.profileImage ? (
+                               <img src={user.profileImage} alt="Profile" className="w-6 h-6 rounded-full" />
+                             ) : (
+                               <CircleUser size={20} />
+                             )}
                 <p className="header-action-label">Account</p>
-                <div
+
+                {user && user.profileImage ? "" : <div
                   className="absolute bg-black text-white rounded-full flex items-center justify-center md:hidden"
                   style={{ width: '14px', height: '14px', top: '6px', right: '0px' }}
                   aria-hidden="true"
                 >
+
                   <Check size={10} strokeWidth={4} />
-                </div>
+                </div>}
+                
               </Link>
               
               {/* Desktop View: Dropdown */}
@@ -316,7 +323,8 @@ export default function Header() {
     textDecoration: "none" 
   }}
 >
-  Login
+                <CircleUser size={24} aria-hidden="true" className="icon" />
+
 </a>
 
           )}

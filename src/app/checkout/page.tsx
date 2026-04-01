@@ -207,7 +207,7 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="min-h-screen pt-14 pb-12" style={{ background: "white" }}>
+    <div className="min-h-screen pt-[80px] lg:pt-[100px] pb-12" style={{ background: "white" }}>
       {/* Processing Overlay */}
       {isProcessing && (
         <div className="fixed inset-0 z-1000 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm transition-opacity duration-300">

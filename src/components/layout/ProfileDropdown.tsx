@@ -23,11 +23,15 @@ export default function ProfileDropdown({ user, onLogout }: ProfileDropdownProps
     <div className="hidden md:block">
       <DropdownMenu.Root>
         <DropdownMenu.Trigger asChild>
-          <button className="flex items-center gap-1 group focus:outline-none rounded-sm px-3 py-2 hover:bg-(--cultured) transition-colors text-(--eerie-black)/70 hover:text-(--eerie-black)">
+          <button className="flex items-center gap-1 group focus:outline-none rounded-sm px-3 py-1.5 hover:bg-(--cultured) transition-colors text-(--eerie-black)/70 hover:text-(--eerie-black)">
             <div className="flex items-center justify-center rounded-full transition-colors">
-              <CircleUser size={20} />
+              {user && user.profileImage ? (
+                <img src={user.profileImage} alt="Profile" className="w-6 h-6 rounded-full" />
+              ) : (
+                <CircleUser size={20} />
+              )}
             </div>
-            <span className="text-sm font-medium group-hover:text-black hidden pr-1 lg:block max-w-[100px] truncate">
+            <span className="text-sm font-medium group-hover:text-black hidden pr-1 md:block max-w-[100px] truncate">
               {user.username || "Account"}
             </span>
             <ChevronDown size={14} className="group-hover:text-black transition-transform duration-200 group-data-[state=open]:rotate-180" />
@@ -36,7 +40,7 @@ export default function ProfileDropdown({ user, onLogout }: ProfileDropdownProps
 
         <DropdownMenu.Portal>
           <DropdownMenu.Content 
-            className="min-w-[220px] bg-white rounded-xl shadow-lg border border-gray-100 p-2 text-sm animate-in fade-in zoom-in-95 duration-200 mt-2"
+            className="min-w-[240px] bg-white rounded-xl border border-gray-100 p-2 text-sm animate-in fade-in zoom-in-95 duration-200 mt-2"
             style={{ zIndex: 9999 }}
             sideOffset={5}
             align="end"
