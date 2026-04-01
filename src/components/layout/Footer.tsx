@@ -105,24 +105,20 @@ export default function Footer() {
             </li>
 
             <li>
-              <Link href="/" className="footer-link">
+              <Link href="/legal/terms-and-conditions" className="footer-link">
                 Terms & Conditions
               </Link>
             </li>
 
             <li>
-              <Link href="/" className="footer-link">
+              <Link href="/legal/privacy-policy" className="footer-link">
                 Privacy Policy
               </Link>
             </li>
 
 
 
-            <li>
-              <Link href="/" className="footer-link">
-                Shipping & Delivery
-              </Link>
-            </li>
+
 
 
           </ul>
@@ -179,15 +175,15 @@ export default function Footer() {
 
           <ul className="footer-bottom-list">
             <li>
-              <a href="#" className="footer-bottom-link">
+              <Link href="/legal/privacy-policy" className="footer-bottom-link">
                 Privacy Policy
-              </a>
+              </Link>
             </li>
 
             <li>
-              <a href="#" className="footer-bottom-link">
+              <Link href="/legal/terms-and-conditions" className="footer-bottom-link">
                 Terms & Conditions
-              </a>
+              </Link>
             </li>
 
             <li>

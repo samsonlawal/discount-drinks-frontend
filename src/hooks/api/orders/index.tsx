@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { OrderPayload } from "@/types";
+import { OrderPayload, PaginationMetadata } from "@/types";
 import { showErrorToast, showSuccessToast } from "@/utils/toaster";
 import OrderService from "@/services/orders";
 import { AxiosError } from "axios";
@@ -44,33 +44,36 @@ export const useCreateOrder = () => {
 export const useGetUserOrders = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [orders, setOrders] = useState<any[]>([]);
+  const [pagination, setPagination] = useState<PaginationMetadata | null>(null);
 
-  const fetchUserOrders = useCallback(async (userId: string) => {
+  const fetchUserOrders = useCallback(async (userId: string, query?: Record<string, string | number>) => {
     if (!userId) {
       console.warn("useGetUserOrders: fetch called with empty userId");
       return;
     }
     setLoading(true);
-    console.log("useGetUserOrders: fetching orders for userId", userId);
+    console.log("useGetUserOrders: fetching orders for userId", userId, "with query", query);
     try {
-      const res = await OrderService.getUserOrders(userId);
+      const res = await OrderService.getUserOrders(userId, query);
       console.log("useGetUserOrders: SUCCESS API Response", res.data);
       
-      // Extract orders array from various possible backend formats
-      const rawData = res.data?.data || res.data?.orders || res.data?.order || res.data;
-      const finalOrders = Array.isArray(rawData) ? rawData : [];
+      // Extract orders and pagination from backend format: { success, data, pagination }
+      const finalOrders = Array.isArray(res.data?.data) ? res.data.data : [];
+      const paginationData = res.data?.pagination || null;
       
       console.log("useGetUserOrders: Final Orders", finalOrders);
       setOrders(finalOrders);
+      setPagination(paginationData);
     } catch (error: any) {
       console.error("[useGetUserOrders] Failed to fetch orders:", error);
       setOrders([]);
+      setPagination(null);
     } finally {
       setLoading(false);
     }
   }, []);
 
-  return { fetchUserOrders, orders, loading };
+  return { fetchUserOrders, orders, pagination, loading };
 };
 
 export const useGetOrderDetails = () => {

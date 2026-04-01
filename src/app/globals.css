@@ -114,7 +114,6 @@ html {
 
 body {
   background: var(--white);
-  padding-block: 70px;
 }
 
 /*-----------------------------------*\
@@ -251,20 +250,7 @@ h3 > a {
  * #HEADER
 \*-----------------------------------*/
 
-.header-search {
-  display: none;
-}
-
-.header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  background: var(--white);
-  width: 100%;
-  padding-block: 20px;
-  z-index: 4;
-  transition: var(--transition-1);
-}
+/* Header styles consolidated in style.css */
 
 .header.active {
   position: fixed;
@@ -342,6 +328,7 @@ h3 > a {
   .header-wishlist-desktop {
     display: none !important;
   }
+
 }
 
 /* Navbar wishlist item — mobile only */
@@ -365,39 +352,11 @@ h3 > a {
   font-weight: var(--fw-600);
 }
 
-.header-action-btn .user-badge {
-  position: absolute;
-  bottom: -5px;
-  right: 0;
-  background: var(--background, var(--eerie-black));
-  width: 10px;
-  height: 10px;
-  display: grid;
-  place-items: center;
-  line-height: 0;
-  font-size: 8px;
-  color: var(--white);
-  border-radius: 50%;
-}
 
-.header-action-btn .btn-badge {
-  position: absolute;
-  top: -5px;
-  right: 0;
-  background: var(--background, var(--eerie-black));
-  width: 20px;
-  height: 20px;
-  display: grid;
-  place-items: center;
-  line-height: 0;
-  font-size: 13px;
-  color: var(--white);
-  border-radius: 50%;
-}
 
-.header-action-btn .btn-badge.green {
-  --background: var(--middle-blue-green);
-}
+
+
+
 
 .navbar {
   background: var(--white);
@@ -1055,6 +1014,46 @@ h3 > a {
   padding-inline: 30px;
   white-space: nowrap;
   flex-shrink: 0;
+}
+
+.newsletter-card .btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.newsletter-success {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: hsla(145, 60%, 95%, 1);
+  color: hsla(145, 50%, 30%, 1);
+  border: 1px solid hsla(145, 50%, 75%, 1);
+  border-radius: 8px;
+  padding: 14px 20px;
+  max-width: 600px;
+  margin-inline: auto;
+  font-weight: var(--fw-500);
+  font-size: var(--fs-8);
+}
+
+.newsletter-error {
+  color: hsla(0, 65%, 45%, 1);
+  font-size: var(--fs-9);
+  margin-top: 10px;
+  text-align: center;
+}
+
+@keyframes spin {
+  to { transform: translateY(-50%) rotate(360deg); }
+}
+
+.newsletter-card .spin {
+  animation: spin-icon 0.8s linear infinite;
+}
+
+@keyframes spin-icon {
+  to { transform: rotate(360deg); }
 }
 
 /*-----------------------------------*\
@@ -1737,8 +1736,8 @@ h3 > a {
 
 /* Icon-only filter toggle button */
 .filter-icon-btn {
-  /* width: 40px; */
-  /* height: 40px; */
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1749,7 +1748,6 @@ h3 > a {
   cursor: pointer;
   transition: all 0.2s ease;
   flex-shrink: 0;
-  padding: 8px
 }
 
 .filter-icon-btn:hover {
@@ -2088,8 +2086,9 @@ h3 > a {
 
 .filter-panel__count {
   font-size: var(--fs-10);
-  color: var(--sonic-silver);
-  font-weight: var(--fw-400);
+  color: var(--eerie-black);
+  font-weight: var(--fw-500);
+  opacity: 0.7;
 }
 
 .filter-panel__heading {
@@ -2099,17 +2098,18 @@ h3 > a {
 }
 
 .filter-panel__close {
-  width: 32px;
-  height: 32px;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: transparent;
+  background: var(--cultured);
   border: none;
   cursor: pointer;
   color: var(--eerie-black);
-  border-radius: 6px;
-  transition: background 0.2s ease;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
 }
 
 .filter-panel__close:hover {
@@ -2169,6 +2169,7 @@ h3 > a {
   .filter-panel__inner {
     width: 100% !important;
     padding: 24px 20px;
+    padding-top: calc(var(--header-height, 70px) + 20px);
     border-right: none;
   }
 }

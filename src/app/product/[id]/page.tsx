@@ -8,9 +8,9 @@ import { products } from "@/data"; // still used for related products fallback
 import { useCart } from "@/contexts/CartContext";
 import ProductCard from "@/components/products/ProductCard";
 import ProductCardSkeleton from "@/components/products/ProductCardSkeleton";
-import { CheckCircle2, Heart, ShoppingCart } from "lucide-react";
+import { CheckCircle2, Heart, ShoppingCart, Grape, Wine } from "lucide-react";
 import { useWishlist } from "@/contexts/WishlistContext";
-import { useGetProductById } from "@/hooks/api/products";
+import { useGetProductById, useGetProducts } from "@/hooks/api/products";
 
 export default function ProductDetailPage() {
   const params = useParams();
@@ -19,6 +19,9 @@ export default function ProductDetailPage() {
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   
   const { product: apiProduct, loading, fetchProduct } = useGetProductById();
+  const { products: apiRelatedProducts, loading: relatedLoading, fetchProducts: fetchRelatedProducts } = useGetProducts();
+  
+  const [loadingIconIndex, setLoadingIconIndex] = useState(0);
 
   // Try to find in mock if API fails/isn't set up yet, to avoid totally breaking
   const mockFallback = products.find((p) => p.id === productId || p._id === productId);
@@ -35,6 +38,16 @@ export default function ProductDetailPage() {
   }, [productId]);
 
   useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (loading) {
+      interval = setInterval(() => {
+        setLoadingIconIndex((prev) => (prev + 1) % 3);
+      }, 800);
+    }
+    return () => clearInterval(interval);
+  }, [loading]);
+
+  useEffect(() => {
     if (product) {
       const productImage = product.image || (product as any).imageUrl || (product as any).thumbnail || (product as any).images?.[0] || "/images/product-1.jpg";
       setActiveImage(productImage);
@@ -44,14 +57,31 @@ export default function ProductDetailPage() {
         : [productImage, "/images/product-1.jpg", "/images/product-2.jpg", "/images/product-4.jpg"];
       
       setGalleryImages(Array.from(new Set(imagesList as string[])));
+
+      // Fetch related products from the same category
+      if ((product as any).category) {
+        const categoryId = (product as any).category.id || (product as any).category._id || (product as any).category;
+        if (categoryId) {
+          fetchRelatedProducts({ category: categoryId });
+        }
+      }
     }
   }, [product]);
 
   if (loading && !product) {
+    const icons = [
+      <Grape key="grapes" size={48} />,
+      <svg key="barrel" viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 10c0 1 0 3 0 4"/><path d="M19 10c0 1 0 3 0 4"/><path d="M2 7c0-1.7 4.5-3 10-3s10 1.3 10 3"/><path d="M22 17c0 1.7-4.5 3-10 3s-10-1.3-10-3"/><path d="M2 7v10"/><path d="M22 7v10"/><path d="M2 12h20"/><path d="M12 4v16"/></svg>,
+      <Wine key="wine" size={48} />
+    ];
+
     return (
       <main className="min-h-screen flex items-center justify-center py-20 px-4">
-        <div className="text-center">
-          <p className="text-xl md:text-2xl font-medium text-gray-600 animate-pulse">Loading product details...</p>
+        <div className="flex flex-col items-center gap-6">
+          <div className="text-(--ocean-green) transition-all duration-500 transform scale-125 animate-bounce">
+            {icons[loadingIconIndex]}
+          </div>
+          <p className="text-sm font-medium text-gray-400 tracking-widest uppercase">Preparing your drink...</p>
         </div>
       </main>
     );
@@ -72,9 +102,10 @@ export default function ProductDetailPage() {
     );
   }
 
-  const relatedProducts = products
-    .filter((p) => p.id !== productId)
-    .slice(0, 4);
+  const currentProductId = product.id || (product as any)._id;
+  const relatedProducts = apiRelatedProducts.length > 0 
+    ? apiRelatedProducts.filter((p) => (p.id || (p as any)._id) !== currentProductId).slice(0, 4)
+    : products.filter((p) => p.id !== productId).slice(0, 4);
 
   const handleAddToCart = () => {
     addToCart(product);
@@ -122,7 +153,7 @@ export default function ProductDetailPage() {
                
                 
                 {/* Thumbnails */}
-                <div className="flex flex-row md:flex-col gap-2 md:gap-4 mt-8 h-fit w-fit justify-center py-4px-2">
+                <div className="flex flex-row md:flex-col gap-2 md:gap-4 h-fit w-fit justify-center py-4px-2">
                   {Array.from({ length: 5 }).map((_, idx) => {
                     const img = galleryImages[idx];
                     const hasImage = !!img && !(typeof img === 'string' && (img.trim() === '' || img === 'null' || img === 'undefined'));
@@ -133,7 +164,7 @@ export default function ProductDetailPage() {
                         key={idx}
                         onClick={() => hasImage && setActiveImage(img)}
                         disabled={!hasImage}
-                        className={`relative shrink-0 rounded-md overflow-hidden transition-all duration-200 w-8 h-8 sm:w-12 sm:h-12 ${
+                        className={`relative shrink-0 rounded-sm overflow-hidden transition-all duration-200 w-8 h-8 sm:w-12 sm:h-12 ${
                           isActive
                             ? "ring-2 ring-black ring-offset-1 opacity-100"
                             : hasImage
@@ -276,8 +307,8 @@ export default function ProductDetailPage() {
           {/* Related Products */}
           <section className="section">
             <h2 className="h2 section-title">Related Products</h2>
-            <ul className="product-list">
-              {loading ? (
+            <ul className="product-list flex flex-row flex-wrap !justify-center items-center">
+              {relatedLoading ? (
                 Array.from({ length: 4 }).map((_, index) => (
                   <li key={index}>
                     <ProductCardSkeleton />
@@ -285,7 +316,7 @@ export default function ProductDetailPage() {
                 ))
               ) : (
                 relatedProducts.map((relatedProduct: any) => (
-                  <li key={relatedProduct.id}>
+                  <li key={relatedProduct.id || relatedProduct._id}>
                     <ProductCard product={relatedProduct} />
                   </li>
                 ))

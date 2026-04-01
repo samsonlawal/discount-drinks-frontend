@@ -2,19 +2,21 @@ import { useState } from "react";
 import { showErrorToast, showSuccessToast } from "@/utils/toaster";
 import { AxiosError } from "axios";
 import ProductsService from "@/services/products";
-import { Product } from "@/types";
+import { Product, PaginationMetadata } from "@/types";
 
 // Hook for fetching products
 export const useGetProducts = () => {
   const [loading, setLoading] = useState(false);
   const [products, setProducts] = useState<Product[]>([]);
+  const [pagination, setPagination] = useState<PaginationMetadata | null>(null);
 
   const fetchProducts = async (query?: Record<string, string | number>) => {
     setLoading(true);
     try {
       const res = await ProductsService.getProducts(query || {});
       console.log("res", res)
-      setProducts(res?.data?.data);
+      setProducts(res?.data?.data || []);
+      setPagination(res?.data?.pagination || null);
       return res?.data?.data as Product[];
     } catch (error: Error | AxiosError | any) {
       showErrorToast({
@@ -27,7 +29,7 @@ export const useGetProducts = () => {
     }
   };
 
-  return { loading, products, fetchProducts };
+  return { loading, products, pagination, fetchProducts };
 };
 
 // Hook for fetching a single product by ID

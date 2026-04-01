@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { showErrorToast, showSuccessToast } from "@/utils/toaster";
 import { AxiosError } from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { setAuthState } from "@/redux/Slices/authSlice";
+import { RootState } from "@/redux/store";
 import UsersService from "@/services/users";
 import { User } from "@/types";
 
@@ -300,4 +303,91 @@ export const useUpdateUserAddress = () => {
   };
 
   return { loading, updateAddress };
+};
+
+// Hook for updating current user's profile
+export const useUpdateProfile = () => {
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const { user } = useSelector((state: RootState) => state.auth);
+
+  const updateProfile = async (data: any) => {
+    const userId = user?.id || user?._id || (user as any)?.userId;
+    if (!userId) {
+      showErrorToast({ message: "User session not found. Please log in again." });
+      return null;
+    }
+
+    setLoading(true);
+    try {
+      const res = await UsersService.updateProfile({ userId, data });
+      const updatedUser = res?.data?.data || res?.data?.user || res?.data;
+      
+      // Update Redux state with merged user data to preserve fields like id/_id
+      dispatch(setAuthState({ 
+        user: user ? { ...user, ...updatedUser } : updatedUser 
+      }));
+      
+      showSuccessToast({
+        message: res?.data?.message || "Profile updated successfully!",
+        description: "Your changes have been saved.",
+      });
+      return updatedUser;
+    } catch (error: Error | AxiosError | any) {
+      showErrorToast({
+        message: error?.response?.data?.message || "Failed to update profile",
+        description: error?.response?.data?.description || "Please try again later.",
+      });
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { loading, updateProfile };
+};
+
+// Hook for uploading profile image
+export const useUploadProfileImage = () => {
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  const { user } = useSelector((state: RootState) => state.auth);
+
+  const uploadImage = async (file: File) => {
+    const userId = user?.id || user?._id ||user.userId;
+    if (!userId) {
+      showErrorToast({ message: "User session not found. Please log in again." });
+      return null;
+    }
+
+    setLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append("image", file); // Key matches backend expectation
+
+      const res = await UsersService.uploadProfileImage({ userId, formData });
+      const updatedUser = res?.data?.data || res?.data?.user || res?.data;
+
+      // Update Redux state with merged user data
+      dispatch(setAuthState({ 
+        user: user ? { ...user, ...updatedUser } : updatedUser 
+      }));
+
+      showSuccessToast({
+        message: res?.data?.message || "Image uploaded successfully!",
+        description: "Your profile picture has been updated.",
+      });
+      return updatedUser;
+    } catch (error: Error | AxiosError | any) {
+      showErrorToast({
+        message: error?.response?.data?.message || "Failed to upload image",
+        description: error?.response?.data?.description || "Please check the file format and size.",
+      });
+      return null;
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return { loading, uploadImage };
 };

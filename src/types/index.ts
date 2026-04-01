@@ -72,7 +72,11 @@ export interface User {
   name?: string;
   username?: string;
   role?: string;
-  isActive?: boolean;
+  gender?: string;
+  phone?: string;
+  dob?: string;
+  profileImage?: string;
+  image?: string;
   addresses?: any[];
 }
 
@@ -121,4 +125,11 @@ export interface OrderResponse {
   message: string;
   orderId?: string;
   order?: any;
+}
+
+export interface PaginationMetadata {
+  total: number;
+  page: number;
+  limit: number;
+  pages: number;
 }

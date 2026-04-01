@@ -5,6 +5,7 @@ import React, {
   useContext,
   useState,
   useEffect,
+  useCallback,
   ReactNode,
 } from "react";
 import { CartItem, Product } from "@/types";
@@ -118,9 +119,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
     );
   };
 
-  const clearCart = () => {
+  const clearCart = useCallback(() => {
     setCart([]);
-  };
+  }, []);
 
   const getCartTotal = () => {
     return cart.reduce((total, item) => total + (item.costPrice ?? item.price) * item.quantity, 0);

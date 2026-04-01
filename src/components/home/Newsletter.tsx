@@ -1,17 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
-import { Mail, ArrowRight } from "lucide-react";
+import React from "react";
+import { Mail, ArrowRight, CheckCircle, Loader2 } from "lucide-react";
+import { useNewsletter } from "@/hooks/api/useNewsletter";
 
 export default function Newsletter() {
-  const [email, setEmail] = useState("");
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle newsletter subscription
-    console.log("Newsletter subscription:", email);
-    setEmail("");
-  };
+  const { email, setEmail, isSubmitting, submitted, error, handleSubmit } =
+    useNewsletter();
 
   return (
     <section className="section newsletter">
@@ -27,27 +22,49 @@ export default function Newsletter() {
             launches and wine selections.
           </p>
 
-          <form onSubmit={handleSubmit} className="card-form">
-            <div className="input-wrapper">
-              <Mail size={20} />
-
-              <input
-                type="email"
-                name="email"
-                placeholder="Enter your email"
-                required
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="input-field"
-              />
+          {submitted ? (
+            <div className="newsletter-success">
+              <CheckCircle size={22} />
+              <span>You&apos;re subscribed! Check your inbox for a welcome email.</span>
             </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="card-form">
+              <div className="input-wrapper">
+                <Mail size={20} />
 
-            <button type="submit" className="btn btn-primary">
-              <span>Subscribe</span>
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Enter your email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="input-field"
+                  disabled={isSubmitting}
+                />
+              </div>
 
-              <ArrowRight size={20} aria-hidden="true" />
-            </button>
-          </form>
+              <button
+                type="submit"
+                className="btn btn-primary"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 size={18} className="spin" />
+                    <span>Subscribing…</span>
+                  </>
+                ) : (
+                  <>
+                    <span>Subscribe</span>
+                    <ArrowRight size={20} aria-hidden="true" />
+                  </>
+                )}
+              </button>
+            </form>
+          )}
+
+          {error && <p className="newsletter-error">{error}</p>}
         </div>
       </div>
     </section>
