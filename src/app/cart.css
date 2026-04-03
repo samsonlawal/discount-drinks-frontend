@@ -59,13 +59,21 @@
    ============================================ */
 
 .cart-main {
-  padding-block: 30px 60px;
+  padding-block: 80px 60px;
   min-height: 60vh;
+}
+
+/* Big screens (Desktop) */
+@media (min-width: 1024px) {
+.cart-main {
+  padding-block: 40px 60px;
+  min-height: 60vh;
+}
 }
 
 /* Breadcrumb */
 .breadcrumb {
-  margin-bottom: 30px;
+  margin-bottom: 30px
 }
 
 .breadcrumb-list {

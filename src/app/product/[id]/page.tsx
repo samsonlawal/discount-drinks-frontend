@@ -149,11 +149,11 @@ export default function ProductDetailPage() {
           <section className="section product-detail">
             <div className="product-detail-grid">
               {/* Product Image */}
-              <div className="product-showcase gap-3 flex-col-reverse md:flex-row bg-[red]">
+              <div className="product-showcase gap-3 flex-col-reverse bg-[red]">
                
                 
                 {/* Thumbnails */}
-                <div className="flex flex-row md:flex-col gap-2 md:gap-4 h-fit w-fit justify-center py-4px-2">
+                <div className="flex flex-row gap-2 md:gap-4 h-fit w-full items-center justify-center py-2 px-2">
                   {Array.from({ length: 5 }).map((_, idx) => {
                     const img = galleryImages[idx];
                     const hasImage = !!img && !(typeof img === 'string' && (img.trim() === '' || img === 'null' || img === 'undefined'));
@@ -207,10 +207,10 @@ export default function ProductDetailPage() {
                   </span>
                 )}
 
-                <h1 className="h2 product-title">{product.name}</h1>
+                <h1 className="text-[22px] md:h3 font-medium product-title leading-5">{product.name}</h1>
 
                 <div className="price-wrapper">
-                  <data className="price" value={(product.costPrice ?? product.price) || 0}>
+                  <data className="price font-medium text-[24px] md:text-[30px]" value={(product.costPrice ?? product.price) || 0}>
                     £{Number((product.costPrice ?? product.price) || 0).toFixed(2)}
                   </data>
                   {(product.originalPrice || product.basePrice) && (
@@ -248,21 +248,21 @@ export default function ProductDetailPage() {
 
                 <div className="product-actions mt-4">
                   <button 
-                    className="btn btn-primary flex gap-2" 
+                    className="btn btn-primary flex gap-2 h-[80px]" 
                     onClick={handleAddToCart}
                     disabled={isProductInCart}
                   >
                     <ShoppingCart className="w-5 h-5" />
                     <span>{isProductInCart ? "In Cart" : "Add to Cart"}</span>
                   </button>
-                  <button 
+                  {/* <button 
                     className={`btn btn-outline flex gap-2 wishlist-detail-btn ${inWishlist ? "active" : ""}`}
                     onClick={handleWishlistToggle}
                     aria-label={inWishlist ? "Remove from Wishlist" : "Add to Wishlist"}
                   >
                     <Heart className="w-5 h-5 shrink-0" fill={inWishlist ? "currentColor" : "none"} />
                     <span className="wishlist-text">{inWishlist ? "In Wishlist" : "Wishlist"}</span>
-                  </button>
+                  </button> */}
                 </div>
 
 

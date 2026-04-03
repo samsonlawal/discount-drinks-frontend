@@ -41,7 +41,7 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
   const isRootProfilePage = pathname === "/user/profile";
 
   return (
-    <main className="min-h-screen pb-10 pt-[60px] lg:pt-[100px]">
+    <main className="min-h-screen pb-10 pt-[60px] lg:pt-[10px]">
       <div className="container max-w-6xl">
         
         {/* Main Interface Wrapper */}

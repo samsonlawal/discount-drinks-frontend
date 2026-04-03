@@ -18,6 +18,7 @@ interface Address {
   city: string;
   state: string;
   postCode: string;
+  country: string;
   phone: string;
   isDefault: boolean;
 }
@@ -78,6 +79,7 @@ export default function ProfileAddressesPage() {
     city: "",
     state: "",
     postCode: "",
+    country: "United Kingdom", // Defaulting to UK as it's the primary market
     phone: "",
     isDefault: false,
   });
@@ -93,6 +95,7 @@ export default function ProfileAddressesPage() {
         city: address.city,
         state: address.state,
         postCode: address.postCode,
+        country: address.country || "United Kingdom",
         phone: address.phone,
         isDefault: address.isDefault,
       });
@@ -106,6 +109,7 @@ export default function ProfileAddressesPage() {
         city: "",
         state: "",
         postCode: "",
+        country: "United Kingdom",
         phone: "",
         isDefault: addresses.length === 0, // Auto-default if it's the first one
       });
@@ -277,6 +281,11 @@ export default function ProfileAddressesPage() {
             </div>
 
             <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Country</label>
+              <input required type="text" name="country" value={formData.country} onChange={handleInputChange} placeholder="e.g. United Kingdom" className="w-full px-4 py-3 bg-white !border !border-solid !border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1a1a1a] focus:!border-transparent outline-none transition-all text-gray-900" />
+            </div>
+
+            <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
               <input required type="tel" name="phone" value={formData.phone} onChange={handleInputChange} className="w-full px-4 py-3 bg-white !border !border-solid !border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1a1a1a] focus:!border-transparent outline-none transition-all text-gray-900" />
             </div>
@@ -351,6 +360,7 @@ export default function ProfileAddressesPage() {
                     <p>{address.addressLine1}</p>
                     {address.addressLine2 && <p>{address.addressLine2}</p>}
                     <p>{address.city}, {address.state} {address.postCode}</p>
+                    <p>{address.country}</p>
                     {/* <p className="pt-2 flex items-center gap-1">
                       <span className="text-gray-400">T:</span> {address.phone}
                     </p> */}

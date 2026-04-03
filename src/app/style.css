@@ -45,7 +45,14 @@
    * spacing
    */
 
-  --section-padding: 60px;
+  --section-padding: 80px;
+}
+
+/* Big screens (Desktop) */
+@media (min-width: 1024px) {
+  :root {
+    --section-padding: 40px;
+  }
 }
 
 /*-----------------------------------*\
@@ -1069,8 +1076,8 @@ h3 > a {
 }
 
 .product-title {
-  margin-bottom: 0px;
-  font-weight: var(--fw-500);
+  margin-bottom: 10px;
+  font-weight: var(--fw-400);
 
 }
 
@@ -1083,7 +1090,7 @@ h3 > a {
 
 .price {
   color: var(--eerie-black);
-  font-size: var(--fs-5);
+  /* font-size: var(--fs-5); */
   font-weight: var(--fw-400);
 }
 

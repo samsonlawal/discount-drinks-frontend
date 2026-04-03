@@ -100,7 +100,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
       <div className="card-content flex flex-row justify-between">
           <div className="flex flex-col">
-                    <h3 className="h5 card-title">
+                    <h3 className="text-sm leading-5 card-title line-clamp-1 overflow-hidden">
           <a href={`/product/${productId}`}>{product.name}</a>
         </h3>
 
