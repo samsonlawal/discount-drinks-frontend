@@ -222,10 +222,9 @@ export default function ProductDetailPage() {
 
                 <div className="product-description">
                   {product.description ? (
-                    <div 
-                      className="w-full text-gray-700" 
-                      dangerouslySetInnerHTML={{ __html: product.description }} 
-                    />
+                    <p className="w-full text-gray-700 whitespace-pre-wrap">
+                      {product.description}
+                    </p>
                   ) : (
                     <p className="w-full text-gray-500 italic">
                       No description available for this product.
