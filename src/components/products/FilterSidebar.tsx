@@ -99,8 +99,8 @@ export default function FilterSidebar({
               {categories.map((category) => (
                 <li key={category._id || category.id || category.name}>
                   <button
-                    onClick={() => onCategoryChange(category.name)}
-                    className={`filter-chip ${selectedCategory === category.name ? "filter-chip--active" : ""}`}
+                    onClick={() => onCategoryChange(category._id || category.id)}
+                    className={`filter-chip ${selectedCategory === (category._id || category.id) ? "filter-chip--active" : ""}`}
                   >
                     {category.name}
                   </button>
@@ -124,8 +124,8 @@ export default function FilterSidebar({
               {badges.map((badge) => (
                 <li key={badge._id || badge.id || badge.name}>
                   <button
-                    onClick={() => onBadgeChange(badge.name)}
-                    className={`filter-chip ${selectedBadge === badge.name ? "filter-chip--active" : ""}`}
+                    onClick={() => onBadgeChange(badge._id || badge.id || badge.name)}
+                    className={`filter-chip ${selectedBadge === (badge._id || badge.id || badge.name) ? "filter-chip--active" : ""}`}
                   >
                     {badge.name}
                   </button>
@@ -149,8 +149,8 @@ export default function FilterSidebar({
               {brands.map((brand) => (
                 <li key={brand._id || brand.id || brand.name}>
                   <button
-                    onClick={() => onBrandChange(brand.name)}
-                    className={`filter-chip ${selectedBrand === brand.name ? "filter-chip--active" : ""}`}
+                    onClick={() => onBrandChange(brand._id || brand.id)}
+                    className={`filter-chip ${selectedBrand === (brand._id || brand.id) ? "filter-chip--active" : ""}`}
                   >
                     {brand.name}
                   </button>
