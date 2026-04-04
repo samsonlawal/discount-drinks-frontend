@@ -8,7 +8,7 @@ import { products } from "@/data"; // still used for related products fallback
 import { useCart } from "@/contexts/CartContext";
 import ProductCard from "@/components/products/ProductCard";
 import ProductCardSkeleton from "@/components/products/ProductCardSkeleton";
-import { CheckCircle2, Heart, ShoppingCart, Grape, Wine } from "lucide-react";
+import { CheckCircle2, Heart, ShoppingCart, Grape, Wine, ShieldCheck, RotateCcw, Truck } from "lucide-react";
 import { useWishlist } from "@/contexts/WishlistContext";
 import { useGetProductById, useGetProducts } from "@/hooks/api/products";
 
@@ -103,9 +103,9 @@ export default function ProductDetailPage() {
   }
 
   const currentProductId = product.id || (product as any)._id;
-  const relatedProducts = apiRelatedProducts.length > 0 
-    ? apiRelatedProducts.filter((p) => (p.id || (p as any)._id) !== currentProductId).slice(0, 4)
-    : products.filter((p) => p.id !== productId).slice(0, 4);
+  const relatedProducts = apiRelatedProducts
+    .filter((p) => (p.id || (p as any)._id) !== currentProductId)
+    .slice(0, 4);
 
   const handleAddToCart = () => {
     addToCart(product);
@@ -209,6 +209,29 @@ export default function ProductDetailPage() {
 
                 <h1 className="text-[22px] md:h3 font-medium product-title leading-5">{product.name}</h1>
 
+                <div className="flex flex-wrap items-center gap-2 mt-2 mb-4 text-sm">
+                  {product.brand && (
+                    <span className="text-gray-500">
+                      Brand: <span className="text-(--eerie-black) font-medium">{(product.brand as any).name || product.brand}</span>
+                    </span>
+                  )}
+                  {product.brand && (product.category || (product as any).type) && <span className="text-gray-300">|</span>}
+                  
+                  {product.category && (
+                    <span className="text-gray-500">
+                      Category: <span className="text-(--eerie-black) font-medium">{(product.category as any).name || product.category}{(product as any).subCategory ? `, ${(product as any).subCategory.name || (product as any).subCategory}` : ""}</span>
+                    </span>
+                  )}
+
+                  {(product.category || product.brand) && (product as any).type && <span className="text-gray-300">|</span>}
+
+                  {(product as any).type && (
+                    <span className="text-gray-500">
+                      Type: <span className="text-(--eerie-black) font-medium">{(product as any).type.name || (product as any).type}</span>
+                    </span>
+                  )}
+                </div>
+
                 <div className="price-wrapper">
                   <data className="price font-medium text-[24px] md:text-[30px]" value={(product.costPrice ?? product.price) || 0}>
                     £{Number((product.costPrice ?? product.price) || 0).toFixed(2)}
@@ -220,9 +243,33 @@ export default function ProductDetailPage() {
                   )}
                 </div>
 
+                
+                <div className="product-actions mb-3">
+                  <button 
+                    className="btn btn-primary flex gap-2 h-[60px]" 
+                    onClick={handleAddToCart}
+                    disabled={isProductInCart}
+                  >
+                    <ShoppingCart className="w-5 h-5" />
+                    <span>{isProductInCart ? "In Cart" : "Add to Cart"}</span>
+                  </button>
+                  {/* <button 
+                    className={`btn btn-outline flex gap-2 wishlist-detail-btn ${inWishlist ? "active" : ""}`}
+                    onClick={handleWishlistToggle}
+                    aria-label={inWishlist ? "Remove from Wishlist" : "Add to Wishlist"}
+                  >
+                    <Heart className="w-5 h-5 shrink-0" fill={inWishlist ? "currentColor" : "none"} />
+                    <span className="wishlist-text">{inWishlist ? "In Wishlist" : "Wishlist"}</span>
+                  </button> */}
+                </div>
+
                 <div className="product-description">
+                  <p className="text-(--eerie-black) font-medium whitespace-pre-wrap pt-[12px] pb-[6px]">
+                    Product Details
+                  </p>
+
                   {product.description ? (
-                    <p className="w-full text-gray-700 whitespace-pre-wrap">
+                    <p className="w-full text-(--sonic-silver) whitespace-pre-wrap">
                       {product.description}
                     </p>
                   ) : (
@@ -245,24 +292,6 @@ export default function ProductDetailPage() {
                   </div>
                 )}
 
-                <div className="product-actions mt-4">
-                  <button 
-                    className="btn btn-primary flex gap-2 h-[80px]" 
-                    onClick={handleAddToCart}
-                    disabled={isProductInCart}
-                  >
-                    <ShoppingCart className="w-5 h-5" />
-                    <span>{isProductInCart ? "In Cart" : "Add to Cart"}</span>
-                  </button>
-                  {/* <button 
-                    className={`btn btn-outline flex gap-2 wishlist-detail-btn ${inWishlist ? "active" : ""}`}
-                    onClick={handleWishlistToggle}
-                    aria-label={inWishlist ? "Remove from Wishlist" : "Add to Wishlist"}
-                  >
-                    <Heart className="w-5 h-5 shrink-0" fill={inWishlist ? "currentColor" : "none"} />
-                    <span className="wishlist-text">{inWishlist ? "In Wishlist" : "Wishlist"}</span>
-                  </button> */}
-                </div>
 
 
 
@@ -279,6 +308,12 @@ export default function ProductDetailPage() {
                                 <td className="specs-value">{value}</td>
                               </tr>
                             ),
+                          )}
+                          {(product as any).shippingWeight && (
+                            <tr className="specs-row">
+                              <th className="specs-key uppercase w-[50%] md:w-[30%]">Weight</th>
+                              <td className="specs-value">{(product as any).shippingWeight}</td>
+                            </tr>
                           )}
                         </tbody>
                       </table>
@@ -300,28 +335,64 @@ export default function ProductDetailPage() {
                   </li>
                 </ul> */}
               </div>
+
+              {/* Product Contact Card */}
+              <div className="bg-white border border-gray-100 rounded-xl p-[24px] transition-all duration-300 hover:border-gray-200 lg:sticky lg:top-[120px]">
+                {/* <h3 className="text-lg font-semibold text-[#111827] mb-3">Ask a Question</h3> */}
+                {/* <p className="text-sm text-gray-500 leading-relaxed mb-1">
+                  If you have questions about this product, our wine experts are here to help.
+                </p>
+                <Link href="/contact" className="btn btn-outline w-full h-[54px] flex items-center justify-center gap-2 mt-4 hover:bg-black hover:text-white transition-all duration-300">
+                  Contact Us
+                </Link> */}
+
+                <h3 className="text-lg font-medium text-[#111827] mb-3">What We Offer</h3>
+
+                
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3 text-sm text-gray-600">
+                    <ShieldCheck className="w-5 h-5 flex-shrink-0" style={{ color: "hsl(353, 42%, 32%)" }} />
+                    <span>Safe & Secure checkout</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-sm text-gray-600">
+                    <RotateCcw className="w-5 h-5 flex-shrink-0" style={{ color: "hsl(353, 42%, 32%)" }} />
+                    <span>Easy returns</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-sm text-gray-600">
+                    <Truck className="w-5 h-5 flex-shrink-0" style={{ color: "hsl(353, 42%, 32%)" }} />
+                    <span>Free delivery across UK</span>
+                  </div>
+                </div>
+              </div>
             </div>
           </section>
 
           {/* Related Products */}
-          <section className="section">
-            <h2 className="h2 section-title">Related Products</h2>
-            <ul className="product-list flex flex-row flex-wrap !justify-center items-center">
-              {relatedLoading ? (
-                Array.from({ length: 4 }).map((_, index) => (
+          {!relatedLoading && relatedProducts.length > 0 && (
+            <section className="section">
+              <h2 className="h2 section-title">Related Products</h2>
+              <ul className="product-list flex flex-row flex-wrap !justify-center items-center">
+                {relatedProducts.map((relatedProduct: any) => (
+                    <li key={relatedProduct.id || relatedProduct._id}>
+                      <ProductCard product={relatedProduct} />
+                    </li>
+                  ))}
+              </ul>
+            </section>
+          )}
+
+          {relatedLoading && (
+            <section className="section">
+              <h2 className="h2 section-title">Related Products</h2>
+              <ul className="product-list flex flex-row flex-wrap !justify-center items-center">
+                {Array.from({ length: 4 }).map((_, index) => (
                   <li key={index}>
                     <ProductCardSkeleton />
                   </li>
-                ))
-              ) : (
-                relatedProducts.map((relatedProduct: any) => (
-                  <li key={relatedProduct.id || relatedProduct._id}>
-                    <ProductCard product={relatedProduct} />
-                  </li>
-                ))
-              )}
-            </ul>
-          </section>
+                ))}
+              </ul>
+            </section>
+          )}
         </div>
       </section>
 

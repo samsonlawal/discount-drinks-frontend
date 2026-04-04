@@ -173,7 +173,7 @@ export default function Footer() {
             &copy; 2025 <Link href="/">DiscountDrinks</Link>. All Rights Reserved
           </p>
 
-          <ul className="footer-bottom-list">
+          {/* <ul className="footer-bottom-list">
             <li>
               <Link href="/legal/privacy-policy" className="footer-bottom-link">
                 Privacy Policy
@@ -191,7 +191,7 @@ export default function Footer() {
                 Sitemap
               </a>
             </li>
-          </ul>
+          </ul> */}
 
           <div className="payment">
             <p className="payment-title">We Support</p>

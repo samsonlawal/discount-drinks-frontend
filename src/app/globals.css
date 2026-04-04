@@ -230,7 +230,7 @@ h3 > a {
 
 /* Match spacing on product detail and cart pages */
 .section.product-detail {
-  padding-top: 20px;
+  padding-top: 0px;
 }
 
 /* .cart-main {
@@ -2229,7 +2229,15 @@ ion-icon {
 .product-detail-grid {
   display: grid;
   gap: 40px;
-  grid-template-columns: 1fr
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 992px) {
+  .product-detail-grid {
+    grid-template-columns: 1fr 1fr 320px;
+    align-items: start;
+    gap: 40px;
+  }
 }
 
 .product-showcase {
@@ -2323,16 +2331,16 @@ ion-icon {
   margin: 20px 0px;
   width: 100%
 }
-
+/* 
 .specs-row {
   border-bottom: 1px solid var(--cultured)
 }
 
 .specs-row:first-child {
   border-top: 1px solid var(--cultured)
-}
+} */
 
-.specs-key {
+/* .specs-key {
   color: var(--eerie-black);
   font-size: var(--fs-9);
   font-weight: var(--fw-600);
@@ -2346,11 +2354,11 @@ ion-icon {
   font-size: var(--fs-9);
   padding: 8px 0;
   vertical-align: top
-}
+} */
 
 .product-description {
-  margin-bottom: 10px;
-  padding-block: 10px
+  /* margin-bottom: 10px; */
+  /* padding-block: 10px */
 }
 
 .product-description p {

@@ -226,7 +226,7 @@ export default function ProfileSettingsPage() {
             <button
               type="submit"
               disabled={isSaving}
-              className="w-full h-12 bg-(--eerie-black) text-white font-semibold rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+              className="w-full h-[60px] bg-(--eerie-black) text-white font-semibold rounded-lg hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             >
               {isSaving && <Loader2 size={18} className="animate-spin" />}
               {isSaving ? "Saving Settings..." : "Save Changes"}
