@@ -107,6 +107,7 @@ export interface ShippingAddressPayload {
   state: string;
   postCode: string;
   country: string;
+  phone: string;
 }
 
 export interface OrderPayload {

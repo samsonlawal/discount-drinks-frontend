@@ -8,7 +8,6 @@ import { RootState } from "@/redux/store";
 import { useCart } from "@/contexts/CartContext";
 import { ShieldCheck, MapPin, Truck, Store, CreditCard, Wallet, ChevronRight, Check, AlertCircle } from "lucide-react";
 import { AddressRequiredModal } from "@/components/modals/AddressRequiredModal";
-import { AddAddressModal } from "@/components/modals/AddAddressModal";
 import { OrderSuccessModal } from "@/components/modals/OrderSuccessModal";
 import { BaseModal } from "@/components/modals/BaseModal";
 import { OrderPayload } from "@/types";
@@ -90,7 +89,7 @@ export default function CheckoutPage() {
       if (cart.length === 0) {
         router.push("/cart");
       } else if (!user?.addresses || user.addresses.length === 0) {
-        setActiveModal("add_address");
+        setActiveModal("address_required");
       }
     }
   }, [cart, cartLoading, user, router]);
@@ -144,6 +143,7 @@ export default function CheckoutPage() {
           state: selectedAddress.state,
           postCode: selectedAddress.postCode || selectedAddress.zipCode,
           country: selectedAddress.country || "United Kingdom", // Backend requires country
+          phone: selectedAddress.phone,
         };
       }
 
@@ -231,16 +231,7 @@ export default function CheckoutPage() {
         }}
       />
 
-      <AddAddressModal 
-        isOpen={activeModal === "add_address"}
-        onClose={closeModal}
-        onSuccess={(newAddress) => {
-          const mappedAddress = { ...newAddress, id: newAddress.id || newAddress._id };
-          setAddresses((prev) => [...prev, mappedAddress]);
-          setSelectedAddressId(mappedAddress.id);
-          setActiveModal("none");
-        }}
-      />
+
 
       <OrderSuccessModal
         isOpen={activeModal === "order_success"}

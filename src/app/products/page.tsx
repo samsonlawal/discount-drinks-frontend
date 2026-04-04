@@ -56,7 +56,7 @@ function ProductsContent() {
     };
 
     if (selectedCategory !== "All") query.category = selectedCategory;
-    if (selectedBadge !== "All") query.tag = selectedBadge;
+    if (selectedBadge !== "All") query.tags = selectedBadge;
     if (selectedBrand !== "All") query.brand = selectedBrand;
     if (priceRange[0] > 0) query.minPrice = priceRange[0];
     if (priceRange[1] < 9999) query.maxPrice = priceRange[1];

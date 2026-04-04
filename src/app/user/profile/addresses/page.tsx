@@ -18,6 +18,7 @@ interface Address {
   city: string;
   state: string;
   postCode: string;
+  country: string;
   phone: string;
   isDefault: boolean;
 }
@@ -78,6 +79,7 @@ export default function ProfileAddressesPage() {
     city: "",
     state: "",
     postCode: "",
+    country: "United Kingdom", // Defaulting to UK as it's the primary market
     phone: "",
     isDefault: false,
   });
@@ -93,6 +95,7 @@ export default function ProfileAddressesPage() {
         city: address.city,
         state: address.state,
         postCode: address.postCode,
+        country: address.country || "United Kingdom",
         phone: address.phone,
         isDefault: address.isDefault,
       });
@@ -106,6 +109,7 @@ export default function ProfileAddressesPage() {
         city: "",
         state: "",
         postCode: "",
+        country: "United Kingdom",
         phone: "",
         isDefault: addresses.length === 0, // Auto-default if it's the first one
       });
@@ -228,7 +232,7 @@ export default function ProfileAddressesPage() {
         <h2 className="text-2xl mb-2" style={{ fontSize: '24px', fontWeight: 600, color: '#111827' }}>Address</h2>
       </div>
         {!isFormOpen && (
-          <button onClick={() => handleOpenForm()} className="flex items-center justify-center gap-1 px-4 py-2.5 bg-[var(--eerie-black)] text-[white] text-sm font-medium rounded-lg hover:bg-black transition-colors shadow-sm">
+          <button onClick={() => handleOpenForm()} className="flex items-center justify-center gap-1 px-6 h-[60px] bg-[var(--eerie-black)] text-[white] text-sm font-medium rounded-lg hover:bg-black transition-colors shadow-sm">
             <Plus size={18} />
             Add New
           </button>
@@ -277,6 +281,11 @@ export default function ProfileAddressesPage() {
             </div>
 
             <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Country</label>
+              <input required type="text" name="country" value={formData.country} onChange={handleInputChange} placeholder="e.g. United Kingdom" className="w-full px-4 py-3 bg-white !border !border-solid !border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1a1a1a] focus:!border-transparent outline-none transition-all text-gray-900" />
+            </div>
+
+            <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">Phone Number</label>
               <input required type="tel" name="phone" value={formData.phone} onChange={handleInputChange} className="w-full px-4 py-3 bg-white !border !border-solid !border-gray-300 rounded-lg focus:ring-2 focus:ring-[#1a1a1a] focus:!border-transparent outline-none transition-all text-gray-900" />
             </div>
@@ -289,11 +298,11 @@ export default function ProfileAddressesPage() {
             </div>
 
             <div className="flex flex-col-reverse md:flex-row justify-end gap-3 pt-6 border-t border-gray-100">
-              <button type="button" onClick={handleCloseForm} className="flex items-center justify-center px-6 py-2.5 bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 rounded-lg text-sm font-medium transition-colors">Cancel</button>
+              <button type="button" onClick={handleCloseForm} className="flex items-center justify-center px-6 h-[60px] bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 rounded-lg text-sm font-medium transition-colors">Cancel</button>
               <button 
                 type="submit" 
                 disabled={isCreating || isUpdating}
-                className="flex items-center justify-center px-6 py-2.5 bg-[#1a1a1a] text-white rounded-lg hover:bg-black text-sm font-medium transition-colors shadow-sm disabled:opacity-50"
+                className="flex items-center justify-center px-6 h-[60px] bg-[#1a1a1a] text-white rounded-lg hover:bg-black text-sm font-medium transition-colors shadow-sm disabled:opacity-50"
               >
                 {isCreating || isUpdating ? "Saving..." : "Save Address"}
               </button>
@@ -304,7 +313,7 @@ export default function ProfileAddressesPage() {
         <div className='flex flex-col-reverse gap-10'>
           {/* Mobile Add Button */}
           <div className="md:hidden mb-6 flex justify-between items-center">
-          <button onClick={() => handleOpenForm()} className="flex items-center justify-center gap-1 px-4 py-2.5 bg-[var(--eerie-black)] text-[white] text-sm font-medium rounded-lg hover:bg-black transition-colors shadow-sm w-full">
+          <button onClick={() => handleOpenForm()} className="flex items-center justify-center gap-1 px-4 h-[60px] bg-[var(--eerie-black)] text-[white] text-sm font-medium rounded-lg hover:bg-black transition-colors shadow-sm w-full">
             <Plus size={18} />
             Add New Address
           </button>
@@ -351,6 +360,7 @@ export default function ProfileAddressesPage() {
                     <p>{address.addressLine1}</p>
                     {address.addressLine2 && <p>{address.addressLine2}</p>}
                     <p>{address.city}, {address.state} {address.postCode}</p>
+                    <p>{address.country}</p>
                     {/* <p className="pt-2 flex items-center gap-1">
                       <span className="text-gray-400">T:</span> {address.phone}
                     </p> */}

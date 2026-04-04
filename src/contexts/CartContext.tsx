@@ -136,7 +136,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
       (total, item) => total + (item.costPrice ?? item.price) * item.quantity,
       0,
     );
-    const tax = subtotal * 0.2; // 20% VAT
+    const tax = subtotal * 0; // 20% VAT
     const total = subtotal + tax;
     const itemCount = cart.reduce((count, item) => count + item.quantity, 0);
 

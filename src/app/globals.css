@@ -48,7 +48,7 @@
    * spacing
    */
 
-  --section-padding: 60px;
+  /* --section-padding: 60px; */
 
   /**
    * layout
@@ -224,18 +224,18 @@ h3 > a {
 }
 
 /* Reduce top gap on product listing pages */
-.section.product {
-  padding-top: 20px;
-}
+/* .section.product {
+  padding-top: 80px;
+} */
 
 /* Match spacing on product detail and cart pages */
 .section.product-detail {
-  padding-top: 20px;
+  padding-top: 0px;
 }
 
-.cart-main {
+/* .cart-main {
   padding-top: 20px;
-}
+} */
 
 .w-100 {
   width: 100%;
@@ -2229,7 +2229,15 @@ ion-icon {
 .product-detail-grid {
   display: grid;
   gap: 40px;
-  grid-template-columns: 1fr
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 992px) {
+  .product-detail-grid {
+    grid-template-columns: 1fr 1fr 320px;
+    align-items: start;
+    gap: 40px;
+  }
 }
 
 .product-showcase {
@@ -2284,11 +2292,11 @@ ion-icon {
   margin-bottom: 16px
 }
 
-.price {
+/* .price {
   color: var(--eerie-black);
   font-size: var(--fs-5);
   font-weight: var(--fw-400)
-}
+} */
 
 .price-old {
   color: var(--sonic-silver);
@@ -2323,16 +2331,16 @@ ion-icon {
   margin: 20px 0px;
   width: 100%
 }
-
+/* 
 .specs-row {
   border-bottom: 1px solid var(--cultured)
 }
 
 .specs-row:first-child {
   border-top: 1px solid var(--cultured)
-}
+} */
 
-.specs-key {
+/* .specs-key {
   color: var(--eerie-black);
   font-size: var(--fs-9);
   font-weight: var(--fw-600);
@@ -2346,11 +2354,11 @@ ion-icon {
   font-size: var(--fs-9);
   padding: 8px 0;
   vertical-align: top
-}
+} */
 
 .product-description {
-  margin-bottom: 10px;
-  padding-block: 10px
+  /* margin-bottom: 10px; */
+  /* padding-block: 10px */
 }
 
 .product-description p {
