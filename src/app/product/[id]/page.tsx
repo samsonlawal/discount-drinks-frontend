@@ -149,7 +149,7 @@ export default function ProductDetailPage() {
           <section className="section product-detail">
             <div className="product-detail-grid">
               {/* Product Image */}
-              <div className="product-showcase gap-3 flex-col-reverse bg-[red]">
+              <div className="product-showcase gap-3 flex-col-reverse">
                
                 
                 {/* Thumbnails */}
@@ -337,7 +337,7 @@ export default function ProductDetailPage() {
               </div>
 
               {/* Product Contact Card */}
-              <div className="bg-white border border-gray-100 rounded-xl p-[24px] transition-all duration-300 hover:border-gray-200 lg:sticky lg:top-[120px]">
+              <div className="bg-(--cultured) border border-gray-100 rounded-xl p-[24px] transition-all duration-300 hover:border-gray-200 lg:sticky lg:top-[120px]">
                 {/* <h3 className="text-lg font-semibold text-[#111827] mb-3">Ask a Question</h3> */}
                 {/* <p className="text-sm text-gray-500 leading-relaxed mb-1">
                   If you have questions about this product, our wine experts are here to help.

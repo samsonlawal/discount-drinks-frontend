@@ -1031,7 +1031,7 @@ h3 > a {
 }
 
 .product-showcase {
-  background: var(--cultured);
+  /* background: var(--cultured); */
   border-radius: 12px;
   overflow: hidden;
   display: flex;
@@ -1325,7 +1325,7 @@ h3 > a {
   }
 
 .product-showcase {
-  background: var(--cultured);
+  /* background: var(--cultured); */
   border-radius: 12px;
   overflow: hidden;
   display: flex;
@@ -1426,7 +1426,7 @@ h3 > a {
    */
 
   .product-detail-grid {
-    grid-template-columns: 4fr 5fr 3fr;
+    grid-template-columns: 4fr 5fr 2.5fr;
     gap: 40px;
     align-items: start;
   }
