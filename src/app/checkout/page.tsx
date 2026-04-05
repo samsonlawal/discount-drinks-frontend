@@ -213,11 +213,11 @@ export default function CheckoutPage() {
     <div className="min-h-screen pt-[80px] lg:pt-[100px] pb-12" style={{ background: "white" }}>
       {/* Processing Overlay */}
       {isProcessing && (
-        <div className="fixed inset-0 z-1000 flex flex-col items-center justify-center bg-white/80 backdrop-blur-sm transition-opacity duration-300">
-          <div className="p-8 rounded-2xl flex flex-col items-center shadow-2xl transform scale-100 animate-[scaleIn_0.3s_ease-out]">
+        <div className="fixed inset-0 z-1000 flex flex-col items-center justify-center bg-white transition-opacity duration-300">
+          <div className="p-8 rounded-2xl flex flex-col items-center transform scale-100 animate-[scaleIn_0.3s_ease-out]">
             <div className="w-12 h-12 border-4 rounded-full border-t-[var(--ocean-green)] border-l-[var(--ocean-green)] border-r-transparent border-b-transparent animate-spin mb-4" />
             <h2 className="text-xl font-bold mb-2" style={{ color: "var(--eerie-black)" }}>
-              Processing Order...
+              Processing Order
             </h2>
             <p className="text-sm" style={{ color: "var(--sonic-silver)" }}>
               Please do not close or refresh this window.
@@ -594,10 +594,10 @@ export default function CheckoutPage() {
                   checked={ageVerified}
                   onChange={(e) => setAgeVerified(e.target.checked)}
                   style={{ accentColor: "var(--eerie-black)" }}
-                  className="w-5 h-5 rounded border-gray-300 cursor-pointer"
+                  className="mt-[2px] w-5 h-5 rounded border-gray-300 cursor-pointer"
                 />
                 <span className="text-sm select-none" style={{ color: "var(--eerie-black)" }}>
-                  I confirm that I am 18 years of age or older and I agree to the <Link href="/legal/terms-and-conditions" className="underline hover:text-(--ocean-green) font-medium">Terms and Conditions</Link>.
+                  I confirm that I am 18 years of age or older and I agree to the <Link href="/legal/terms-and-conditions" className="!underline hover:text-(--ocean-green)">Terms and Conditions</Link>.
                 </span>
               </div>
 

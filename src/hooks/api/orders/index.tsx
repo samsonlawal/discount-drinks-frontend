@@ -29,9 +29,17 @@ export const useCreateOrder = () => {
       successCallback?.(res.data);
     } catch (error: Error | AxiosError | any) {
       console.error("[useCreateOrder] Order creation failed.", error);
+      
+      const backendMessage = error?.response?.data?.message || error?.response?.data?.error || "Failed to place order!";
+      
+      showErrorToast({
+        message: "Order Failed",
+        description: backendMessage,
+      });
+
       errorCallback?.({
-        message: error?.response?.data?.message || "Failed to place order!",
-        description: error?.response?.data?.message || "",
+        message: backendMessage,
+        description: backendMessage,
       });
     } finally {
       setLoading(false);

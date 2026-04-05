@@ -211,7 +211,7 @@ export const serviceFeatures: ServiceFeature[] = [
   {
     icon: "/images/service-icon-1.svg",
     title: "Free Shipping",
-    description: "On All Order Over $599",
+    description: "On All Orders",
   },
   {
     icon: "/images/service-icon-2.svg",
