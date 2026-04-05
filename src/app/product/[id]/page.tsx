@@ -207,9 +207,9 @@ export default function ProductDetailPage() {
                   </span>
                 )}
 
-                <h1 className="text-[22px] md:h3 font-medium product-title leading-5">{product.name}</h1>
+                <h1 className="text-[22px] font-medium product-title leading-5">{product.name}</h1>
 
-                <div className="flex flex-wrap items-center gap-2 mt-2 mb-4 text-sm">
+                <div className="flex flex-wrap items-center gap-2 mb-4 text-sm">
                   {product.brand && (
                     <span className="text-gray-500">
                       Brand: <span className="text-(--eerie-black) font-medium">{(product.brand as any).name || product.brand}</span>
@@ -242,6 +242,7 @@ export default function ProductDetailPage() {
                     </data>
                   )}
                 </div>
+
 
                 
                 <div className="product-actions mb-3">
@@ -279,9 +280,7 @@ export default function ProductDetailPage() {
                   )}
                 </div>
 
-                
-
-                {/* Tags */}
+                                {/* Tags */}
                 {product.tags && product.tags.length > 0 && (
                   <div className="product-tags">
                     {product.tags.map((tag) => (
@@ -291,6 +290,8 @@ export default function ProductDetailPage() {
                     ))}
                   </div>
                 )}
+
+
 
 
 
@@ -353,10 +354,6 @@ export default function ProductDetailPage() {
                   <div className="flex items-center gap-3 text-sm text-gray-600">
                     <ShieldCheck className="w-5 h-5 flex-shrink-0" style={{ color: "hsl(353, 42%, 32%)" }} />
                     <span>Safe & Secure checkout</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-sm text-gray-600">
-                    <RotateCcw className="w-5 h-5 flex-shrink-0" style={{ color: "hsl(353, 42%, 32%)" }} />
-                    <span>Easy returns</span>
                   </div>
                   <div className="flex items-center gap-3 text-sm text-gray-600">
                     <Truck className="w-5 h-5 flex-shrink-0" style={{ color: "hsl(353, 42%, 32%)" }} />
