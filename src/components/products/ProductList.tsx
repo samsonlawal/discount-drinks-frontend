@@ -23,7 +23,7 @@ export default function ProductList({ loading: manualLoading = false }: ProductL
   return (
     <section className="section product">
       <div className="container">
-        <h2 className="h2 section-title">Best Sellers</h2>
+        <h2 className="h2 section-title">Our Best Sellers</h2>
 
         <ul className="product-list flex flex-row flex-wrap !justify-center items-center">
           {isLoading ? (

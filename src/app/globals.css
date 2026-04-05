@@ -673,7 +673,7 @@ h3 > a {
  * #SERVICE
 \*-----------------------------------*/
 
-.service {
+/* .service {
   padding-block: 45px;
 }
 
@@ -706,7 +706,7 @@ h3 > a {
   color: var(--eerie-black);
   font-size: var(--fs-7);
   font-weight: var(--fw-600);
-}
+} */
 
 /*-----------------------------------*\
  * #CATETORY

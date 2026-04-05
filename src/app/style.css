@@ -488,46 +488,6 @@ h3 > a {
   font-size: 4.3rem;
 }
 
-/*-----------------------------------*\
- * #SERVICE
-\*-----------------------------------*/
-
-.service {
-  padding: 140px 45px;
-  /* background: var(--cultured); */
-}
-
-.service-list {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 40px;
-}
-
-.service-item {
-  max-width: 235px;
-  width: 100%;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 20px;
-  padding-block: 20px;
-}
-
-.service-item-icon {
-  width: 45px;
-}
-
-.service-item-icon img {
-  margin-inline: auto;
-}
-
-.service-item-title {
-  color: var(--eerie-black);
-  font-size: var(--fs-7);
-  font-weight: var(--fw-600);
-}
 
 /*-----------------------------------*\
  * #CATETORY
