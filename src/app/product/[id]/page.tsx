@@ -8,7 +8,7 @@ import { products } from "@/data"; // still used for related products fallback
 import { useCart } from "@/contexts/CartContext";
 import ProductCard from "@/components/products/ProductCard";
 import ProductCardSkeleton from "@/components/products/ProductCardSkeleton";
-import { CheckCircle2, Heart, ShoppingCart, Grape, Wine, ShieldCheck, RotateCcw, Truck } from "lucide-react";
+import { CheckCircle2, Heart, ShoppingCart, Grape, Wine, ShieldCheck, RotateCcw, Truck, Headphones } from "lucide-react";
 import { useWishlist } from "@/contexts/WishlistContext";
 import { useGetProductById, useGetProducts } from "@/hooks/api/products";
 
@@ -347,19 +347,53 @@ export default function ProductDetailPage() {
                   Contact Us
                 </Link> */}
 
-                <h3 className="text-lg font-medium text-[#111827] mb-3">What We Offer</h3>
+                <h3 className="text-lg font-medium text-[#111827] mb-5">What We Offer</h3>
 
-                
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3 text-sm text-gray-600">
-                    <ShieldCheck className="w-5 h-5 flex-shrink-0" style={{ color: "hsl(353, 42%, 32%)" }} />
-                    <span>Safe & Secure checkout</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-sm text-gray-600">
-                    <Truck className="w-5 h-5 flex-shrink-0" style={{ color: "hsl(353, 42%, 32%)" }} />
-                    <span>Free delivery across UK</span>
-                  </div>
-                </div>
+                <ul className="flex flex-col gap-6 mt-2">
+                  <li className="flex items-center gap-4 w-full">
+                    <div className="w-8 shrink-0 text-(--ocean-green)">
+                      <Truck className="w-6 h-6" />
+                    </div>
+
+                    <div>
+                      <p className="font-medium text-sm text-(--eerie-black)">Free Shipping</p>
+                      <p className="text-[12px] text-gray-500">On All Orders</p>
+                    </div>
+                  </li>
+
+                  <li className="flex items-center gap-4 w-full">
+                    <div className="w-8 shrink-0 text-(--ocean-green)">
+                      <RotateCcw className="w-6 h-6" />
+                    </div>
+
+                    <div>
+                      <p className="font-medium text-sm text-(--eerie-black)">Easy Returns</p>
+                      <p className="text-[12px] text-gray-500">30 Day Returns Policy</p>
+                    </div>
+                  </li>
+
+                  <li className="flex items-center gap-4 w-full">
+                    <div className="w-8 shrink-0 text-(--ocean-green)">
+                      <ShieldCheck className="w-6 h-6" />
+                    </div>
+
+                    <div>
+                      <p className="font-medium text-sm text-(--eerie-black)">Secure Payment</p>
+                      <p className="text-[12px] text-gray-500">100% Secure Gaurantee</p>
+                    </div>
+                  </li>
+
+                  <li className="flex items-center gap-4 w-full">
+                    <div className="w-8 shrink-0 text-(--ocean-green)">
+                      <Headphones className="w-6 h-6" />
+                    </div>
+
+                    <div>
+                      <p className="font-medium text-sm text-(--eerie-black)">Special Support</p>
+                      <p className="text-[12px] text-gray-500">24/7 Dedicated Support</p>
+                    </div>
+                  </li>
+                </ul>
               </div>
             </div>
           </section>
