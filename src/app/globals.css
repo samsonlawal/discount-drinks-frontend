@@ -213,7 +213,7 @@ h3 > a {
   transition: background var(--transition-1), color var(--transition-1), border-color var(--transition-1);
 }
 
-.btn-dark:is(:hover, :focus) {
+.btn-dark:is(:hover, :focus):not(:disabled) {
   background: var(--white);
   color: var(--eerie-black);
   border-color: var(--eerie-black);

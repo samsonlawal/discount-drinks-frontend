@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useCart } from "@/contexts/CartContext";
@@ -46,6 +47,7 @@ export default function CheckoutPage() {
   const [selectedAddressId, setSelectedAddressId] = useState<string | null>(null);
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("card");
   const [isProcessing, setIsProcessing] = useState(false);
+  const [ageVerified, setAgeVerified] = useState(false);
 
   const [activeModal, setActiveModal] = useState<"none" | "address_required" | "order_success" | "missing_info" | "add_address">("none");
   const [successMessage, setSuccessMessage] = useState("");
@@ -165,6 +167,7 @@ export default function CheckoutPage() {
         totalAmount: totals.total,
         shippingCost: 0,
         taxRate: totals.tax,
+        ageVerified: true, // As per requirements
       };
 
       // Call our robust axios API hook
@@ -583,10 +586,25 @@ export default function CheckoutPage() {
                 </div>
               </div>
 
+              {/* Age Verification Checkbox */}
+              <div className="mt-10 flex items-start gap-3">
+                <input
+                  type="checkbox"
+                  id="age-verification"
+                  checked={ageVerified}
+                  onChange={(e) => setAgeVerified(e.target.checked)}
+                  style={{ accentColor: "var(--eerie-black)" }}
+                  className="w-5 h-5 rounded border-gray-300 cursor-pointer"
+                />
+                <span className="text-sm select-none" style={{ color: "var(--eerie-black)" }}>
+                  I confirm that I am 18 years of age or older and I agree to the <Link href="/legal/terms-and-conditions" className="underline hover:text-(--ocean-green) font-medium">Terms and Conditions</Link>.
+                </span>
+              </div>
+
               <button
                 onClick={handleCheckout}
-                disabled={orderLoading || isProcessing}
-                className="btn-dark w-full rounded-xl py-4 mt-6 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={orderLoading || isProcessing || !ageVerified}
+                className="btn-dark w-full rounded-xl py-4 mt-4 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {orderLoading || isProcessing ? "Processing..." : "Proceed to Payment"}
                 {!orderLoading && !isProcessing && <ChevronRight size={20} />}
