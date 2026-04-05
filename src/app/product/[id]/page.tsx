@@ -8,7 +8,7 @@ import { products } from "@/data"; // still used for related products fallback
 import { useCart } from "@/contexts/CartContext";
 import ProductCard from "@/components/products/ProductCard";
 import ProductCardSkeleton from "@/components/products/ProductCardSkeleton";
-import { CheckCircle2, Heart, ShoppingCart, Grape, Wine, ShieldCheck, RotateCcw, Truck } from "lucide-react";
+import { CheckCircle2, Heart, ShoppingCart, Grape, Wine, ShieldCheck, RotateCcw, Truck, Headphones } from "lucide-react";
 import { useWishlist } from "@/contexts/WishlistContext";
 import { useGetProductById, useGetProducts } from "@/hooks/api/products";
 
@@ -149,7 +149,7 @@ export default function ProductDetailPage() {
           <section className="section product-detail">
             <div className="product-detail-grid">
               {/* Product Image */}
-              <div className="product-showcase gap-3 flex-col-reverse bg-[red]">
+              <div className="product-showcase gap-3 flex-col-reverse">
                
                 
                 {/* Thumbnails */}
@@ -207,9 +207,9 @@ export default function ProductDetailPage() {
                   </span>
                 )}
 
-                <h1 className="text-[22px] md:h3 font-medium product-title leading-5">{product.name}</h1>
+                <h1 className="text-[22px] font-medium product-title leading-5">{product.name}</h1>
 
-                <div className="flex flex-wrap items-center gap-2 mt-2 mb-4 text-sm">
+                <div className="flex flex-wrap items-center gap-2 mb-4 text-sm">
                   {product.brand && (
                     <span className="text-gray-500">
                       Brand: <span className="text-(--eerie-black) font-medium">{(product.brand as any).name || product.brand}</span>
@@ -242,6 +242,7 @@ export default function ProductDetailPage() {
                     </data>
                   )}
                 </div>
+
 
                 
                 <div className="product-actions mb-3">
@@ -279,9 +280,7 @@ export default function ProductDetailPage() {
                   )}
                 </div>
 
-                
-
-                {/* Tags */}
+                                {/* Tags */}
                 {product.tags && product.tags.length > 0 && (
                   <div className="product-tags">
                     {product.tags.map((tag) => (
@@ -291,6 +290,8 @@ export default function ProductDetailPage() {
                     ))}
                   </div>
                 )}
+
+
 
 
 
@@ -337,7 +338,7 @@ export default function ProductDetailPage() {
               </div>
 
               {/* Product Contact Card */}
-              <div className="bg-white border border-gray-100 rounded-xl p-[24px] transition-all duration-300 hover:border-gray-200 lg:sticky lg:top-[120px]">
+              <div className="bg-(--cultured) border border-gray-100 rounded-xl p-[24px] transition-all duration-300 hover:border-gray-200 lg:sticky lg:top-[120px]">
                 {/* <h3 className="text-lg font-semibold text-[#111827] mb-3">Ask a Question</h3> */}
                 {/* <p className="text-sm text-gray-500 leading-relaxed mb-1">
                   If you have questions about this product, our wine experts are here to help.
@@ -346,23 +347,53 @@ export default function ProductDetailPage() {
                   Contact Us
                 </Link> */}
 
-                <h3 className="text-lg font-medium text-[#111827] mb-3">What We Offer</h3>
+                <h3 className="text-lg font-medium text-[#111827] mb-5">What We Offer</h3>
 
-                
-                <div className="space-y-4">
-                  <div className="flex items-center gap-3 text-sm text-gray-600">
-                    <ShieldCheck className="w-5 h-5 flex-shrink-0" style={{ color: "hsl(353, 42%, 32%)" }} />
-                    <span>Safe & Secure checkout</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-sm text-gray-600">
-                    <RotateCcw className="w-5 h-5 flex-shrink-0" style={{ color: "hsl(353, 42%, 32%)" }} />
-                    <span>Easy returns</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-sm text-gray-600">
-                    <Truck className="w-5 h-5 flex-shrink-0" style={{ color: "hsl(353, 42%, 32%)" }} />
-                    <span>Free delivery across UK</span>
-                  </div>
-                </div>
+                <ul className="flex flex-col gap-6 mt-2">
+                  <li className="flex items-center gap-4 w-full">
+                    <div className="w-8 shrink-0 text-(--ocean-green)">
+                      <Truck className="w-6 h-6" />
+                    </div>
+
+                    <div>
+                      <p className="font-medium text-sm text-(--eerie-black)">Free Shipping</p>
+                      <p className="text-[12px] text-gray-500">On All Orders</p>
+                    </div>
+                  </li>
+
+                  <li className="flex items-center gap-4 w-full">
+                    <div className="w-8 shrink-0 text-(--ocean-green)">
+                      <RotateCcw className="w-6 h-6" />
+                    </div>
+
+                    <div>
+                      <p className="font-medium text-sm text-(--eerie-black)">Easy Returns</p>
+                      <p className="text-[12px] text-gray-500">30 Day Returns Policy</p>
+                    </div>
+                  </li>
+
+                  <li className="flex items-center gap-4 w-full">
+                    <div className="w-8 shrink-0 text-(--ocean-green)">
+                      <ShieldCheck className="w-6 h-6" />
+                    </div>
+
+                    <div>
+                      <p className="font-medium text-sm text-(--eerie-black)">Secure Payment</p>
+                      <p className="text-[12px] text-gray-500">100% Secure Gaurantee</p>
+                    </div>
+                  </li>
+
+                  <li className="flex items-center gap-4 w-full">
+                    <div className="w-8 shrink-0 text-(--ocean-green)">
+                      <Headphones className="w-6 h-6" />
+                    </div>
+
+                    <div>
+                      <p className="font-medium text-sm text-(--eerie-black)">Special Support</p>
+                      <p className="text-[12px] text-gray-500">24/7 Dedicated Support</p>
+                    </div>
+                  </li>
+                </ul>
               </div>
             </div>
           </section>

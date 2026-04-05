@@ -2232,17 +2232,17 @@ ion-icon {
   grid-template-columns: 1fr;
 }
 
-@media (min-width: 992px) {
+/* @media (min-width: 992px) {
   .product-detail-grid {
     grid-template-columns: 1fr 1fr 320px;
     align-items: start;
     gap: 40px;
   }
-}
+} */
 
 .product-showcase {
   align-items: center;
-  background: var(--cultured);
+  /* background: var(--cultured); */
   border-radius: 12px;
   display: flex;
   overflow: hidden;

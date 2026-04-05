@@ -14,7 +14,8 @@ export default function ProductList({ loading: manualLoading = false }: ProductL
   const { fetchProducts, loading: apiLoading, products: apiProducts } = useGetProducts();
 
   useEffect(() => {
-    fetchProducts();
+    // Fetch a larger pool of products to filter from, bypassing the potentially empty "tags" filter on the server
+    fetchProducts({ limit: 50 });
   }, []);
 
   const isLoading = manualLoading || apiLoading;
@@ -26,7 +27,7 @@ export default function ProductList({ loading: manualLoading = false }: ProductL
 
         <ul className="product-list flex flex-row flex-wrap !justify-center items-center">
           {isLoading ? (
-            Array.from({ length: 10 }).map((_, index) => (
+            Array.from({ length: 12 }).map((_, index) => (
               <li key={index}>
                 <ProductCardSkeleton />
               </li>
@@ -34,9 +35,10 @@ export default function ProductList({ loading: manualLoading = false }: ProductL
           ) : (
             apiProducts
               .filter((product: any) => 
-                product.tags?.some((tag: string) => 
-                  tag.toLowerCase().includes("best-seller")
-                )
+                product.tags?.some((tag: any) => {
+                  const name = typeof tag === "string" ? tag : tag?.name || "";
+                  return name.toLowerCase().includes("best-seller");
+                })
               )
               .map((product: any) => (
                 <li key={product.id || (product as any)._id}>
