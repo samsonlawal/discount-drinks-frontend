@@ -24,7 +24,9 @@ export const useGetTags = () => {
       const mappedData = rawData.map((tag: any) => ({
         ...tag,
         status:
-          tag.status?.toLowerCase() || (tag.isActive ? "active" : "inactive"),
+          (tag.status?.toLowerCase() === "active" || tag.isActive || (!tag.status && tag.isActive === undefined)) 
+            ? "active" 
+            : "inactive",
       })) as Tag[];
       setTags(mappedData);
       //  setMeta({

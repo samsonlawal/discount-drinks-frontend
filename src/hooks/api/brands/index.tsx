@@ -16,7 +16,7 @@ export const useGetBrands = () => {
       // Transform the data to match expected format
       const transformedData = (res?.data?.data || []).map((brand: any) => ({
         ...brand,
-        status: brand.isActive ? "Active" : "Inactive",
+        status: (brand.status?.toLowerCase() === "active" || brand.isActive) ? "Active" : "Inactive",
         createdDate: brand.createdAt
           ? new Date(brand.createdAt).toLocaleDateString()
           : "",
