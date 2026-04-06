@@ -196,11 +196,10 @@ export default function Footer() {
           <div className="payment">
             <p className="payment-title">We Support</p>
 
-            <img
-              src="/images/payment-img.png"
-              alt="Online payment logos"
-              className="payment-img"
-            />
+            <div className="flex items-center gap-2">
+              <img src="/images/mastercard.svg" alt="Mastercard" className="w-10" />
+              <img src="/images/visa.svg" alt="Visa" className="w-10" />
+            </div>
           </div>
         </div>
       </div>
