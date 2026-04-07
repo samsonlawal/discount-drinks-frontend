@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { showErrorToast, showSuccessToast } from "@/utils/toaster";
+import { getErrorMessage } from "@/utils/errorUtils";
 import { AxiosError } from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setAuthState } from "@/redux/Slices/authSlice";
@@ -20,8 +21,8 @@ export const useGetUsers = () => {
       return res?.data?.data as User[];
     } catch (error: Error | AxiosError | any) {
       showErrorToast({
-        message: error?.response?.data?.message || "Failed to fetch users",
-        description: error?.response?.data?.description || "",
+        message: getErrorMessage(error, "Failed to fetch users"),
+        description: "",
       });
       return [];
     } finally {
@@ -45,8 +46,8 @@ export const useGetUserById = () => {
       return res?.data?.data as User;
     } catch (error: Error | AxiosError | any) {
       showErrorToast({
-        message: error?.response?.data?.message || "Failed to fetch user",
-        description: error?.response?.data?.description || "",
+        message: getErrorMessage(error, "Failed to fetch user"),
+        description: "",
       });
       return null;
     } finally {
@@ -79,8 +80,8 @@ export const useGetUserAddresses = () => {
       return fetchedAddresses;
     } catch (error: Error | AxiosError | any) {
       showErrorToast({
-        message: error?.response?.data?.message || "Failed to fetch addresses",
-        description: error?.response?.data?.description || "",
+        message: getErrorMessage(error, "Failed to fetch addresses"),
+        description: "",
       });
       setAddresses([]);
       return [];
@@ -114,8 +115,8 @@ export const useCreateUser = () => {
       return res?.data?.data as User;
     } catch (error: Error | AxiosError | any) {
       showErrorToast({
-        message: error?.response?.data?.message || "Failed to create user",
-        description: error?.response?.data?.description || "",
+        message: getErrorMessage(error, "Failed to create user"),
+        description: "",
       });
       return null;
     } finally {
@@ -148,8 +149,8 @@ export const useUpdateUser = () => {
       return res?.data?.data as User;
     } catch (error: Error | AxiosError | any) {
       showErrorToast({
-        message: error?.response?.data?.message || "Failed to update user",
-        description: error?.response?.data?.description || "",
+        message: getErrorMessage(error, "Failed to update user"),
+        description: "",
       });
       return null;
     } finally {
@@ -182,8 +183,8 @@ export const useDeleteUser = () => {
       return true;
     } catch (error: Error | AxiosError | any) {
       showErrorToast({
-        message: error?.response?.data?.message || "Failed to delete user",
-        description: error?.response?.data?.description || "",
+        message: getErrorMessage(error, "Failed to delete user"),
+        description: "",
       });
       return false;
     } finally {
@@ -335,8 +336,8 @@ export const useUpdateProfile = () => {
       return updatedUser;
     } catch (error: Error | AxiosError | any) {
       showErrorToast({
-        message: error?.response?.data?.message || "Failed to update profile",
-        description: error?.response?.data?.description || "Please try again later.",
+        message: getErrorMessage(error, "Failed to update profile"),
+        description: "",
       });
       return null;
     } finally {
@@ -380,8 +381,8 @@ export const useUploadProfileImage = () => {
       return updatedUser;
     } catch (error: Error | AxiosError | any) {
       showErrorToast({
-        message: error?.response?.data?.message || "Failed to upload image",
-        description: error?.response?.data?.description || "Please check the file format and size.",
+        message: getErrorMessage(error, "Failed to upload image"),
+        description: "",
       });
       return null;
     } finally {

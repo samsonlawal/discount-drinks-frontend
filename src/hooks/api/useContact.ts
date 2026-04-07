@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ContactRequest } from "@/types/contact";
 import contactService from "@/services/contact/contactService";
+import { getErrorMessage } from "@/utils/errorUtils";
 
 export const useContact = () => {
   const [formData, setFormData] = useState<ContactRequest>({
@@ -34,7 +35,7 @@ export const useContact = () => {
       // Reset success message after 5 seconds
       setTimeout(() => setSubmitted(false), 5000);
     } catch (err: any) {
-      setError(err?.response?.data?.message || "Something went wrong. Please try again later.");
+      setError(getErrorMessage(err, "Something went wrong. Please try again later."));
     } finally {
       setIsSubmitting(false);
     }

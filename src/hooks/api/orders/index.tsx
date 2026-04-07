@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 import { OrderPayload, PaginationMetadata } from "@/types";
 import { showErrorToast, showSuccessToast } from "@/utils/toaster";
+import { getErrorMessage } from "@/utils/errorUtils";
 import OrderService from "@/services/orders";
 import { AxiosError } from "axios";
 
@@ -30,7 +31,7 @@ export const useCreateOrder = () => {
     } catch (error: Error | AxiosError | any) {
       console.error("[useCreateOrder] Order creation failed.", error);
       
-      const backendMessage = error?.response?.data?.message || error?.response?.data?.error || "Failed to place order!";
+      const backendMessage = getErrorMessage(error, "Failed to place order!");
       
       showErrorToast({
         message: "Order Failed",

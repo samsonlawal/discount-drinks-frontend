@@ -7,7 +7,7 @@ import { deleteFromLocalStorage } from "@/utils/localStorage/AsyncStorage";
 import env from "@/config/env";
 import axios, { AxiosError } from "axios";
 import AuthService from "@/services/auth";
-// import accountService from "@/services/account";
+import { getErrorMessage } from "@/utils/errorUtils";
 import { useRouter } from "next/navigation";
 import router from "next/router";
 
@@ -64,10 +64,9 @@ export const useLogin = () => {
       router.push("/products");
       setLoading(false);
     } catch (error: Error | AxiosError | any) {
-      // console.log("error", error?.response?.data);
       errorCallback?.({
-        message: error?.response?.data?.message || "An error occured!",
-        description: error?.response?.data?.message || "",
+        message: getErrorMessage(error, "An error occured!"),
+        description: "",
       });
       setLoading(false);
     } finally {
@@ -106,20 +105,7 @@ export const useRegister = () => {
       // If Next.js throws a redirect error, don't show it as an error toast
       if (error?.message === "NEXT_REDIRECT") return;
       
-      let message = "An error occured!";
-
-      if (typeof error?.response?.data === "string")
-        message = error?.response?.data;
-      else if (
-        typeof error?.response?.data === "object" &&
-        Object.keys(error?.response?.data)?.length
-      ) {
-        message =
-          error?.response?.data[Object.keys(error?.response?.data)?.[0]];
-      } else if (error?.message) {
-        message = error.message;
-      }
-      
+      const message = getErrorMessage(error, "An error occured!");
       errorCallback?.({ message });
     } finally {
       setLoading(false);
@@ -169,8 +155,7 @@ export const useForgotPassword = () => {
       const res = await AuthService.forgotPassword({ payload });
       successCallback?.(res?.data?.message);
     } catch (error: Error | any) {
-      const message =
-        error?.response?.data?.message || "An error occurred!";
+      const message = getErrorMessage(error, "An error occurred!");
       showErrorToast({ message });
       errorCallback?.({ message });
     } finally {
@@ -199,8 +184,7 @@ export const useVerifyCode = () => {
       const res = await AuthService.verifyCode({ payload });
       successCallback?.(res?.data?.message);
     } catch (error: Error | any) {
-      const message =
-        error?.response?.data?.message || "An error occurred!";
+      const message = getErrorMessage(error, "An error occurred!");
       showErrorToast({ message });
       errorCallback?.({ message });
     } finally {
@@ -234,8 +218,7 @@ export const useResetPassword = () => {
       const res = await AuthService.resetPassword({ payload });
       successCallback?.(res?.data?.message);
     } catch (error: Error | any) {
-      const message =
-        error?.response?.data?.message || "An error occurred!";
+      const message = getErrorMessage(error, "An error occurred!");
       showErrorToast({ message });
       errorCallback?.({ message });
     } finally {

@@ -3,6 +3,7 @@ import { showErrorToast, showSuccessToast } from "@/utils/toaster";
 import { AxiosError } from "axios";
 import BrandsService from "@/services/brands";
 import { Brand } from "@/types";
+import { getErrorMessage } from "@/utils/errorUtils";
 
 // Hook for fetching brands
 export const useGetBrands = () => {
@@ -25,8 +26,8 @@ export const useGetBrands = () => {
       return transformedData;
     } catch (error: Error | AxiosError | any) {
       showErrorToast({
-        message: error?.response?.data?.message || "Failed to fetch brands",
-        description: error?.response?.data?.description || "",
+        message: getErrorMessage(error, "Failed to fetch brands"),
+        description: "",
       });
       return [];
     } finally {
@@ -50,8 +51,8 @@ export const useGetBrandById = () => {
       return res?.data?.data as Brand;
     } catch (error: Error | AxiosError | any) {
       showErrorToast({
-        message: error?.response?.data?.message || "Failed to fetch brand",
-        description: error?.response?.data?.description || "",
+        message: getErrorMessage(error, "Failed to fetch brand"),
+        description: "",
       });
       return null;
     } finally {
@@ -88,8 +89,8 @@ export const useCreateBrand = () => {
       return res?.data?.data as Brand;
     } catch (error: Error | AxiosError | any) {
       showErrorToast({
-        message: error?.response?.data?.message || "Failed to create brand",
-        description: error?.response?.data?.description || "",
+        message: getErrorMessage(error, "Failed to create brand"),
+        description: "",
       });
       return null;
     } finally {
@@ -127,8 +128,8 @@ export const useUpdateBrand = () => {
       return res?.data?.data as Brand;
     } catch (error: Error | AxiosError | any) {
       showErrorToast({
-        message: error?.response?.data?.message || "Failed to update brand",
-        description: error?.response?.data?.description || "",
+        message: getErrorMessage(error, "Failed to update brand"),
+        description: "",
       });
       return null;
     } finally {
@@ -161,8 +162,8 @@ export const useDeleteBrand = () => {
       return true;
     } catch (error: Error | AxiosError | any) {
       showErrorToast({
-        message: error?.response?.data?.message || "Failed to delete brand",
-        description: error?.response?.data?.description || "",
+        message: getErrorMessage(error, "Failed to delete brand"),
+        description: "",
       });
       return false;
     } finally {

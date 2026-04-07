@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { showErrorToast, showSuccessToast } from "@/utils/toaster";
+import { getErrorMessage } from "@/utils/errorUtils";
 import { AxiosError } from "axios";
 // import { IFetchCategoryQuery } from "@/types";
 import CategoriesService from "@/services/categories";
@@ -27,8 +28,8 @@ export const useGetCategories = () => {
       return transformedData;
     } catch (error: Error | AxiosError | any) {
       showErrorToast({
-        message: error?.response?.data?.message || "Failed to fetch categories",
-        description: error?.response?.data?.description || "",
+        message: getErrorMessage(error, "Failed to fetch categories"),
+        description: "",
       });
       return [];
     } finally {
@@ -52,8 +53,8 @@ export const useGetCategoryById = () => {
       return res?.data?.data as Category;
     } catch (error: Error | AxiosError | any) {
       showErrorToast({
-        message: error?.response?.data?.message || "Failed to fetch category",
-        description: error?.response?.data?.description || "",
+        message: getErrorMessage(error, "Failed to fetch category"),
+        description: "",
       });
       return null;
     } finally {

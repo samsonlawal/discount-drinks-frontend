@@ -1,5 +1,6 @@
 import { useState } from "react";
 import newsletterService from "@/services/newsletter/newsletterService";
+import { getErrorMessage } from "@/utils/errorUtils";
 
 export const useNewsletter = () => {
   const [email, setEmail] = useState("");
@@ -20,10 +21,7 @@ export const useNewsletter = () => {
       // Reset success state after 5 seconds
       setTimeout(() => setSubmitted(false), 5000);
     } catch (err: any) {
-      setError(
-        err?.response?.data?.message ||
-          "Something went wrong. Please try again later."
-      );
+      setError(getErrorMessage(err, "Something went wrong. Please try again later."));
     } finally {
       setIsSubmitting(false);
     }
@@ -38,3 +36,5 @@ export const useNewsletter = () => {
     handleSubmit,
   };
 };
+//   };
+// };

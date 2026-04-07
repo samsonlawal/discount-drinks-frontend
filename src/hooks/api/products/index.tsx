@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { showErrorToast, showSuccessToast } from "@/utils/toaster";
+import { getErrorMessage } from "@/utils/errorUtils";
 import { AxiosError } from "axios";
 import ProductsService from "@/services/products";
 import { Product, PaginationMetadata } from "@/types";
