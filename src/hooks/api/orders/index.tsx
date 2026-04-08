@@ -96,9 +96,11 @@ export const useGetOrderDetails = () => {
       const res = await OrderService.getOrderById(orderId);
       const data = res.data?.data || res.data?.order || res.data;
       setOrder(data);
+      return data;
     } catch (error: any) {
       console.error("[useGetOrderDetails] Failed to fetch order details:", error);
       setOrder(null);
+      return null;
     } finally {
       setLoading(false);
     }
