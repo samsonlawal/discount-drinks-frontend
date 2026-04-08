@@ -73,10 +73,12 @@ export const useGetUserOrders = () => {
       console.log("useGetUserOrders: Final Orders", finalOrders);
       setOrders(finalOrders);
       setPagination(paginationData);
+      return finalOrders;
     } catch (error: any) {
       console.error("[useGetUserOrders] Failed to fetch orders:", error);
       setOrders([]);
       setPagination(null);
+      return [];
     } finally {
       setLoading(false);
     }

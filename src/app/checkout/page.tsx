@@ -211,8 +211,15 @@ export default function CheckoutPage() {
           }
 
           // If neither exists, assume it's a successful backend order (e.g. mock or manual) and redirect
-          const orderId = response?.orderId || response?.data?.orderId || response?.order?._id || response?.data?.order?._id || "manual";
-          router.push(`/order/success?order_id=${orderId}`);
+          // CRITICAL: Extract the ObjectID for API calls. We check every possible path.
+          const resBody = response?.data || response;
+          const objectId = resBody?._id || resBody?.id || resBody?.order?._id || resBody?.order?.id;
+          const humanId = resBody?.orderId || resBody?.data?.orderId || "manual";
+          
+          const finalId = objectId || humanId;
+
+          console.log("🚀 [Checkout] Logic - ObjectID found:", objectId, "HumanID found:", humanId);
+          router.push(`/order/success?order_id=${finalId}`);
           setIsProcessing(false);
         },
         errorCallback: () => {

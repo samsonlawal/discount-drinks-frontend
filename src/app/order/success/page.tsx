@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { CheckCircle2, ShoppingBag, Loader2, AlertCircle } from "lucide-react";
 import { useCart } from "@/contexts/CartContext";
-import { useGetOrderDetails } from "@/hooks/api/orders";
+import { useGetOrderDetails, useGetUserOrders } from "@/hooks/api/orders";
 import "../../style.css";
 
 const SUCCESS_STATUSES = ["paid", "processing", "shipped", "delivered"];
@@ -15,6 +15,8 @@ function SuccessContent() {
   const searchParams = useSearchParams();
   const { clearCart } = useCart();
   const { fetchOrderDetails, order, loading: isFetching } = useGetOrderDetails();
+  const { fetchUserOrders } = useGetUserOrders();
+  const userId = typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('user') || '{}')._id : null;
   
   const [isVerifying, setIsVerifying] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -34,12 +36,12 @@ function SuccessContent() {
     const maxPolls = 5;
     const pollInterval = 3000; // 3 seconds
 
-    const verifyOrder = async () => {
-      const oid = orderId || sessionId; // Try both if backend supports it
-      if (!oid) return;
+    const verifyOrder = async (idToVerify: string) => {
+      if (!idToVerify) return;
 
       try {
-        const fetchedOrder = await fetchOrderDetails(oid);
+        console.log("🔍 [Success] Verifying order ID:", idToVerify);
+        const fetchedOrder = await fetchOrderDetails(idToVerify);
         const status = (fetchedOrder?.status || "").toLowerCase();
 
         if (SUCCESS_STATUSES.includes(status)) {
@@ -57,20 +59,44 @@ function SuccessContent() {
           // Still pending, try polling
           if (pollCount < maxPolls) {
             pollCount++;
-            setTimeout(verifyOrder, pollInterval);
+            setTimeout(() => verifyOrder(idToVerify), pollInterval);
           } else {
             setError("We couldn't verify your payment immediately. Don't worry, your order is being processed. Please check your email for confirmation.");
             setIsVerifying(false);
           }
         }
-      } catch (err) {
+      } catch (err: any) {
+        const errorMsg = err?.response?.data?.message || err?.message || "";
+        
+        // RESILIENCE LOGIC: If we hit a 400 Validation Error (e.g. for ORD0077), 
+        // try to find the real ObjectID by searching user history.
+        if ((err?.response?.status === 400 || errorMsg.includes("format")) && idToVerify.startsWith("ORD") && userId) {
+          console.log("🛡️ [Success] Human-readable ID detected, attempting to find ObjectID match...");
+          try {
+            const userOrders = await fetchUserOrders(userId);
+            const foundOrder = userOrders?.find((o: any) => o.orderId === idToVerify);
+            if (foundOrder?._id) {
+              console.log("✅ [Success] Found matching ObjectID:", foundOrder._id);
+              // REWRITE THE URL: Replace ORD... with the real ObjectID in the browser address bar
+              const newUrl = window.location.pathname + `?order_id=${foundOrder._id}`;
+              window.history.replaceState({}, '', newUrl);
+              
+              // Retry with the correct ObjectID
+              verifyOrder(foundOrder._id);
+              return;
+            }
+          } catch (fetchErr) {
+            console.error("❌ [Success] Failed to search for ObjectID:", fetchErr);
+          }
+        }
+
         setError("Something went wrong while verifying your order.");
         setIsVerifying(false);
       }
     };
 
-    verifyOrder();
-  }, [sessionId, orderId, router, fetchOrderDetails, clearCart, hasCleared]);
+    verifyOrder(orderId || sessionId || "");
+  }, [sessionId, orderId, router, fetchOrderDetails, fetchUserOrders, clearCart, hasCleared, userId]);
 
   if (!sessionId && !orderId) {
     return null;
