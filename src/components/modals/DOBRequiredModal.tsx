@@ -44,7 +44,7 @@ export function DOBRequiredModal({
   };
 
   return (
-    <BaseModal isOpen={isOpen} onClose={onClose} className="md:min-w-[500px] bg-white p-10">
+    <BaseModal isOpen={isOpen} onClose={onClose} className="md:min-w-[500px] bg-white p-6 md:p-10 w-full overflow-hidden">
       <div className="flex flex-col items-center gap-6">
         <div className="flex h-20 w-20 items-center justify-center rounded-full bg-(--ocean-green)/10 text-(--ocean-green)">
           <Cake size={40} strokeWidth={1.5} />
@@ -60,7 +60,7 @@ export function DOBRequiredModal({
         </div>
 
         <form onSubmit={handleSubmit} className="w-full space-y-6 pt-4">
-          <div>
+          <div className="w-full min-w-0">
             <label htmlFor="dob-input" className="block text-sm font-medium text-gray-700 mb-1">
               Date of Birth
             </label>
@@ -69,7 +69,7 @@ export function DOBRequiredModal({
               type="date"
               value={dob}
               onChange={(e) => setDob(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-200 rounded-xl bg-white text-gray-900 text-sm focus:outline-none focus:border-(--ocean-green) transition-colors"
+              className="w-full max-w-full min-w-0 box-border px-4 py-3 border border-gray-200 rounded-xl bg-white text-gray-900 text-sm focus:outline-none focus:border-(--ocean-green) transition-colors"
               required
             />
           </div>

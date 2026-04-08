@@ -232,7 +232,7 @@ export default function ProfileAddressesPage() {
         <h2 className="text-2xl mb-2" style={{ fontSize: '24px', fontWeight: 600, color: '#111827' }}>Address</h2>
       </div>
         {!isFormOpen && (
-          <button onClick={() => handleOpenForm()} className="flex items-center justify-center gap-1 px-6 h-[60px] bg-[var(--eerie-black)] text-[white] text-sm font-medium rounded-lg hover:bg-black transition-colors shadow-sm">
+          <button onClick={() => handleOpenForm()} className="flex items-center gap-1 px-4 py-2.5 bg-[var(--eerie-black)] text-white text-sm font-medium rounded-lg hover:bg-black transition-colors shadow-sm">
             <Plus size={18} />
             Add New
           </button>
@@ -298,11 +298,11 @@ export default function ProfileAddressesPage() {
             </div>
 
             <div className="flex flex-col-reverse md:flex-row justify-end gap-3 pt-6 border-t border-gray-100">
-              <button type="button" onClick={handleCloseForm} className="flex items-center justify-center px-6 h-[60px] bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 rounded-lg text-sm font-medium transition-colors">Cancel</button>
+              <button type="button" onClick={handleCloseForm} className="flex items-center justify-center px-6 py-3 bg-white text-gray-700 border border-gray-300 hover:bg-gray-50 rounded-lg text-sm font-medium transition-colors">Cancel</button>
               <button 
                 type="submit" 
                 disabled={isCreating || isUpdating}
-                className="flex items-center justify-center px-6 h-[60px] bg-[#1a1a1a] text-white rounded-lg hover:bg-black text-sm font-medium transition-colors shadow-sm disabled:opacity-50"
+                className="flex items-center justify-center px-6 py-3 bg-[#1a1a1a] text-white rounded-lg hover:bg-black text-sm font-medium transition-colors shadow-sm disabled:opacity-50"
               >
                 {isCreating || isUpdating ? "Saving..." : "Save Address"}
               </button>

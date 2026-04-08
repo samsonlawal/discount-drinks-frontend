@@ -121,17 +121,18 @@ export const useLogout = () => {
   const dispatch = useDispatch();
 
   const onLogout = async () => {
-    // 1. Clear Redux state
+    // Navigate FIRST — this tears down the React tree immediately,
+    // preventing the naked header/footer flash while async cleanup runs
+    window.location.href = "/";
+
+    // Clear Redux state
     dispatch(clearAuthState());
-    
-    // 2. Purge persistent storage (Redux Persist)
+
+    // Purge persistent storage in the background (page is already navigating)
     const { persistor } = await import("@/redux/store");
     if (persistor) {
       await persistor.purge();
     }
-
-    // 3. Hard redirect to home to clear all memory states
-    window.location.href = "/";
   };
 
   return { onLogout };
