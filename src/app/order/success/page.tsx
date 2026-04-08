@@ -129,7 +129,7 @@ function SuccessContent() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-[60vh] text-center px-4">
-      <div className="flex h-24 w-24 items-center justify-center rounded-full bg-(--ocean-green)/10 text-(--ocean-green) mb-8 animate-[scaleIn_0.4s_ease-out]">
+      <div className="flex h-24 w-24 items-center justify-center rounded-full bg-green-600 text-white mb-8 animate-[scaleIn_0.4s_ease-out]">
         <CheckCircle2 size={48} strokeWidth={1.5} />
       </div>
 

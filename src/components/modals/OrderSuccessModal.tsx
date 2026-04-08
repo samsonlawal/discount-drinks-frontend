@@ -19,7 +19,7 @@ export function OrderSuccessModal({
   return (
     <BaseModal isOpen={isOpen} onClose={onClose} className="md:min-w-[700px] bg-white p-10">
       <div className="flex flex-col items-center gap-6">
-        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-(--ocean-green)/10 text-(--ocean-green)">
+        <div className="flex h-20 w-20 items-center justify-center rounded-full bg-green-600 text-white">
           <CheckCircle2 size={40} strokeWidth={1.5} />
         </div>
 

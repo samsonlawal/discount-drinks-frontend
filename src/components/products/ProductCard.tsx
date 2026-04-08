@@ -13,12 +13,16 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product }: ProductCardProps) {
-  const { addToCart, isInCart } = useCart();
+  const { addToCart, removeFromCart, isInCart } = useCart();
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   const router = useRouter();
 
-  const handleAddToCart = () => {
-    addToCart(product);
+  const handleCartToggle = () => {
+    if (inCart) {
+      removeFromCart(productId);
+    } else {
+      addToCart(product);
+    }
   };
 
   const handleWishlistToggle = () => {
@@ -116,9 +120,8 @@ export default function ProductCard({ product }: ProductCardProps) {
 
             <button
             className={`card-action-btn cart-btn group ${inCart ? "text-(--ocean-green)!" : ""}`}
-            onClick={handleAddToCart}
-            disabled={inCart}
-            aria-label={`Add ${product.name} to cart`}
+            onClick={handleCartToggle}
+            aria-label={inCart ? `Remove ${product.name} from cart` : `Add ${product.name} to cart`}
           >
             <ShoppingCart
               className={`icon transition-all duration-200 ${inCart ? "fill-current stroke-(--ocean-green)" : "group-hover:fill-current group-hover:stroke-(--ocean-green) group-hover:text-(--ocean-green)"}`}
