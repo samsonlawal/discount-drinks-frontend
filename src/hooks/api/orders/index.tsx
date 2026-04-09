@@ -1,6 +1,7 @@
 import { useState, useCallback } from "react";
 import { OrderPayload, PaginationMetadata } from "@/types";
 import { showErrorToast, showSuccessToast } from "@/utils/toaster";
+import { getErrorMessage } from "@/utils/errorUtils";
 import OrderService from "@/services/orders";
 import { AxiosError } from "axios";
 
@@ -30,7 +31,7 @@ export const useCreateOrder = () => {
     } catch (error: Error | AxiosError | any) {
       console.error("[useCreateOrder] Order creation failed.", error);
       
-      const backendMessage = error?.response?.data?.message || error?.response?.data?.error || "Failed to place order!";
+      const backendMessage = getErrorMessage(error, "Failed to place order!");
       
       showErrorToast({
         message: "Order Failed",
@@ -72,10 +73,12 @@ export const useGetUserOrders = () => {
       console.log("useGetUserOrders: Final Orders", finalOrders);
       setOrders(finalOrders);
       setPagination(paginationData);
+      return finalOrders;
     } catch (error: any) {
       console.error("[useGetUserOrders] Failed to fetch orders:", error);
       setOrders([]);
       setPagination(null);
+      return [];
     } finally {
       setLoading(false);
     }
@@ -95,9 +98,11 @@ export const useGetOrderDetails = () => {
       const res = await OrderService.getOrderById(orderId);
       const data = res.data?.data || res.data?.order || res.data;
       setOrder(data);
+      return data;
     } catch (error: any) {
       console.error("[useGetOrderDetails] Failed to fetch order details:", error);
       setOrder(null);
+      return null;
     } finally {
       setLoading(false);
     }

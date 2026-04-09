@@ -10,8 +10,10 @@ import { useCart } from "@/contexts/CartContext";
 import { ShieldCheck, MapPin, Truck, Store, CreditCard, Wallet, ChevronRight, Check, AlertCircle } from "lucide-react";
 import { AddressRequiredModal } from "@/components/modals/AddressRequiredModal";
 import { OrderSuccessModal } from "@/components/modals/OrderSuccessModal";
+import { DOBRequiredModal } from "@/components/modals/DOBRequiredModal";
 import { BaseModal } from "@/components/modals/BaseModal";
 import { OrderPayload } from "@/types";
+import { isAtLeast18 } from "@/utils/ageUtils";
 import { useCreateOrder } from "@/hooks/api/orders";
 // import { getStripe, createCheckoutSession } from "@/utils/stripe";
 import { showErrorToast } from "@/utils/toaster";
@@ -49,7 +51,7 @@ export default function CheckoutPage() {
   const [isProcessing, setIsProcessing] = useState(false);
   const [ageVerified, setAgeVerified] = useState(false);
 
-  const [activeModal, setActiveModal] = useState<"none" | "address_required" | "order_success" | "missing_info" | "add_address">("none");
+  const [activeModal, setActiveModal] = useState<"none" | "address_required" | "order_success" | "missing_info" | "add_address" | "dob_required">("none");
   const [successMessage, setSuccessMessage] = useState("");
 
   const closeModal = () => setActiveModal("none");
@@ -126,6 +128,20 @@ export default function CheckoutPage() {
       return;
     }
 
+    // Age Verification Check
+    if (!user?.dob) {
+      setActiveModal("dob_required");
+      return;
+    }
+
+    if (!isAtLeast18(user.dob)) {
+      showErrorToast({ 
+        message: "Age Restriction", 
+        description: "You must be at least 18 years old to purchase from this store." 
+      });
+      return;
+    }
+
     setIsProcessing(true);
 
     try {
@@ -195,8 +211,15 @@ export default function CheckoutPage() {
           }
 
           // If neither exists, assume it's a successful backend order (e.g. mock or manual) and redirect
-          const orderId = response?.orderId || response?.data?.orderId || response?.order?._id || response?.data?.order?._id || "manual";
-          router.push(`/order/success?order_id=${orderId}`);
+          // CRITICAL: Extract the ObjectID for API calls. We check every possible path.
+          const resBody = response?.data || response;
+          const objectId = resBody?._id || resBody?.id || resBody?.order?._id || resBody?.order?.id;
+          const humanId = resBody?.orderId || resBody?.data?.orderId || "manual";
+          
+          const finalId = objectId || humanId;
+
+          console.log("🚀 [Checkout] Logic - ObjectID found:", objectId, "HumanID found:", humanId);
+          router.push(`/order/success?order_id=${finalId}`);
           setIsProcessing(false);
         },
         errorCallback: () => {
@@ -243,6 +266,15 @@ export default function CheckoutPage() {
           router.push("/user/profile/orders");
         }}
         message={successMessage}
+      />
+
+      <DOBRequiredModal
+        isOpen={activeModal === "dob_required"}
+        onClose={closeModal}
+        onSuccess={() => {
+          closeModal();
+          // Optionally re-trigger checkout or just let them click again
+        }}
       />
 
       <BaseModal isOpen={activeModal === "missing_info"} onClose={closeModal}>
@@ -601,10 +633,19 @@ export default function CheckoutPage() {
                 </span>
               </div>
 
+              {user?.dob && !isAtLeast18(user.dob) && (
+                <div className="mt-4 p-3 rounded-lg bg-red-50 border border-red-100 flex items-start gap-2">
+                  <AlertCircle size={18} className="text-red-500 mt-0.5" />
+                  <p className="text-xs text-red-600 font-medium leading-relaxed">
+                    We're sorry, but you must be at least 18 years old to purchase alcohol. Your profile indicates you do not meet this requirement.
+                  </p>
+                </div>
+              )}
+
               <button
                 onClick={handleCheckout}
-                disabled={orderLoading || isProcessing || !ageVerified}
-                className="btn-dark w-full rounded-xl py-4 mt-4 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={orderLoading || isProcessing || !ageVerified || (user?.dob && !isAtLeast18(user.dob))}
+                className="btn-dark w-full py-4 mt-4 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {orderLoading || isProcessing ? "Processing..." : "Proceed to Payment"}
                 {!orderLoading && !isProcessing && <ChevronRight size={20} />}

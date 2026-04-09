@@ -15,7 +15,7 @@ import { useGetProductById, useGetProducts } from "@/hooks/api/products";
 export default function ProductDetailPage() {
   const params = useParams();
   const productId = params?.id as string;
-  const { addToCart, isInCart } = useCart();
+  const { addToCart, removeFromCart, isInCart } = useCart();
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   
   const { product: apiProduct, loading, fetchProduct } = useGetProductById();
@@ -107,8 +107,12 @@ export default function ProductDetailPage() {
     .filter((p) => (p.id || (p as any)._id) !== currentProductId)
     .slice(0, 4);
 
-  const handleAddToCart = () => {
-    addToCart(product);
+  const handleCartToggle = () => {
+    if (isProductInCart) {
+      removeFromCart(currentProductId);
+    } else {
+      addToCart(product);
+    }
   };
 
   const isProductInCart = product ? isInCart(product.id || (product as any)._id) : false;
@@ -248,11 +252,10 @@ export default function ProductDetailPage() {
                 <div className="product-actions mb-3">
                   <button 
                     className="btn btn-primary flex gap-2 h-[60px]" 
-                    onClick={handleAddToCart}
-                    disabled={isProductInCart}
+                    onClick={handleCartToggle}
                   >
                     <ShoppingCart className="w-5 h-5" />
-                    <span>{isProductInCart ? "In Cart" : "Add to Cart"}</span>
+                    <span>{isProductInCart ? "Remove from Cart" : "Add to Cart"}</span>
                   </button>
                   {/* <button 
                     className={`btn btn-outline flex gap-2 wishlist-detail-btn ${inWishlist ? "active" : ""}`}

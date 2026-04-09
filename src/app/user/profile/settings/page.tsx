@@ -1,28 +1,53 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import React, { useState, useEffect, useCallback } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/redux/store";
+import { setAuthState } from "@/redux/Slices/authSlice";
 import MobileBackButton from "../MobileBackButton";
-import { useUpdateProfile, useUploadProfileImage } from "@/hooks/api/users";
+import { useUpdateProfile, useUploadProfileImage, useGetUserById } from "@/hooks/api/users";
 import { User as UserIcon, Camera, Loader2, ChevronDown, Check } from "lucide-react";
 import { UploadImageModal } from "@/components/modals/UploadImageModal";
 import * as Select from "@radix-ui/react-select";
 
+// Helper to format date for input type="date" (expects YYYY-MM-DD)
+const formatDateForInput = (dateString: string | null | undefined) => {
+  if (!dateString) return "";
+  const date = new Date(dateString);
+  if (isNaN(date.getTime())) return ""; 
+  return date.toISOString().split("T")[0];
+};
+
 export default function ProfileSettingsPage() {
+  const dispatch = useDispatch();
   const { user } = useSelector((state: RootState) => state.auth);
   const { updateProfile, loading: isSaving } = useUpdateProfile();
   const { uploadImage, loading: isUploading } = useUploadProfileImage();
+  const { fetchUser, loading: isFetching } = useGetUserById();
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [formData, setFormData] = useState({
     name: user?.name || "",
     email: user?.email || "",
     username: user?.username || "",
-    phone: (user as any)?.phone || "",
+    phone: (user as any)?.phone || (user as any)?.phoneNumber || "",
     gender: (user as any)?.gender || "",
-    dob: (user as any)?.dob || "",
+    dob: formatDateForInput((user as any)?.dob),
   });
+
+  // Fetch full user data on mount to ensure we have phone/dob
+  useEffect(() => {
+    const userId = user?.id || user?._id || (user as any)?.userId;
+    if (userId) {
+      fetchUser(userId).then((fetchedUser) => {
+        if (fetchedUser) {
+          dispatch(setAuthState({ 
+            user: user ? { ...user, ...fetchedUser } : fetchedUser 
+          }));
+        }
+      });
+    }
+  }, [dispatch, user?.id, user?._id, (user as any)?.userId]);
 
   // Sync state if user changes
   useEffect(() => {
@@ -31,9 +56,9 @@ export default function ProfileSettingsPage() {
         name: user.name || "",
         email: user.email || "",
         username: user.username || "",
-        phone: (user as any)?.phone || "",
+        phone: (user as any)?.phone || (user as any)?.phoneNumber || "",
         gender: (user as any)?.gender || "",
-        dob: (user as any)?.dob || "",
+        dob: formatDateForInput((user as any)?.dob),
       });
     }
   }, [user]);

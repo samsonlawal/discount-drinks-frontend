@@ -93,10 +93,7 @@ export default function ProfileDropdown({ user, onLogout }: ProfileDropdownProps
             <DropdownMenu.Separator className="h-px bg-gray-100 my-2" />
 
             <DropdownMenu.Item 
-              onClick={() => {
-                onLogout();
-                window.location.href = '/';
-              }} 
+              onClick={() => onLogout()} 
               className="flex items-center gap-3 px-3 py-2.5 rounded-lg cursor-pointer text-red-600 hover:bg-red-50 transition-colors focus:bg-red-50 outline-none w-full text-left"
             >
               <LogOut size={16} />

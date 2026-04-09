@@ -210,6 +210,7 @@ h3 > a {
   background: var(--eerie-black);
   color: var(--white);
   border: 1px solid var(--eerie-black);
+  border-radius: 6px;
   transition: background var(--transition-1), color var(--transition-1), border-color var(--transition-1);
 }
 

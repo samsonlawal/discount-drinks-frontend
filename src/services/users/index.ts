@@ -29,8 +29,11 @@ class Service {
   }
 
   getUserById({ userId }: { userId: string }) {
+    const token = store.getState().auth.accessToken;
     return axios.get(`${env.api.users}/${userId}`, {
       withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
+
     });
   }
 
@@ -83,15 +86,19 @@ class Service {
   }
 
   updateProfile({ userId, data }: { userId: string; data: any }) {
+    const token = store.getState().auth.accessToken;
     return axios.put(`${env.api.users}/${userId}`, data, {
       withCredentials: true,
+      headers: { Authorization: `Bearer ${token}` },
     });
   }
 
   uploadProfileImage({ userId, formData }: { userId: string; formData: FormData }) {
+    const token = store.getState().auth.accessToken;
     return axios.post(`${env.api.users}/${userId}/avatar`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
       },
       withCredentials: true,
     });

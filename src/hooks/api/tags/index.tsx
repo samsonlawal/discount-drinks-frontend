@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { showErrorToast, showSuccessToast } from "@/utils/toaster";
+import { getErrorMessage } from "@/utils/errorUtils";
 import { AxiosError } from "axios";
 import TagsService from "@/services/tags";
 import { Tag } from "@/types";
@@ -39,8 +40,8 @@ export const useGetTags = () => {
       return mappedData;
     } catch (error: Error | AxiosError | any) {
       showErrorToast({
-        message: error?.response?.data?.message || "Failed to fetch tags",
-        description: error?.response?.data?.description || "",
+        message: getErrorMessage(error, "Failed to fetch tags"),
+        description: "",
       });
       return [];
     } finally {
@@ -73,8 +74,8 @@ export const useGetTagById = () => {
       return mappedData;
     } catch (error: Error | AxiosError | any) {
       showErrorToast({
-        message: error?.response?.data?.message || "Failed to fetch tag",
-        description: error?.response?.data?.description || "",
+        message: getErrorMessage(error, "Failed to fetch tag"),
+        description: "",
       });
       return null;
     } finally {
@@ -107,8 +108,8 @@ export const useCreateTag = () => {
       return res?.data?.data as Tag;
     } catch (error: Error | AxiosError | any) {
       showErrorToast({
-        message: error?.response?.data?.message || "Failed to create tag",
-        description: error?.response?.data?.description || "",
+        message: getErrorMessage(error, "Failed to create tag"),
+        description: "",
       });
       console.log(error);
       return null;
@@ -142,8 +143,8 @@ export const useUpdateTag = () => {
       return res?.data?.data as Tag;
     } catch (error: Error | AxiosError | any) {
       showErrorToast({
-        message: error?.response?.data?.message || "Failed to update tag",
-        description: error?.response?.data?.description || "",
+        message: getErrorMessage(error, "Failed to update tag"),
+        description: "",
       });
       return null;
     } finally {
@@ -176,8 +177,8 @@ export const useDeleteTag = () => {
       return true;
     } catch (error: Error | AxiosError | any) {
       showErrorToast({
-        message: error?.response?.data?.message || "Failed to delete tag",
-        description: error?.response?.data?.description || "",
+        message: getErrorMessage(error, "Failed to delete tag"),
+        description: "",
       });
       return false;
     } finally {

@@ -32,22 +32,29 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
-export function CartProvider({ children }: { children: ReactNode }) {
+export function CartProvider({ children, userId }: { children: ReactNode; userId?: string }) {
+  // Scope the key to the user so different users on the same device have separate carts
+  const cartKey = userId ? `discountdrinks_cart_${userId}` : "discountdrinks_cart_guest";
+
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Load cart from localStorage on mount
+  // Load cart from localStorage when the user changes (login/logout/switch)
   useEffect(() => {
-    const savedCart = localStorage.getItem("discountdrinks_cart");
+    setIsLoading(true);
+    const savedCart = localStorage.getItem(cartKey);
     if (savedCart) {
       try {
         setCart(JSON.parse(savedCart));
       } catch (error) {
         console.error("Failed to parse cart from localStorage:", error);
+        setCart([]);
       }
+    } else {
+      setCart([]);
     }
     setIsLoading(false);
-  }, []);
+  }, [cartKey]);
 
   // Save cart to localStorage whenever it changes
   useEffect(() => {
@@ -57,15 +64,15 @@ export function CartProvider({ children }: { children: ReactNode }) {
           ...item,
           image: typeof item.image === 'string' && item.image.length > 500 ? '' : item.image
         }));
-        localStorage.setItem("discountdrinks_cart", JSON.stringify(cartToSave));
+        localStorage.setItem(cartKey, JSON.stringify(cartToSave));
       } catch (error) {
         console.error("Failed to save cart to localStorage:", error);
         if (error instanceof DOMException && error.name === 'QuotaExceededError') {
-           localStorage.removeItem("discountdrinks_cart");
+           localStorage.removeItem(cartKey);
         }
       }
     }
-  }, [cart, isLoading]);
+  }, [cart, isLoading, cartKey]);
 
   const addToCart = (product: Product) => {
     // Try to get the most appropriate image string
