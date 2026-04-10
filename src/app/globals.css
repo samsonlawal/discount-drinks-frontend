@@ -179,7 +179,6 @@ h3 > a {
 }
 
 .btn-secondary {
-  --height: 50px;
   --background: var(--white);
   --color: var(--eerie-black);
   --border-color: var(--white);
@@ -192,7 +191,6 @@ h3 > a {
 }
 
 .btn-outline {
-  --height: 50px;
   --background: var(--white);
   --color: var(--eerie-black);
   --border-color: var(--eerie-black);
@@ -211,6 +209,10 @@ h3 > a {
   color: var(--white);
   border: 1px solid var(--eerie-black);
   border-radius: 6px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: background var(--transition-1), color var(--transition-1), border-color var(--transition-1);
 }
 

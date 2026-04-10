@@ -29,18 +29,18 @@ function FailedContent() {
         Order Processing Failed
       </h1>
       
-      <p className="text-gray-500 max-w-md mx-auto mb-2 text-lg font-medium">
+      <p className="text-gray-500 max-w-md mx-auto mb-6 text-lg font-medium">
         Something went wrong while processing your payment.
       </p>
       
-      <p className="text-gray-400 max-w-md mx-auto mb-8">
+      {/* <p className="text-gray-400 max-w-md mx-auto mb-8">
         Your order {orderId && <span className="font-semibold text-gray-600">(#{orderId})</span>} has been recorded as failed, and you have not been charged for this attempt.
-      </p>
+      </p> */}
 
-      <div className="flex flex-col sm:flex-row gap-4 w-full max-w-md">
+      <div className="flex flex-col sm:flex-row gap-4 justify-center w-full">
         <Link 
           href="/checkout" 
-          className="btn btn-primary flex-1 py-4 flex items-center justify-center gap-2"
+          className="btn btn-primary w-full sm:w-auto px-6 lg:px-10 gap-2 !flex !justify-center whitespace-nowrap"
         >
           <ShoppingCart size={20} />
           Try Again
@@ -48,7 +48,7 @@ function FailedContent() {
         
         <Link 
           href="/contact" 
-          className="btn btn-outline flex-1 py-4 flex items-center justify-center gap-2"
+          className="btn btn-outline w-full sm:w-auto px-6 lg:px-10 gap-2 !flex !justify-center whitespace-nowrap"
         >
           <MessageCircle size={20} />
           Contact Support
