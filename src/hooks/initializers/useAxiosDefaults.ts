@@ -34,7 +34,10 @@ function useAxiosDefaults({ accessToken }: { accessToken?: string }) {
       (response) => response,
       async (error) => {
         // If we get a 401, it means the session/token is invalid or expired
-        if (error.response?.status === 401) {
+        // But do not redirect / clear if we are in the middle of a login attempt
+        const isLoginRequest = error.config?.url?.includes("/login") || false;
+        
+        if (error.response?.status === 401 && !isLoginRequest) {
           console.warn("Unauthorized! Clearing session data...");
           
           // Clear Redux state

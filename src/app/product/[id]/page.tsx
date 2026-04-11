@@ -8,7 +8,7 @@ import { products } from "@/data"; // still used for related products fallback
 import { useCart } from "@/contexts/CartContext";
 import ProductCard from "@/components/products/ProductCard";
 import ProductCardSkeleton from "@/components/products/ProductCardSkeleton";
-import { CheckCircle2, Heart, ShoppingCart, Grape, Wine, ShieldCheck, RotateCcw, Truck, Headphones } from "lucide-react";
+import { CheckCircle2, Heart, ShoppingCart, Grape, Wine, ShieldCheck, RotateCcw, Truck, Headphones, Ban } from "lucide-react";
 import { useWishlist } from "@/contexts/WishlistContext";
 import { useGetProductById, useGetProducts } from "@/hooks/api/products";
 
@@ -251,11 +251,16 @@ export default function ProductDetailPage() {
                 
                 <div className="product-actions mb-3">
                   <button 
-                    className="btn btn-primary flex gap-2 h-[60px]" 
-                    onClick={handleCartToggle}
+                    className={`btn btn-primary flex gap-2 h-[60px] ${((product as any).inStock === false || (product as any).stockQuantity === 0 || (product as any).stock === 0 || (product as any).countInStock === 0) ? "opacity-80 cursor-not-allowed bg-red-50 text-red-600 border border-red-200 pointer-events-none hover:bg-red-50 hover:border-red-200" : ""}`} 
+                    onClick={((product as any).inStock === false || (product as any).stockQuantity === 0 || (product as any).stock === 0 || (product as any).countInStock === 0) ? undefined : handleCartToggle}
+                    disabled={((product as any).inStock === false || (product as any).stockQuantity === 0 || (product as any).stock === 0 || (product as any).countInStock === 0)}
                   >
-                    <ShoppingCart className="w-5 h-5" />
-                    <span>{isProductInCart ? "Remove from Cart" : "Add to Cart"}</span>
+                    {((product as any).inStock === false || (product as any).stockQuantity === 0 || (product as any).stock === 0 || (product as any).countInStock === 0) ? (
+                      <Ban className="w-5 h-5" />
+                    ) : (
+                      <ShoppingCart className="w-5 h-5" />
+                    )}
+                    <span>{((product as any).inStock === false || (product as any).stockQuantity === 0 || (product as any).stock === 0 || (product as any).countInStock === 0) ? "Out of Stock" : isProductInCart ? "Remove from Cart" : "Add to Cart"}</span>
                   </button>
                   {/* <button 
                     className={`btn btn-outline flex gap-2 wishlist-detail-btn ${inWishlist ? "active" : ""}`}
