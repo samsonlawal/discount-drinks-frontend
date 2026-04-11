@@ -4,15 +4,17 @@ import Image from "next/image";
 
 export default function Footer() {
   return (
-    <footer className="footer">
-      <div className="footer-top">
-        <div className="container">
-          <div className="footer-brand">
-            <a href="#" className="logo">
-              <img src="/images/logo.svg" alt="Casmart logo" />
+    <footer className="bg-(--cultured) pt-16 pb-8">
+      <div className="container mx-auto max-w-[1350px]">
+        {/* Footer Top */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12 lg:mb-16">
+          
+          <div className="lg:col-span-2">
+            <a href="#" className="inline-block">
+              <img src="/images/logo.svg" alt="Discount Drinks logo" className="h-10" />
             </a>
 
-            <p className="footer-text">
+            <p className="text-(--sonic-silver) text-[15px] leading-relaxed mb-6 max-w-[470px]">
               We are your one-stop destination for every kind of drink and wine
               from everyday favorites to premium selections sourced from around
               the world. Whether you are stocking up for personal enjoyment,
@@ -20,185 +22,117 @@ export default function Footer() {
               make buying more rewarding
             </p>
 
-            <ul className="social-list">
+            <ul className="flex justify-start items-center gap-3">
               <li>
-                <a href="#" className="social-link" aria-label="Facebook">
-                  {/* Facebook */}
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
+                <a href="#" className="flex items-center justify-center bg-(--eerie-black) text-white w-[35px] h-[35px] rounded-full transition-all duration-200 hover:bg-(--ocean-green)" aria-label="Facebook">
+                  <svg className="w-[18px] h-[18px] fill-white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.236 2.686.236v2.97h-1.513c-1.491 0-1.956.93-1.956 1.886v2.267h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z" />
                   </svg>
                 </a>
               </li>
 
               <li>
-                <a href="#" className="social-link" aria-label="X / Twitter">
-                  {/* X (Twitter) */}
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
+                <a href="#" className="flex items-center justify-center bg-(--eerie-black) text-white w-[35px] h-[35px] rounded-full transition-all duration-200 hover:bg-(--ocean-green)" aria-label="X / Twitter">
+                  <svg className="w-[16px] h-[16px] fill-white" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
                   </svg>
                 </a>
               </li>
 
-              {/* <li>
-                <a href="#" className="social-link" aria-label="Instagram">
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 448 512"
-                    fill="currentColor"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z" />
-                  </svg>
-                </a>
-              </li> */}
-
-              {/* <li>
-                <a href="#" className="social-link" aria-label="TikTok">
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    fill="currentColor"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.75a4.85 4.85 0 01-1.01-.06z" />
-                  </svg>
-                </a>
-              </li> */}
+  
             </ul>
           </div>
 
-          <ul className="footer-list">
-            <li>
-              <p className="footer-list-title">Information</p>
-            </li>
+          <div className="w-full pl-0 lg:pl-6">
+            <p className="text-(--eerie-black) text-[22px] font-semibold mb-4">Information</p>
+            <ul className="flex flex-col gap-1">
+              <li>
+                <Link href="/about" className="relative text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
+                  <span className="absolute left-[-15px] top-1/2 -translate-y-1/2 w-[10px] h-[2px] bg-(--sonic-silver) scale-x-0 origin-right transition-transform duration-250 group-hover:scale-x-100"></span>
+                  About Us
+                </Link>
+              </li>
+              <li>
+                <Link href="/faq" className="relative text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
+                  <span className="absolute left-[-15px] top-1/2 -translate-y-1/2 w-[10px] h-[2px] bg-(--sonic-silver) scale-x-0 origin-right transition-transform duration-250 group-hover:scale-x-100"></span>
+                  FAQ
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="relative text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
+                  <span className="absolute left-[-15px] top-1/2 -translate-y-1/2 w-[10px] h-[2px] bg-(--sonic-silver) scale-x-0 origin-right transition-transform duration-250 group-hover:scale-x-100"></span>
+                  Contact Us
+                </Link>
+              </li>
+              <li>
+                <Link href="/legal/terms-and-conditions" className="relative text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
+                  <span className="absolute left-[-15px] top-1/2 -translate-y-1/2 w-[10px] h-[2px] bg-(--sonic-silver) scale-x-0 origin-right transition-transform duration-250 group-hover:scale-x-100"></span>
+                  Terms & Conditions
+                </Link>
+              </li>
+              <li>
+                <Link href="/legal/privacy-policy" className="relative text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
+                  <span className="absolute left-[-15px] top-1/2 -translate-y-1/2 w-[10px] h-[2px] bg-(--sonic-silver) scale-x-0 origin-right transition-transform duration-250 group-hover:scale-x-100"></span>
+                  Privacy Policy
+                </Link>
+              </li>
+            </ul>
+          </div>
 
-            <li>
-              <Link href="/about" className="footer-link">
-                About Us
-              </Link>
-            </li>
-
-                        <li>
-              <Link href="/faq" className="footer-link">
-                FAQ
-              </Link>
-            </li>
-
-                        <li>
-              <Link href="/contact" className="footer-link">
-                Contact Us
-              </Link>
-            </li>
-
-            <li>
-              <Link href="/legal/terms-and-conditions" className="footer-link">
-                Terms & Conditions
-              </Link>
-            </li>
-
-            <li>
-              <Link href="/legal/privacy-policy" className="footer-link">
-                Privacy Policy
-              </Link>
-            </li>
-
-
-
-
-
-
-          </ul>
-
-          <ul className="footer-list">
-            <li>
-              <p className="footer-list-title">Category</p>
-            </li>
-
-            <li>
-              <Link href="/products?category=Rum" className="footer-link">
-                Rum
-              </Link>
-            </li>
-
-            <li>
-              <Link href="/products?category=Whiskey" className="footer-link">
-                Whiskey
-              </Link>
-            </li>
-
-            <li>
-              <Link href="/products?category=Vodka" className="footer-link">
-                Vodka
-              </Link>
-            </li>
-
-            <li>
-              <Link href="/products?category=Spirit" className="footer-link">
-                Spirit
-              </Link>
-            </li>
-
-            <li>
-              <Link href="/products?category=Beer" className="footer-link">
-                Beer
-              </Link>
-            </li>
-
-            <li>
-              <Link href="/products?category=Tequila" className="footer-link">
-                Tequila
-              </Link>
-            </li>
-          </ul>
+          <div className="w-full">
+            <p className="text-(--eerie-black) text-[22px] font-semibold mb-4">Category</p>
+            <ul className="flex flex-col gap-1">
+              <li>
+                <Link href="/products?category=Rum" className="relative text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
+                  <span className="absolute left-[-15px] top-1/2 -translate-y-1/2 w-[10px] h-[2px] bg-(--sonic-silver) scale-x-0 origin-right transition-transform duration-250 group-hover:scale-x-100"></span>
+                  Rum
+                </Link>
+              </li>
+              <li>
+                <Link href="/products?category=Whiskey" className="relative text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
+                  <span className="absolute left-[-15px] top-1/2 -translate-y-1/2 w-[10px] h-[2px] bg-(--sonic-silver) scale-x-0 origin-right transition-transform duration-250 group-hover:scale-x-100"></span>
+                  Whiskey
+                </Link>
+              </li>
+              <li>
+                <Link href="/products?category=Vodka" className="relative text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
+                  <span className="absolute left-[-15px] top-1/2 -translate-y-1/2 w-[10px] h-[2px] bg-(--sonic-silver) scale-x-0 origin-right transition-transform duration-250 group-hover:scale-x-100"></span>
+                  Vodka
+                </Link>
+              </li>
+              <li>
+                <Link href="/products?category=Spirit" className="relative text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
+                  <span className="absolute left-[-15px] top-1/2 -translate-y-1/2 w-[10px] h-[2px] bg-(--sonic-silver) scale-x-0 origin-right transition-transform duration-250 group-hover:scale-x-100"></span>
+                  Spirit
+                </Link>
+              </li>
+              <li>
+                <Link href="/products?category=Beer" className="relative text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
+                  <span className="absolute left-[-15px] top-1/2 -translate-y-1/2 w-[10px] h-[2px] bg-(--sonic-silver) scale-x-0 origin-right transition-transform duration-250 group-hover:scale-x-100"></span>
+                  Beer
+                </Link>
+              </li>
+              <li>
+                <Link href="/products?category=Tequila" className="relative text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
+                  <span className="absolute left-[-15px] top-1/2 -translate-y-1/2 w-[10px] h-[2px] bg-(--sonic-silver) scale-x-0 origin-right transition-transform duration-250 group-hover:scale-x-100"></span>
+                  Tequila
+                </Link>
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
 
-      <div className="footer-bottom">
-        <div className="container">
-          <p className="copyright">
-            &copy; 2025 <Link href="/">DiscountDrinks</Link>. All Rights Reserved
+        {/* Footer Bottom */}
+        <div className="flex flex-col sm:flex-row justify-center lg:justify-between items-center gap-6 sm:gap-12 pt-6">
+          <p className="text-center text-(--sonic-silver)">
+            &copy; 2026 <Link href="/" className="inline-block text-(--eerie-black) font-semibold">DiscountDrinks</Link>. All Rights Reserved
           </p>
 
-          {/* <ul className="footer-bottom-list">
-            <li>
-              <Link href="/legal/privacy-policy" className="footer-bottom-link">
-                Privacy Policy
-              </Link>
-            </li>
-
-            <li>
-              <Link href="/legal/terms-and-conditions" className="footer-bottom-link">
-                Terms & Conditions
-              </Link>
-            </li>
-
-            <li>
-              <a href="#" className="footer-bottom-link">
-                Sitemap
-              </a>
-            </li>
-          </ul> */}
-
-          <div className="payment">
-            <p className="payment-title">We Support</p>
-
-            <div className="flex items-center gap-2">
-              <img src="/images/mastercard.svg" alt="Mastercard" className="w-10" />
-              <img src="/images/visa.svg" alt="Visa" className="w-10" />
+          <div className="flex items-center gap-4 flex-wrap justify-center">
+            <p className="text-[15px]">We Support</p>
+            <div className="flex items-center gap-3">
+              <img src="/images/mastercard.svg" alt="Mastercard" className="w-[45px] opacity-90" />
+              <img src="/images/visa.svg" alt="Visa" className="w-[45px] opacity-90" />
             </div>
           </div>
         </div>

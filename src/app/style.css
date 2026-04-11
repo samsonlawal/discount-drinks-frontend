@@ -1119,6 +1119,7 @@ h3 > a {
   /* border-bottom: 1px solid var(--cultured); */
   /* padding-block: 10px; */
   /* margin-bottom: 10px; */
+  padding-bottom: 12px;
 }
 
 .product-description p {
@@ -1295,9 +1296,9 @@ h3 > a {
 .product-img {
   width: 100%;
   max-width: 500px;
-  /* max-height: 500px; */
-  /* object-fit: contain; */
-  /* height: auto; */
+   max-height: 500px; 
+   object-fit: contain; 
+  height: auto; 
 }
 }
 

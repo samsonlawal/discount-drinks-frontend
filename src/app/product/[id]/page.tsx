@@ -168,7 +168,7 @@ export default function ProductDetailPage() {
                         key={idx}
                         onClick={() => hasImage && setActiveImage(img)}
                         disabled={!hasImage}
-                        className={`relative shrink-0 rounded-sm overflow-hidden transition-all duration-200 w-8 h-8 sm:w-12 sm:h-12 ${
+                        className={`relative shrink-0 overflow-hidden transition-all duration-200 w-8 h-8 sm:w-12 sm:h-12 ${
                           isActive
                             ? "ring-2 ring-black ring-offset-1 opacity-100"
                             : hasImage
