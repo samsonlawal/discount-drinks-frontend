@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter, useSearchParams } from "next/navigation";
 import {
   Mail,
   Lock,
@@ -19,6 +20,10 @@ import "../../auth.css";
 import { useLogin } from "@/hooks/api/auth";
 
 export default function SignInPage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -35,6 +40,8 @@ export default function SignInPage() {
       payload: formData,
       successCallback: () => {
         showSuccessToast({ message: "🚀 Sign In Successful!" });
+        // Redirect to callbackUrl or home
+        router.push(callbackUrl);
       },
       errorCallback: (error: Error | any) => {
         showErrorToast({ message: error?.message });

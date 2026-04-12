@@ -6,7 +6,9 @@ import { clearAuthState } from "@/redux/Slices/authSlice";
 import { persistor } from "@/redux/store";
 import { useRouter } from "next/navigation";
 
-function useAxiosDefaults({ accessToken }: { accessToken?: string }) {
+import { showErrorToast } from "@/utils/toaster";
+
+function useAxiosDefaults({ accessToken, user }: { accessToken?: string; user?: any }) {
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -35,21 +37,41 @@ function useAxiosDefaults({ accessToken }: { accessToken?: string }) {
       async (error) => {
         // If we get a 401, it means the session/token is invalid or expired
         // But do not redirect / clear if we are in the middle of a login attempt
-        const isLoginRequest = error.config?.url?.includes("/login") || false;
+        const isLoginRequest = error.config?.url?.includes("/login") || error.config?.url?.includes("/sign-in") || false;
         
         if (error.response?.status === 401 && !isLoginRequest) {
           console.warn("Unauthorized! Clearing session data...");
+
+          // 1. Notify the user
+          showErrorToast({ 
+            message: "Session Expired", 
+            description: "Your session has timed out. Please sign in again to continue." 
+          });
+
+          // 2. Cart Handover: Preserve items by copying to guest cart
+          const userId = user?.id || user?._id;
+          if (userId) {
+            const userCartKey = `discountdrinks_cart_${userId}`;
+            const guestCartKey = "discountdrinks_cart_guest";
+            const userCartData = localStorage.getItem(userCartKey);
+            
+            if (userCartData) {
+              localStorage.setItem(guestCartKey, userCartData);
+            }
+          }
           
-          // Clear Redux state
+          // 3. Clear Redux state
           dispatch(clearAuthState());
           
-          // Wipe persistent storage (purge cache)
+          // 4. Wipe persistent storage (purge cache)
           if (persistor) {
             await persistor.purge();
           }
 
-          // Redirect to home/login to force a fresh start
-          router.push("/");
+          // 5. Redirect to sign-in with callback URL to preserve context
+          const currentPath = window.location.pathname;
+          const callbackParam = currentPath !== "/" ? `?callbackUrl=${encodeURIComponent(currentPath)}` : "";
+          router.push(`/auth/sign-in${callbackParam}`);
         }
         return Promise.reject(error);
       }
@@ -60,7 +82,7 @@ function useAxiosDefaults({ accessToken }: { accessToken?: string }) {
       axios.interceptors.request.eject(requestInterceptor);
       axios.interceptors.response.eject(responseInterceptor);
     };
-  }, [accessToken, dispatch, router]);
+  }, [accessToken, user, dispatch, router]);
 }
 
 export default useAxiosDefaults;
