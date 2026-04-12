@@ -283,7 +283,8 @@ export default function ProductDetailPage() {
                 
                 <div className="product-actions mb-3">
                   <button 
-                    className={`btn btn-primary flex gap-2 h-[60px] ${((product as any).inStock === false || (product as any).stockQuantity === 0 || (product as any).stock === 0 || (product as any).countInStock === 0) ? "opacity-80 cursor-not-allowed bg-red-50 text-red-600 border border-red-200 pointer-events-none hover:bg-red-50 hover:border-red-200" : ""}`} 
+                    style={{ height: '50px' }}
+                    className={`btn btn-primary flex gap-2 w-full ${((product as any).inStock === false || (product as any).stockQuantity === 0 || (product as any).stock === 0 || (product as any).countInStock === 0) ? "opacity-80 cursor-not-allowed bg-red-50 text-red-600 border border-red-200 pointer-events-none hover:bg-red-50 hover:border-red-200" : ""}`} 
                     onClick={((product as any).inStock === false || (product as any).stockQuantity === 0 || (product as any).stock === 0 || (product as any).countInStock === 0) ? undefined : handleCartToggle}
                     disabled={((product as any).inStock === false || (product as any).stockQuantity === 0 || (product as any).stock === 0 || (product as any).countInStock === 0)}
                   >
@@ -434,7 +435,8 @@ export default function ProductDetailPage() {
 
                 <div className="flex flex-col gap-3">
                   <button 
-                    className={`btn btn-primary flex justify-center items-center gap-2 w-full h-[48px] transition-all ${((product as any).inStock === false || (product as any).stockQuantity === 0 || (product as any).stock === 0 || (product as any).countInStock === 0) ? "opacity-30 cursor-not-allowed pointer-events-none" : ""}`} 
+                    style={{ height: '50px' }}
+                    className={`btn btn-primary flex justify-center items-center gap-2 w-full transition-all ${((product as any).inStock === false || (product as any).stockQuantity === 0 || (product as any).stock === 0 || (product as any).countInStock === 0) ? "opacity-30 cursor-not-allowed pointer-events-none" : ""}`} 
                     onClick={((product as any).inStock === false || (product as any).stockQuantity === 0 || (product as any).stock === 0 || (product as any).countInStock === 0) ? undefined : handleBuyNow}
                     disabled={((product as any).inStock === false || (product as any).stockQuantity === 0 || (product as any).stock === 0 || (product as any).countInStock === 0)}
                   >

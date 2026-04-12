@@ -462,7 +462,7 @@ h3 > a {
   height: calc(90vh - 50px);
   min-height: 600px;
   display: flex;
-  padding-top:60px; /* Matches header height to reveal ticker */
+  padding-top: 0;
   overflow: hidden;
 }
 

@@ -227,7 +227,7 @@ export default function Header() {
           {/* Mobile Search Bar — Expandable */}
           <div 
             ref={mobileSearchRef}
-            className={`absolute top-full left-0 w-full bg-white p-4 shadow-lg border-t border-gray-100 z-40 transition-all duration-300 lg:hidden ${isMobileSearchOpen ? "opacity-100 visible translate-y-0" : "opacity-0 invisible -translate-y-2 pointer-events-none"}`}
+            className={`absolute top-full left-0 w-full bg-white z-40 transition-all duration-300 lg:hidden ${isMobileSearchOpen ? "opacity-100 visible translate-y-0 p-4 shadow-lg border-t border-gray-100" : "opacity-0 invisible -translate-y-2 pointer-events-none h-0 p-0 overflow-hidden border-none"}`}
           >
             <div className="relative flex items-center">
               <input
