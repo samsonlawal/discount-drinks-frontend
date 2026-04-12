@@ -1,21 +1,21 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import { products } from "@/data"; // still used for related products fallback
 import { useCart } from "@/contexts/CartContext";
 import ProductCard from "@/components/products/ProductCard";
 import ProductCardSkeleton from "@/components/products/ProductCardSkeleton";
-import { CheckCircle2, Heart, ShoppingCart, Grape, Wine, ShieldCheck, RotateCcw, Truck, Headphones } from "lucide-react";
+import { CheckCircle2, Heart, ShoppingCart, Beer, Wine, Martini, ShieldCheck, RotateCcw, Truck, Headphones, Ban, WineOff } from "lucide-react";
 import { useWishlist } from "@/contexts/WishlistContext";
 import { useGetProductById, useGetProducts } from "@/hooks/api/products";
 
 export default function ProductDetailPage() {
   const params = useParams();
   const productId = params?.id as string;
-  const { addToCart, removeFromCart, isInCart } = useCart();
+  const { cart, addToCart, removeFromCart, isInCart } = useCart();
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   
   const { product: apiProduct, loading, fetchProduct } = useGetProductById();
@@ -29,6 +29,8 @@ export default function ProductDetailPage() {
 
   const [activeImage, setActiveImage] = useState("");
   const [galleryImages, setGalleryImages] = useState<string[]>([]);
+  const [quantity, setQuantity] = useState(1);
+  const router = useRouter();
 
   useEffect(() => {
     // Prevent fetching mock products (prod_xxx) from the database since MongoDB uses 24-char ObjectIds
@@ -70,9 +72,9 @@ export default function ProductDetailPage() {
 
   if (loading && !product) {
     const icons = [
-      <Grape key="grapes" size={48} />,
-      <svg key="barrel" viewBox="0 0 24 24" width="48" height="48" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 10c0 1 0 3 0 4"/><path d="M19 10c0 1 0 3 0 4"/><path d="M2 7c0-1.7 4.5-3 10-3s10 1.3 10 3"/><path d="M22 17c0 1.7-4.5 3-10 3s-10-1.3-10-3"/><path d="M2 7v10"/><path d="M22 7v10"/><path d="M2 12h20"/><path d="M12 4v16"/></svg>,
-      <Wine key="wine" size={48} />
+      <Beer key="beer" size={48} />,
+      <Wine key="wine" size={48} />,
+      <Martini key="martini" size={48} />
     ];
 
     return (
@@ -89,14 +91,22 @@ export default function ProductDetailPage() {
 
   if (!product) {
     return (
-      <main className="min-h-screen flex items-center justify-center py-20">
-        <div className="text-center">
-          <h1 className="text-fs-2 font-semibold text-eerie-black mb-4">
-            Product Not Found
-          </h1>
-          <Link href="/" className="btn btn-primary inline-flex">
-            Back to Home
-          </Link>
+      <main className="min-h-screen flex items-center justify-center py-20 px-4">
+        <div className="flex flex-col items-center gap-6 max-w-md text-center">
+          <div className="bg-gray-100 p-8 rounded-full mb-2">
+            <WineOff size={64} className="text-gray-400" />
+          </div>
+          <div>
+            <h1 className="text-fs-2 font-semibold text-eerie-black mb-2">
+              Product Not Found
+            </h1>
+            <p className="text-gray-500 mb-8">
+              The drink you're looking for might have been moved, renamed, or is currently out of stock.
+            </p>
+            <Link href="/" className="btn btn-primary inline-flex px-10">
+              Browse All Drinks
+            </Link>
+          </div>
         </div>
       </main>
     );
@@ -111,8 +121,16 @@ export default function ProductDetailPage() {
     if (isProductInCart) {
       removeFromCart(currentProductId);
     } else {
-      addToCart(product);
+      addToCart(product, quantity);
     }
+  };
+
+  const handleBuyNow = () => {
+    if (!isProductInCart) {
+      addToCart(product, quantity);
+    }
+    // Alternatively, if they change quantity, we could update it, but for now we just push.
+    router.push("/checkout");
   };
 
   const isProductInCart = product ? isInCart(product.id || (product as any)._id) : false;
@@ -127,6 +145,15 @@ export default function ProductDetailPage() {
       addToWishlist(product);
     }
   };
+
+  const currentPrice = product ? Number((product.costPrice ?? product.price) || 0) : 0;
+  const basePrice = product ? Number(product.originalPrice || product.basePrice || 0) : 0;
+  const showBasePrice = basePrice > 0 && basePrice > currentPrice;
+  const discountPercentage = showBasePrice ? Math.round(((basePrice - currentPrice) / basePrice) * 100) : 0;
+
+  const displayQuantity = isProductInCart ? (cart.find((item: any) => (item.id || item._id) === currentProductId)?.quantity || quantity) : quantity;
+  const widgetCurrentPrice = currentPrice * displayQuantity;
+  const widgetBasePrice = basePrice * displayQuantity;
 
   return (
     <main>
@@ -168,7 +195,7 @@ export default function ProductDetailPage() {
                         key={idx}
                         onClick={() => hasImage && setActiveImage(img)}
                         disabled={!hasImage}
-                        className={`relative shrink-0 rounded-sm overflow-hidden transition-all duration-200 w-8 h-8 sm:w-12 sm:h-12 ${
+                        className={`relative shrink-0 overflow-hidden transition-all duration-200 w-8 h-8 sm:w-12 sm:h-12 ${
                           isActive
                             ? "ring-2 ring-black ring-offset-1 opacity-100"
                             : hasImage
@@ -236,14 +263,19 @@ export default function ProductDetailPage() {
                   )}
                 </div>
 
-                <div className="price-wrapper">
-                  <data className="price font-medium text-[24px] md:text-[30px]" value={(product.costPrice ?? product.price) || 0}>
-                    £{Number((product.costPrice ?? product.price) || 0).toFixed(2)}
+                <div className="price-wrapper flex items-center gap-3">
+                  <data className="price font-medium text-[24px] md:text-[30px]" value={currentPrice}>
+                    £{currentPrice.toFixed(2)}
                   </data>
-                  {(product.originalPrice || product.basePrice) && (
-                    <data className="price-old" value={product.originalPrice || product.basePrice}>
-                      £{Number(product.originalPrice || product.basePrice).toFixed(2)}
-                    </data>
+                  {showBasePrice && (
+                    <>
+                      <data className="price-old text-gray-400 line-through text-[18px]" value={basePrice}>
+                        £{basePrice.toFixed(2)}
+                      </data>
+                      <span className="text-white bg-(--ocean-green) px-2 py-0.5 rounded text-xs font-bold uppercase tracking-wider">
+                        Save {discountPercentage}%
+                      </span>
+                    </>
                   )}
                 </div>
 
@@ -251,20 +283,18 @@ export default function ProductDetailPage() {
                 
                 <div className="product-actions mb-3">
                   <button 
-                    className="btn btn-primary flex gap-2 h-[60px]" 
-                    onClick={handleCartToggle}
+                    style={{ height: '50px' }}
+                    className={`btn btn-primary flex gap-2 w-full ${((product as any).inStock === false || (product as any).stockQuantity === 0 || (product as any).stock === 0 || (product as any).countInStock === 0) ? "opacity-80 cursor-not-allowed bg-red-50 text-red-600 border border-red-200 pointer-events-none hover:bg-red-50 hover:border-red-200" : ""}`} 
+                    onClick={((product as any).inStock === false || (product as any).stockQuantity === 0 || (product as any).stock === 0 || (product as any).countInStock === 0) ? undefined : handleCartToggle}
+                    disabled={((product as any).inStock === false || (product as any).stockQuantity === 0 || (product as any).stock === 0 || (product as any).countInStock === 0)}
                   >
-                    <ShoppingCart className="w-5 h-5" />
-                    <span>{isProductInCart ? "Remove from Cart" : "Add to Cart"}</span>
+                    {((product as any).inStock === false || (product as any).stockQuantity === 0 || (product as any).stock === 0 || (product as any).countInStock === 0) ? (
+                      <Ban className="w-5 h-5" />
+                    ) : (
+                      <ShoppingCart className="w-5 h-5" />
+                    )}
+                    <span>{((product as any).inStock === false || (product as any).stockQuantity === 0 || (product as any).stock === 0 || (product as any).countInStock === 0) ? "Out of Stock" : isProductInCart ? "Remove from Cart" : "Add to Cart"}</span>
                   </button>
-                  {/* <button 
-                    className={`btn btn-outline flex gap-2 wishlist-detail-btn ${inWishlist ? "active" : ""}`}
-                    onClick={handleWishlistToggle}
-                    aria-label={inWishlist ? "Remove from Wishlist" : "Add to Wishlist"}
-                  >
-                    <Heart className="w-5 h-5 shrink-0" fill={inWishlist ? "currentColor" : "none"} />
-                    <span className="wishlist-text">{inWishlist ? "In Wishlist" : "Wishlist"}</span>
-                  </button> */}
                 </div>
 
                 <div className="product-description">
@@ -340,63 +370,84 @@ export default function ProductDetailPage() {
                 </ul> */}
               </div>
 
-              {/* Product Contact Card */}
-              <div className="bg-(--cultured) border border-gray-100 rounded-xl p-[24px] transition-all duration-300 hover:border-gray-200 lg:sticky lg:top-[120px]">
-                {/* <h3 className="text-lg font-semibold text-[#111827] mb-3">Ask a Question</h3> */}
-                {/* <p className="text-sm text-gray-500 leading-relaxed mb-1">
-                  If you have questions about this product, our wine experts are here to help.
-                </p>
-                <Link href="/contact" className="btn btn-outline w-full h-[54px] flex items-center justify-center gap-2 mt-4 hover:bg-black hover:text-white transition-all duration-300">
-                  Contact Us
-                </Link> */}
+              {/* Buy Box Widget */}
+              <div className="bg-(--cultured) border border-gray-100 rounded-sm p-[24px] shadow-sm transition-all duration-300 hover:border-gray-200 lg:sticky lg:top-[120px]">
+                <div className="mb-4">
+                  <div className="flex items-end gap-2 text-(--eerie-black) mb-1.5 border-b border-gray-200 pb-3">
+                    <data className="font-semibold text-[28px] leading-none" value={widgetCurrentPrice}>
+                      £{widgetCurrentPrice.toFixed(2)}
+                    </data>
+                    {showBasePrice && (
+                      <div className="flex flex-col items-start leading-[1.1] ml-1">
+                        <span className="text-red-600 text-[11px] font-bold uppercase tracking-wider mb-0.5">
+                          Save {discountPercentage}%
+                        </span>
+                        <data className="text-gray-400 line-through text-[13px] font-medium" value={widgetBasePrice}>
+                          £{widgetBasePrice.toFixed(2)}
+                        </data>
+                      </div>
+                    )}
+                  </div>
+                  
+                  {((product as any).inStock === false || (product as any).stockQuantity === 0 || (product as any).stock === 0 || (product as any).countInStock === 0) ? (
+                     <p className="text-(--sonic-silver) font-medium text-sm mt-1 flex items-center gap-1.5"><Ban size={16} /> Currently out of stock.</p>
+                  ) : (
+                     <p className="text-(--ocean-green) font-medium text-sm mt-1 flex items-center gap-1.5"><CheckCircle2 size={16} /> In Stock & Ready to Ship</p>
+                  )}
+                </div>
 
-                <h3 className="text-lg font-medium text-[#111827] mb-5">What We Offer</h3>
+                {/* Quantity Picker */}
+                <div className="mb-5">
+                  <label htmlFor="quantity" className="block text-sm font-medium text-gray-700 mb-2">Quantity:</label>
+                  <div className="flex items-center gap-0 w-32 border border-gray-300 rounded-md overflow-hidden bg-white">
+                    <button 
+                      className="w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                      disabled={quantity <= 1 || isProductInCart}
+                    >
+                      -
+                    </button>
+                    <input 
+                      type="number" 
+                      id="quantity"
+                      min="1"
+                      className="w-12 h-10 text-center font-medium border-x border-gray-300 focus:outline-none focus:ring-0"
+                      value={displayQuantity}
+                      onChange={(e) => {
+                        if (!isProductInCart) {
+                          const val = parseInt(e.target.value);
+                          setQuantity(isNaN(val) ? 1 : Math.max(1, val));
+                        }
+                      }}
+                      disabled={isProductInCart}
+                      readOnly={isProductInCart}
+                    />
+                    <button 
+                      className="w-10 h-10 flex items-center justify-center text-gray-600 hover:bg-gray-100 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                      onClick={() => setQuantity(quantity + 1)}
+                      disabled={isProductInCart}
+                    >
+                      +
+                    </button>
+                  </div>
+                  {isProductInCart && <p className="text-xs text-gray-500 mt-2">Quantity managed in cart</p>}
+                </div>
 
-                <ul className="flex flex-col gap-6 mt-2">
-                  <li className="flex items-center gap-4 w-full">
-                    <div className="w-8 shrink-0 text-(--ocean-green)">
-                      <Truck className="w-6 h-6" />
-                    </div>
-
-                    <div>
-                      <p className="font-medium text-sm text-(--eerie-black)">Free Shipping</p>
-                      <p className="text-[12px] text-gray-500">On All Orders</p>
-                    </div>
-                  </li>
-
-                  <li className="flex items-center gap-4 w-full">
-                    <div className="w-8 shrink-0 text-(--ocean-green)">
-                      <RotateCcw className="w-6 h-6" />
-                    </div>
-
-                    <div>
-                      <p className="font-medium text-sm text-(--eerie-black)">Easy Returns</p>
-                      <p className="text-[12px] text-gray-500">30 Day Returns Policy</p>
-                    </div>
-                  </li>
-
-                  <li className="flex items-center gap-4 w-full">
-                    <div className="w-8 shrink-0 text-(--ocean-green)">
-                      <ShieldCheck className="w-6 h-6" />
-                    </div>
-
-                    <div>
-                      <p className="font-medium text-sm text-(--eerie-black)">Secure Payment</p>
-                      <p className="text-[12px] text-gray-500">100% Secure Gaurantee</p>
-                    </div>
-                  </li>
-
-                  <li className="flex items-center gap-4 w-full">
-                    <div className="w-8 shrink-0 text-(--ocean-green)">
-                      <Headphones className="w-6 h-6" />
-                    </div>
-
-                    <div>
-                      <p className="font-medium text-sm text-(--eerie-black)">Special Support</p>
-                      <p className="text-[12px] text-gray-500">24/7 Dedicated Support</p>
-                    </div>
-                  </li>
-                </ul>
+                <div className="flex flex-col gap-3">
+                  <button 
+                    style={{ height: '50px' }}
+                    className={`btn btn-primary flex justify-center items-center gap-2 w-full transition-all ${((product as any).inStock === false || (product as any).stockQuantity === 0 || (product as any).stock === 0 || (product as any).countInStock === 0) ? "opacity-30 cursor-not-allowed pointer-events-none" : ""}`} 
+                    onClick={((product as any).inStock === false || (product as any).stockQuantity === 0 || (product as any).stock === 0 || (product as any).countInStock === 0) ? undefined : handleBuyNow}
+                    disabled={((product as any).inStock === false || (product as any).stockQuantity === 0 || (product as any).stock === 0 || (product as any).countInStock === 0)}
+                  >
+                    <span className="font-medium text-md">Buy Now</span>
+                  </button>
+                </div>
+                
+                <div className="mt-6 pt-5 border-t border-gray-100 flex items-center justify-center gap-2 text-gray-500 text-xs">
+                  <ShieldCheck size={16} className="text-(--ocean-green)" />
+                  Payments are secure and encrypted.
+                </div>
               </div>
             </div>
           </section>

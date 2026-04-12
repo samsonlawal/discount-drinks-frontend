@@ -26,7 +26,6 @@ import ProfileDropdown from "./ProfileDropdown";
 import { useGetProducts } from "@/hooks/api/products";
 import { Product } from "@/types";
 
-
 export default function Header() {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
@@ -101,7 +100,6 @@ export default function Header() {
     setIsSearching(true);
     setShowDropdown(true);
 
-    // Data is now prefetched on mount, but we add a fallback just in case
     if (!hasFetchedRef.current) {
       const data = await fetchProducts();
       if (data) {
@@ -168,238 +166,211 @@ export default function Header() {
   const { onLogout } = useLogout();
 
   return (
-    <header className={`header ${isScrolled ? "active" : ""}`} data-header>
-      <div className="container">
-        <div
-          className={`overlay ${isNavOpen ? "active" : ""}`}
-          data-overlay
-          onClick={closeNav}
-        />
-
-        {/* Hamburger — mobile only */}
-        <button
-          className="pr-1 text-(--eerie-black) md:hidden"
-          aria-label="Open Menu"
-          onClick={toggleNav}
-        >
-          <Menu size={22} />
-        </button>
-
-        {/* Desktop search bar */}
-        <div className="relative hidden lg:block w-max" ref={searchWrapperRef}>
-          <input
-            type="search"
-            name="search"
-            placeholder="Search products..."
-            className="bg-white h-10.5 w-70 pl-3.75 pr-11.25 border border-black/10 rounded-lg text-sm focus:outline-none focus:border-black transition-all"
-            value={searchQuery}
-            onChange={handleSearchChange}
-            onKeyDown={handleSearchKeyDown}
-            autoComplete="off"
+    <header className={`w-full bg-white transition-all duration-200 z-50 ${isScrolled ? "fixed top-0 left-0 shadow-md lg:static lg:shadow-none lg:border-b lg:border-black/10" : "relative lg:py-2 lg:border-b lg:border-black/10 lg:mb-[50px]"}`}>
+      <div className="container mx-auto px-4 sm:px-10 max-w-[1350px]">
+        
+        {/* Main Header Row */}
+        <div className="flex justify-between items-center py-3 lg:py-0">
+          
+          {/* Overlay */}
+          <div
+            className={`fixed inset-0 bg-black transition-opacity duration-250 z-[100] lg:hidden ${isNavOpen ? "opacity-70 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
+            onClick={closeNav}
           />
-          <button 
-            className="absolute top-1/2 right-3.75 -translate-y-1/2 text-black hover:text-emerald-600 transition-colors" 
-            aria-label="Search"
-          >
-            <Search size={18} />
-          </button>
 
-          {/* Search Dropdown - Desktop */}
-          {showDropdown && (
-            <div className="absolute top-[calc(100%+8px)] left-0 w-98 bg-white border border-black/10 rounded-md p-2 shadow-2xl z-[1500] min-h-60 max-h-100 overflow-y-auto overflow-x-hidden hidden lg:block">
-              <SearchResultsList 
-                results={searchResults} 
-                isSearching={isSearching} 
-                hasFetched={hasFetchedRef.current}
-                activeIndex={activeIndex}
-                handleResultClick={handleResultClick}
-                setActiveIndex={setActiveIndex}
-              />
-            </div>
-          )}
-        </div>
-
-        {/* Mobile Search Bar — Expandable */}
-        <div 
-          ref={mobileSearchRef}
-          className={`mobile-search-bar ${isMobileSearchOpen ? "active" : ""} lg:hidden`}
-        >
-          <div className="search-input-wrapper">
-            <input
-              type="search"
-              placeholder="Search products..."
-              className="mobile-search-input"
-              value={searchQuery}
-              onChange={handleSearchChange}
-              onKeyDown={handleSearchKeyDown}
-              autoFocus={isMobileSearchOpen}
-              autoComplete="off"
-            />
-            <button 
-              className="search-close-btn"
-              onClick={() => setIsMobileSearchOpen(false)}
+          {/* Left section: Hamburger & Search */}
+          <div className="flex-1 flex items-center justify-start">
+            {/* Hamburger — mobile only */}
+            <button
+              className="flex items-center justify-center p-2 pl-0 text-(--eerie-black) shrink-0 lg:hidden"
+              aria-label="Open Menu"
+              onClick={toggleNav}
             >
-              <X size={18} />
+              <Menu size={24} />
             </button>
+
+            {/* Desktop search bar */}
+            <div className="relative hidden lg:block w-max" ref={searchWrapperRef}>
+              <input
+                type="search"
+                name="search"
+                placeholder="Search products..."
+                className="bg-white h-9.5 w-70 pl-3.75 pr-11.25 border border-black/10 rounded-lg text-sm focus:outline-none focus:border-black transition-all"
+                value={searchQuery}
+                onChange={handleSearchChange}
+                onKeyDown={handleSearchKeyDown}
+                autoComplete="off"
+              />
+              <button 
+                className="absolute top-1/2 right-3.75 -translate-y-1/2 text-black hover:text-(--ocean-green) transition-colors" 
+                aria-label="Search"
+              >
+                <Search size={18} />
+              </button>
+
+              {/* Search Dropdown - Desktop */}
+              {showDropdown && (
+                <div className="absolute top-[calc(100%+8px)] left-0 w-98 bg-white border border-black/10 rounded-md p-2 shadow-2xl z-[1500] min-h-60 max-h-100 overflow-y-auto overflow-x-hidden hidden lg:block">
+                  <SearchResultsList 
+                    results={searchResults} 
+                    isSearching={isSearching} 
+                    hasFetched={hasFetchedRef.current}
+                    activeIndex={activeIndex}
+                    handleResultClick={handleResultClick}
+                    setActiveIndex={setActiveIndex}
+                  />
+                </div>
+              )}
+            </div>
           </div>
 
-          {/* Search Dropdown - Mobile */}
-          {showDropdown && (
-            <div className="mobile-search-results bg-white mt-3 border border-black/10 rounded-md p-2 shadow-xl max-h-80 overflow-y-auto">
-              <SearchResultsList 
-                results={searchResults} 
-                isSearching={isSearching} 
-                hasFetched={hasFetchedRef.current}
-                activeIndex={activeIndex}
-                handleResultClick={handleResultClick}
-                setActiveIndex={setActiveIndex}
+          {/* Mobile Search Bar — Expandable */}
+          <div 
+            ref={mobileSearchRef}
+            className={`absolute top-full left-0 w-full bg-white z-40 transition-all duration-300 lg:hidden ${isMobileSearchOpen ? "opacity-100 visible translate-y-0 p-4 shadow-lg border-t border-gray-100" : "opacity-0 invisible -translate-y-2 pointer-events-none h-0 p-0 overflow-hidden border-none"}`}
+          >
+            <div className="relative flex items-center">
+              <input
+                type="search"
+                placeholder="Search products..."
+                className="flex-1 h-10 px-4 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-gray-400"
+                value={searchQuery}
+                onChange={handleSearchChange}
+                onKeyDown={handleSearchKeyDown}
+                autoComplete="off"
               />
             </div>
-          )}
-        </div>
 
-        {/* Logo */}
-        <a href="/" className="logo">
-          <img
-            src="/images/logo.svg"
-            alt="DiscountDrinks logo"
-            width={130}
-            height={31}
-          />
-        </a>
-
-        {/* Action icons */}
-        <div className="header-actions">
-          {/* Search Toggle — mobile only */}
-          <button 
-            className={`header-action-btn lg:!hidden ${isMobileSearchOpen ? "active" : ""}`}
-            onClick={toggleMobileSearch}
-            aria-label="Toggle Search"
-          >
-            <Search size={20} aria-hidden="true" className="icon" />
-          </button>
-
-          {/* User */}
-          {user ? 
-            <>
-              {/* Mobile View */}
-              <Link 
-                href="/user/profile"
-                className="header-action-btn relative md:!hidden flex!" 
-                data-auth-btn
-              >
-               {user && user.profileImage ? (
-                               <img src={user.profileImage} alt="Profile" className="w-6 h-6 rounded-full" />
-                             ) : (
-                               <CircleUser size={20} />
-                             )}
-                <p className="header-action-label">Account</p>
-
-                {user && user.profileImage ? "" : <div
-                  className="absolute bg-black text-white rounded-full flex items-center justify-center md:hidden"
-                  style={{ width: '14px', height: '14px', top: '6px', right: '0px' }}
-                  aria-hidden="true"
-                >
-
-                  <Check size={10} strokeWidth={4} />
-                </div>}
-                
-              </Link>
-              
-              {/* Desktop View: Dropdown */}
-              <ProfileDropdown user={user} onLogout={onLogout} />
-            </>
-          :
-          (
-            <a
-  href="/auth/sign-in" // or previously /login
-  className=""
-  data-auth-btn
-  style={{ 
-    // padding: "6px 16px", 
-    borderRadius: "4px", 
-    fontSize: "14px", 
-    fontWeight: 600, 
-    textDecoration: "none" 
-  }}
->
-                <CircleUser size={24} aria-hidden="true" className="icon" />
-
-</a>
-
-          )}
-
-          {/* Cart */}
-          <a href="/cart" className="header-action-btn">
-            <ShoppingCart aria-hidden="true" className="icon" />
-            {!isLoading && (
-              <div
-                className="btn-badge green"
-                aria-hidden="true"
-                data-cart-count
-              >
-                {getCartCount()}
+            {/* Search Dropdown - Mobile */}
+            {showDropdown && (
+              <div className="mt-3 bg-white border border-black/10 rounded-md p-2 shadow-xl max-h-80 overflow-y-auto">
+                <SearchResultsList 
+                  results={searchResults} 
+                  isSearching={isSearching} 
+                  hasFetched={hasFetchedRef.current}
+                  activeIndex={activeIndex}
+                  handleResultClick={handleResultClick}
+                  setActiveIndex={setActiveIndex}
+                />
               </div>
             )}
-          </a>
+          </div>
+
+          {/* Logo */}
+          <Link href="/" className="flex-none">
+            <img
+              src="/images/logo.svg"
+              alt="DiscountDrinks logo"
+              width={130}
+              height={31}
+            />
+          </Link>
+
+          {/* Action icons */}
+          <div className="flex-1 flex items-center gap-1 lg:gap-4 justify-end">
+            {/* Search Toggle — mobile only */}
+            <button 
+              className={`relative flex items-center justify-center w-[36px] h-[36px] text-(--eerie-black) rounded-lg transition-colors lg:hidden ${isMobileSearchOpen ? "text-(--ocean-green)" : ""}`}
+              onClick={toggleMobileSearch}
+              aria-label="Toggle Search"
+            >
+              <Search size={22} aria-hidden="true" />
+            </button>
+
+            {/* User */}
+            {user ? (
+              <>
+                {/* Mobile View */}
+                <Link 
+                  href="/user/profile"
+                  className="relative flex items-center justify-center w-[36px] h-[36px] text-(--eerie-black) lg:hidden" 
+                >
+                  {user.profileImage ? (
+                    <img src={user.profileImage} alt="Profile" className="w-[22px] h-[22px] rounded-full" />
+                  ) : (
+                    <CircleUser size={22} />
+                  )}
+                  <p className="hidden">Account</p>
+
+                  {!user.profileImage && (
+                    <div className="absolute top-[6px] right-0 w-[14px] h-[14px] bg-black text-white rounded-full flex items-center justify-center">
+                      <Check size={10} strokeWidth={4} />
+                    </div>
+                  )}
+                </Link>
+                
+                {/* Desktop View: Dropdown */}
+                <ProfileDropdown user={user} onLogout={onLogout} />
+              </>
+            ) : (
+              <Link
+                href="/auth/sign-in"
+                className="relative flex items-center justify-center w-[36px] h-[36px] text-(--eerie-black) rounded-lg transition-colors lg:w-auto lg:gap-1.5 lg:h-auto group hover:text-(--ocean-green)"
+              >
+                <CircleUser size={24} aria-hidden="true" />
+                <span className="hidden lg:block text-(--sonic-silver) text-[14px] group-hover:text-(--ocean-green) font-medium">Account</span>
+              </Link>
+            )}
+
+            {/* Cart */}
+            <Link href="/cart" className="relative flex items-center justify-center w-[36px] h-[36px] text-(--eerie-black) rounded-lg transition-colors lg:w-auto lg:gap-1.5 lg:h-auto group hover:text-(--ocean-green)">
+              <div className="relative flex justify-center items-center">
+                <ShoppingCart size={24} aria-hidden="true" />
+                {!isLoading && (
+                  <div className="absolute -top-1.5 -right-2 flex items-center justify-center min-w-[18px] h-[18px] bg-(--ocean-green) text-white text-[10px] rounded-full px-1">
+                    {getCartCount()}
+                  </div>
+                )}
+              </div>
+              <span className="hidden lg:block text-(--sonic-silver) text-[14px] group-hover:text-(--ocean-green) font-medium">Cart</span>
+            </Link>
+          </div>
         </div>
 
-        {/* Side nav drawer */}
-        <nav className={`navbar ${isNavOpen ? "active" : ""}`} data-navbar>
-          <div className="navbar-top">
-            <a href="/" className="logo">
+        {/* Side nav drawer / Desktop Navbar */}
+        <nav className={`fixed top-0 left-0 w-full max-w-[300px] h-full bg-white px-6 py-8 z-[200] transition-transform duration-500 ease-in-out ${isNavOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0 lg:max-w-none lg:h-auto lg:p-0 ${isScrolled ? "lg:fixed lg:top-0 lg:left-0 lg:w-full lg:bg-white lg:shadow-md lg:z-[1000]" : "lg:absolute lg:top-full lg:bg-transparent lg:z-[150]"}`}>
+          <div className="flex justify-between items-center mb-10 lg:hidden">
+            <Link href="/">
               <img
                 src="/images/logo.svg"
                 alt="DiscountDrinks logo"
                 width={130}
                 height={31}
               />
-            </a>
+            </Link>
             <button
-              className="nav-close-btn"
+              className="text-(--eerie-black) p-1"
               aria-label="Close Menu"
               onClick={closeNav}
             >
-              <X className="icon" />
+              <X size={24} />
             </button>
           </div>
 
-          <ul className="navbar-list">
-            <li>
-              <a href="/" className="navbar-link" onClick={closeNav}>
-                <Home size={16} className="navbar-link-icon" /> Home
-              </a>
-            </li>
-            <li>
-              <a href="/products" className="navbar-link" onClick={closeNav}>
-                <Store size={16} className="navbar-link-icon" /> Shop
-              </a>
-            </li>
-            <li>
-              <Link
-                href="/about"
-                className="navbar-link"
-                onClick={closeNav}
-              >
-                <Info size={16} className="navbar-link-icon" /> About
+          <ul className="flex flex-col w-full lg:flex-row lg:justify-center lg:items-center lg:gap-10 lg:px-10 lg:h-[50px] ">
+            <li className="border-b border-(--cultured) lg:border-none">
+              <Link href="/" className="flex items-center gap-3 py-3 text-(--eerie-black) text-[18px] lg:text-[15px] lg:font-medium lg:py-3 transition-colors hover:text-(--ocean-green)" onClick={closeNav}>
+                <Home size={18} className="shrink-0 text-(--sonic-silver) lg:hidden" /> Home
               </Link>
             </li>
-            <li style={{ cursor: "pointer" }}>
-              <Link
-                href="/faq"
-                className="navbar-link"
-                onClick={closeNav}
-              >
-                <HelpCircle size={16} className="navbar-link-icon" /> FAQ
+            <li className="border-b border-(--cultured) lg:border-none">
+              <Link href="/products" className="flex items-center gap-3 py-3 text-(--eerie-black) text-[18px] lg:text-[15px] lg:font-medium lg:py-3 transition-colors hover:text-(--ocean-green)" onClick={closeNav}>
+                <Store size={18} className="shrink-0 text-(--sonic-silver) lg:hidden" /> Shop
               </Link>
             </li>
-            <li style={{ cursor: "pointer" }}>
-              <Link
-                href="/contact"
-                className="navbar-link"
-                onClick={closeNav}
-              >
-                <Mail size={16} className="navbar-link-icon" /> Contact
+            <li className="border-b border-(--cultured) lg:border-none">
+              <Link href="/about" className="flex items-center gap-3 py-3 text-(--eerie-black) text-[18px] lg:text-[15px] lg:font-medium lg:py-3 transition-colors hover:text-(--ocean-green)" onClick={closeNav}>
+                <Info size={18} className="shrink-0 text-(--sonic-silver) lg:hidden" /> About
+              </Link>
+            </li>
+            <li className="border-b border-(--cultured) lg:border-none">
+              <Link href="/faq" className="flex items-center gap-3 py-3 text-(--eerie-black) text-[18px] lg:text-[15px] lg:font-medium lg:py-3 transition-colors hover:text-(--ocean-green)" onClick={closeNav}>
+                <HelpCircle size={18} className="shrink-0 text-(--sonic-silver) lg:hidden" /> FAQ
+              </Link>
+            </li>
+            <li className="lg:border-none">
+              <Link href="/contact" className="flex items-center gap-3 py-3 text-(--eerie-black) text-[18px] lg:text-[15px] lg:font-medium lg:py-3 transition-colors hover:text-(--ocean-green)" onClick={closeNav}>
+                <Mail size={18} className="shrink-0 text-(--sonic-silver) lg:hidden" /> Contact
               </Link>
             </li>
           </ul>

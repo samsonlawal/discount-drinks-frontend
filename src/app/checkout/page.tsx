@@ -645,7 +645,7 @@ export default function CheckoutPage() {
               <button
                 onClick={handleCheckout}
                 disabled={orderLoading || isProcessing || !ageVerified || (user?.dob && !isAtLeast18(user.dob))}
-                className="btn-dark w-full py-4 mt-4 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="btn-dark w-full mt-4 flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {orderLoading || isProcessing ? "Processing..." : "Proceed to Payment"}
                 {!orderLoading && !isProcessing && <ChevronRight size={20} />}

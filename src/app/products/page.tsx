@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import ProductCard from "@/components/products/ProductCard";
 import ProductCardSkeleton from "@/components/products/ProductCardSkeleton";
 import FilterSidebar from "@/components/products/FilterSidebar";
-import { SlidersHorizontal } from "lucide-react";
+import { SlidersHorizontal, WineOff } from "lucide-react";
 
 import { useGetProducts } from "@/hooks/api/products";
 import { useGetCategories } from "@/hooks/api/categories";
@@ -158,15 +158,25 @@ function ProductsContent() {
                   </ul>
 
                   {formattedProducts.length === 0 && !productsLoading && (
-                    <div style={{ textAlign: "center", padding: "20px 20px" }} className="flex justify-center items-center py-20 w-full h-[60vh]">
-                      <p
-                        style={{
-                          color: "var(--sonic-silver)",
-                          fontSize: "var(--fs-6)",
-                        }}
-                      >
-                        No products found.
+                    <div className="flex flex-col justify-center items-center py-20 w-full min-h-[50vh] text-center px-4">
+                      <div className="bg-gray-100 p-8 rounded-full mb-6">
+                        <WineOff size={48} className="text-gray-400" />
+                      </div>
+                      <h3 className="text-xl font-semibold text-eerie-black mb-2">No Drinks Found</h3>
+                      <p className="text-gray-500 max-w-xs mb-8">
+                        We couldn't find any drinks matching your current filters. Try adjusting them to see more results.
                       </p>
+                      <button 
+                        onClick={() => {
+                          setSelectedCategory("All");
+                          setSelectedBadge("All");
+                          setSelectedBrand("All");
+                          setPriceRange([0, 9999]);
+                        }}
+                        className="btn btn-primary px-8"
+                      >
+                        Reset All Filters
+                      </button>
                     </div>
                   )}
 

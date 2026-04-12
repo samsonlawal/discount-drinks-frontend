@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { Product } from "@/types";
 import { useCart } from "@/contexts/CartContext";
 import { useWishlist } from "@/contexts/WishlistContext";
-import { Eye, ShoppingCart, Heart } from "lucide-react";
+import { Eye, ShoppingCart, Heart, Ban } from "lucide-react";
 
 interface ProductCardProps {
   product: Product;
@@ -55,11 +55,16 @@ export default function ProductCard({ product }: ProductCardProps) {
             loading="lazy"
             width="800"
             height="800"
-            className="w-full object-cover aspect-square"
+            className={`w-full object-cover aspect-square ${(product as any).inStock === false || (product as any).stockQuantity === 0 || (product as any).stock === 0 || (product as any).countInStock === 0 ? "opacity-60" : ""}`}
           />
         </a>
 
-        {product.badge && (
+        {((product as any).inStock === false || (product as any).stockQuantity === 0 || (product as any).stock === 0 || (product as any).countInStock === 0) ? (
+          <div className="card-badge bg-gray-500 text-white rounded-md px-2 py-1 text-xs font-medium uppercase absolute top-3 left-3 z-10 shadow-sm flex items-center gap-1">
+            <Ban size={12} strokeWidth={2.5} />
+            Out of Stock
+          </div>
+        ) : product.badge && (
           <div
             className={`card-badge ${product.badge === "sale" ? "red" : "green"}`}
           >
@@ -67,39 +72,6 @@ export default function ProductCard({ product }: ProductCardProps) {
           </div>
         )}
 
-        {/* <div className="card-actions">
-          <button
-            className="card-action-btn card-eye-btn"
-            onClick={handleQuickView}
-            aria-label="Quick view"
-          >
-            <Eye className="icon" />
-          </button>
-
-          <button
-            className={`card-action-btn cart-btn ${inCart ? "bg-ocean-green! border-ocean-green! text-white!" : ""}`}
-            onClick={handleAddToCart}
-            disabled={inCart}
-            aria-label={`Add ${product.name} to cart`}
-          >
-            <ShoppingCart className="icon" aria-hidden="true" />
-            <p className="cart-btn-text">{inCart ? "In Cart" : "Add to Cart"}</p>
-          </button>
-
-          <button
-            className="card-action-btn"
-            onClick={handleWishlistToggle}
-            aria-label={inWishlist ? "Remove from Wishlist" : "Add to Wishlist"}
-            style={inWishlist ? {
-              color: "var(--candy-pink)"
-            } : undefined}
-          >
-            <Heart
-              className="icon"
-              fill={inWishlist ? "currentColor" : "none"}
-            />
-          </button>
-        </div> */}
       </figure>
 
       <div className="card-content flex flex-row justify-between">
@@ -119,9 +91,10 @@ export default function ProductCard({ product }: ProductCardProps) {
           </div>
 
             <button
-            className={`card-action-btn cart-btn group ${inCart ? "text-(--ocean-green)!" : ""}`}
-            onClick={handleCartToggle}
-            aria-label={inCart ? `Remove ${product.name} from cart` : `Add ${product.name} to cart`}
+            className={`card-action-btn cart-btn group ${inCart ? "text-(--ocean-green)!" : ""} ${((product as any).inStock === false || (product as any).stockQuantity === 0 || (product as any).stock === 0 || (product as any).countInStock === 0) ? "opacity-50 cursor-not-allowed" : ""}`}
+            onClick={((product as any).inStock === false || (product as any).stockQuantity === 0 || (product as any).stock === 0 || (product as any).countInStock === 0) ? undefined : handleCartToggle}
+            disabled={((product as any).inStock === false || (product as any).stockQuantity === 0 || (product as any).stock === 0 || (product as any).countInStock === 0)}
+            aria-label={((product as any).inStock === false || (product as any).stockQuantity === 0 || (product as any).stock === 0 || (product as any).countInStock === 0) ? "Out of stock" : inCart ? `Remove ${product.name} from cart` : `Add ${product.name} to cart`}
           >
             <ShoppingCart
               className={`icon transition-all duration-200 ${inCart ? "fill-current stroke-(--ocean-green)" : "group-hover:fill-current group-hover:stroke-(--ocean-green) group-hover:text-(--ocean-green)"}`}

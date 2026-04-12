@@ -214,9 +214,6 @@ export default function ProfileSettingsPage() {
                       {[
                         { value: "male", label: "Male" },
                         { value: "female", label: "Female" },
-                        { value: "non-binary", label: "Non-binary" },
-                        { value: "other", label: "Other" },
-                        { value: "prefer not to say", label: "Prefer not to say" },
                       ].map((option) => (
                         <Select.Item
                           key={option.value}
