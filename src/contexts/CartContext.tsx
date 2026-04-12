@@ -20,7 +20,7 @@ interface CartTotals {
 interface CartContextType {
   cart: CartItem[];
   isLoading: boolean;
-  addToCart: (product: Product) => void;
+  addToCart: (product: Product, quantity?: number) => void;
   removeFromCart: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
@@ -74,7 +74,7 @@ export function CartProvider({ children, userId }: { children: ReactNode; userId
     }
   }, [cart, isLoading, cartKey]);
 
-  const addToCart = (product: Product) => {
+  const addToCart = (product: Product, quantityToAdd: number = 1) => {
     // Try to get the most appropriate image string
     let extractedImage = product.image;
     
@@ -100,12 +100,12 @@ export function CartProvider({ children, userId }: { children: ReactNode; userId
       if (existingItem) {
         return prevCart.map((item) =>
           (item.id || (item as any)._id) === productId
-            ? { ...item, quantity: item.quantity + 1, image: productToSave.image }
+            ? { ...item, quantity: item.quantity + quantityToAdd, image: productToSave.image }
             : item,
         );
       }
 
-      return [...prevCart, { ...productToSave, id: productId, quantity: 1 }];
+      return [...prevCart, { ...productToSave, id: productId, quantity: quantityToAdd }];
     });
   };
 
