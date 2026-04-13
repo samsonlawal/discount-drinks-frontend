@@ -215,7 +215,7 @@ export default function Header() {
             {/* Desktop search bar */}
             <div className="relative hidden lg:block w-max" ref={searchWrapperRef}>
               <input
-                type="search"
+                type="text"
                 name="search"
                 placeholder="Search products..."
                 className="bg-white h-9.5 w-70 pl-3.75 pr-11.25 border border-black/10 rounded-lg text-sm focus:outline-none focus:border-black transition-all"
@@ -224,6 +224,15 @@ export default function Header() {
                 onKeyDown={handleSearchKeyDown}
                 autoComplete="off"
               />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="absolute top-1/2 right-10 -translate-y-1/2 text-gray-400 hover:text-black transition-colors"
+                  aria-label="Clear search"
+                >
+                  <X size={16} />
+                </button>
+              )}
               <button 
                 className="absolute top-1/2 right-3.75 -translate-y-1/2 text-black hover:text-(--ocean-green) transition-colors" 
                 aria-label="Search"
@@ -261,14 +270,23 @@ export default function Header() {
           >
             <div className="relative flex items-center">
               <input
-                type="search"
+                type="text"
                 placeholder="Search products..."
-                className="flex-1 h-11 px-4 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-gray-400"
+                className="flex-1 h-11 pl-4 pr-10 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-gray-400"
                 value={searchQuery}
                 onChange={handleSearchChange}
                 onKeyDown={handleSearchKeyDown}
                 autoComplete="off"
               />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-3 text-gray-400 hover:text-black transition-colors"
+                  aria-label="Clear search"
+                >
+                  <X size={18} />
+                </button>
+              )}
             </div>
 
             {/* Search Dropdown - Mobile */}
@@ -426,15 +444,27 @@ function SearchResultsList({
   setActiveIndex: (index: number) => void
 }) {
   if (isSearching && hasFetched) {
-    return <div className="p-4 text-center text-gray-500 text-sm italic">Filtering list...</div>;
+    return (
+      <div className="h-full flex flex-col items-center justify-center p-4">
+        <p className="text-gray-500 text-sm italic">Filtering list...</p>
+      </div>
+    );
   }
   
   if (isSearching) {
-    return <div className="p-4 text-center text-gray-500 text-sm">Searching products...</div>;
+    return (
+      <div className="h-full flex flex-col items-center justify-center p-4">
+        <p className="text-gray-500 text-sm">Searching products...</p>
+      </div>
+    );
   }
   
   if (results.length === 0) {
-    return <div className="p-4 text-center text-gray-500 text-sm">No products found</div>;
+    return (
+      <div className="h-full flex flex-col items-center justify-center p-4">
+        <p className="text-gray-500 text-sm">No products found</p>
+      </div>
+    );
   }
 
   return (
