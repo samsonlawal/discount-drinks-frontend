@@ -9,12 +9,12 @@ export default function Footer() {
         {/* Footer Top */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12 lg:mb-16">
           
-          <div className="lg:col-span-2">
-            <a href="#" className="inline-block">
+          <div className="lg:col-span-2 flex flex-col gap-1">
+            <Link href="/" className="inline-block">
               <img src="/images/logo.svg" alt="Discount Drinks logo" className="h-10" />
-            </a>
+            </Link>
 
-            <p className="text-(--sonic-silver) text-[15px] leading-relaxed mb-6 max-w-[470px]">
+            <p className="text-(--sonic-silver) text-[16px] leading-relaxed mb-6 max-w-[470px]">
               We are your one-stop destination for every kind of drink and wine
               from everyday favorites to premium selections sourced from around
               the world. Whether you are stocking up for personal enjoyment,
@@ -44,34 +44,34 @@ export default function Footer() {
           </div>
 
           <div className="w-full pl-0 lg:pl-6">
-            <p className="text-(--eerie-black) text-[22px] font-semibold mb-4">Information</p>
+            <p className="text-(--eerie-black) text-[22px] font-semibold mb-2">Information</p>
             <ul className="flex flex-col gap-1">
               <li>
-                <Link href="/about" className="relative text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
+                <Link href="/about" className="relative !text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
                   <span className="absolute left-[-15px] top-1/2 -translate-y-1/2 w-[10px] h-[2px] bg-(--sonic-silver) scale-x-0 origin-right transition-transform duration-250 group-hover:scale-x-100"></span>
                   About Us
                 </Link>
               </li>
               <li>
-                <Link href="/faq" className="relative text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
+                <Link href="/faq" className="relative !text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
                   <span className="absolute left-[-15px] top-1/2 -translate-y-1/2 w-[10px] h-[2px] bg-(--sonic-silver) scale-x-0 origin-right transition-transform duration-250 group-hover:scale-x-100"></span>
                   FAQ
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="relative text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
+                <Link href="/contact" className="relative !text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
                   <span className="absolute left-[-15px] top-1/2 -translate-y-1/2 w-[10px] h-[2px] bg-(--sonic-silver) scale-x-0 origin-right transition-transform duration-250 group-hover:scale-x-100"></span>
                   Contact Us
                 </Link>
               </li>
               <li>
-                <Link href="/legal/terms-and-conditions" className="relative text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
+                <Link href="/legal/terms-and-conditions" className="relative !text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
                   <span className="absolute left-[-15px] top-1/2 -translate-y-1/2 w-[10px] h-[2px] bg-(--sonic-silver) scale-x-0 origin-right transition-transform duration-250 group-hover:scale-x-100"></span>
                   Terms & Conditions
                 </Link>
               </li>
               <li>
-                <Link href="/legal/privacy-policy" className="relative text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
+                <Link href="/legal/privacy-policy" className="relative !text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
                   <span className="absolute left-[-15px] top-1/2 -translate-y-1/2 w-[10px] h-[2px] bg-(--sonic-silver) scale-x-0 origin-right transition-transform duration-250 group-hover:scale-x-100"></span>
                   Privacy Policy
                 </Link>
@@ -80,40 +80,40 @@ export default function Footer() {
           </div>
 
           <div className="w-full">
-            <p className="text-(--eerie-black) text-[22px] font-semibold mb-4">Category</p>
+            <p className="text-(--eerie-black) text-[22px] font-semibold mb-2">Category</p>
             <ul className="flex flex-col gap-1">
               <li>
-                <Link href="/products?category=Rum" className="relative text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
+                <Link href="/products?category=Rum" className="relative !text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
                   <span className="absolute left-[-15px] top-1/2 -translate-y-1/2 w-[10px] h-[2px] bg-(--sonic-silver) scale-x-0 origin-right transition-transform duration-250 group-hover:scale-x-100"></span>
                   Rum
                 </Link>
               </li>
               <li>
-                <Link href="/products?category=Whiskey" className="relative text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
+                <Link href="/products?category=Whiskey" className="relative !text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
                   <span className="absolute left-[-15px] top-1/2 -translate-y-1/2 w-[10px] h-[2px] bg-(--sonic-silver) scale-x-0 origin-right transition-transform duration-250 group-hover:scale-x-100"></span>
                   Whiskey
                 </Link>
               </li>
               <li>
-                <Link href="/products?category=Vodka" className="relative text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
+                <Link href="/products?category=Vodka" className="relative !text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
                   <span className="absolute left-[-15px] top-1/2 -translate-y-1/2 w-[10px] h-[2px] bg-(--sonic-silver) scale-x-0 origin-right transition-transform duration-250 group-hover:scale-x-100"></span>
                   Vodka
                 </Link>
               </li>
               <li>
-                <Link href="/products?category=Spirit" className="relative text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
+                <Link href="/products?category=Spirit" className="relative !text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
                   <span className="absolute left-[-15px] top-1/2 -translate-y-1/2 w-[10px] h-[2px] bg-(--sonic-silver) scale-x-0 origin-right transition-transform duration-250 group-hover:scale-x-100"></span>
                   Spirit
                 </Link>
               </li>
               <li>
-                <Link href="/products?category=Beer" className="relative text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
+                <Link href="/products?category=Beer" className="relative !text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
                   <span className="absolute left-[-15px] top-1/2 -translate-y-1/2 w-[10px] h-[2px] bg-(--sonic-silver) scale-x-0 origin-right transition-transform duration-250 group-hover:scale-x-100"></span>
                   Beer
                 </Link>
               </li>
               <li>
-                <Link href="/products?category=Tequila" className="relative text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
+                <Link href="/products?category=Tequila" className="relative !text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
                   <span className="absolute left-[-15px] top-1/2 -translate-y-1/2 w-[10px] h-[2px] bg-(--sonic-silver) scale-x-0 origin-right transition-transform duration-250 group-hover:scale-x-100"></span>
                   Tequila
                 </Link>
@@ -125,7 +125,7 @@ export default function Footer() {
         {/* Footer Bottom */}
         <div className="flex flex-col sm:flex-row justify-center lg:justify-between items-center gap-6 sm:gap-12 pt-6">
           <p className="text-center text-(--sonic-silver)">
-            &copy; 2026 <Link href="/" className="inline-block text-(--eerie-black) font-semibold">DiscountDrinks</Link>. All Rights Reserved
+            &copy; 2026 <Link href="/" className="inline-block !text-(--sonic-silver) font-semibold hover:text-(--eerie-black) transition-colors">DiscountDrinks</Link>. All Rights Reserved
           </p>
 
           <div className="flex items-center gap-4 flex-wrap justify-center">
