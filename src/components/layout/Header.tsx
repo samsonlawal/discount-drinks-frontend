@@ -80,6 +80,18 @@ export default function Header() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [isMobileSearchOpen]);
 
+  // Body scroll lock
+  useEffect(() => {
+    if (isNavOpen || isMobileSearchOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+    }
+    return () => {
+      document.body.style.overflow = "auto";
+    };
+  }, [isNavOpen, isMobileSearchOpen]);
+
   // Debounced search effect
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -166,7 +178,7 @@ export default function Header() {
   const { onLogout } = useLogout();
 
   return (
-    <header className={`w-full bg-white transition-all duration-200 z-50 ${isScrolled ? "fixed top-0 left-0 shadow-md lg:static lg:shadow-none lg:border-b lg:border-black/10" : "relative lg:py-2 lg:border-b lg:border-black/10 lg:mb-[50px]"}`}>
+    <header className={`w-full bg-white transition-all duration-200 z-50 ${isScrolled ? "fixed top-0 left-0 lg:static lg:shadow-none lg:border-b lg:border-black/10" : "relative lg:py-2 lg:border-b lg:border-black/10 lg:mb-[50px]"}`}>
       <div className="container mx-auto px-4 sm:px-10 max-w-[1350px]">
         
         {/* Main Header Row */}
@@ -189,10 +201,21 @@ export default function Header() {
               <Menu size={24} />
             </button>
 
+            {/* Logo — Mobile only (next to hamburger) */}
+            <Link href="/" className="shrink-0 flex items-center lg:hidden ml-1">
+              <img
+                src="/images/logo.svg"
+                alt="DiscountDrinks logo"
+                width={110}
+                height={26}
+                className="w-[110px] h-auto"
+              />
+            </Link>
+
             {/* Desktop search bar */}
             <div className="relative hidden lg:block w-max" ref={searchWrapperRef}>
               <input
-                type="search"
+                type="text"
                 name="search"
                 placeholder="Search products..."
                 className="bg-white h-9.5 w-70 pl-3.75 pr-11.25 border border-black/10 rounded-lg text-sm focus:outline-none focus:border-black transition-all"
@@ -201,6 +224,15 @@ export default function Header() {
                 onKeyDown={handleSearchKeyDown}
                 autoComplete="off"
               />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="absolute top-1/2 right-10 -translate-y-1/2 text-gray-400 hover:text-black transition-colors"
+                  aria-label="Clear search"
+                >
+                  <X size={16} />
+                </button>
+              )}
               <button 
                 className="absolute top-1/2 right-3.75 -translate-y-1/2 text-black hover:text-(--ocean-green) transition-colors" 
                 aria-label="Search"
@@ -210,7 +242,7 @@ export default function Header() {
 
               {/* Search Dropdown - Desktop */}
               {showDropdown && (
-                <div className="absolute top-[calc(100%+8px)] left-0 w-98 bg-white border border-black/10 rounded-md p-2 shadow-2xl z-[1500] min-h-60 max-h-100 overflow-y-auto overflow-x-hidden hidden lg:block">
+                <div className="absolute top-[calc(100%+8px)] left-0 w-98 bg-white border border-black/10 rounded-md p-2 z-[1500] min-h-60 max-h-100 overflow-y-auto overflow-x-hidden hidden lg:block">
                   <SearchResultsList 
                     results={searchResults} 
                     isSearching={isSearching} 
@@ -224,26 +256,42 @@ export default function Header() {
             </div>
           </div>
 
-          {/* Mobile Search Bar — Expandable */}
+          {/* Mobile Search - Backdrop & Dropdown */}
+          {isMobileSearchOpen && (
+            <div 
+              className="fixed top-[var(--header-height,71px)] left-0 right-0 bottom-0 bg-black/10 backdrop-blur-sm z-[30] lg:hidden"
+              onClick={() => setIsMobileSearchOpen(false)}
+            />
+          )}
+
           <div 
             ref={mobileSearchRef}
-            className={`absolute top-full left-0 w-full bg-white z-40 transition-all duration-300 lg:hidden ${isMobileSearchOpen ? "opacity-100 visible translate-y-0 p-4 shadow-lg border-t border-gray-100" : "opacity-0 invisible -translate-y-2 pointer-events-none h-0 p-0 overflow-hidden border-none"}`}
+            className={`absolute top-full left-0 w-full bg-white z-40 transition-all duration-300 lg:hidden ${isMobileSearchOpen ? "opacity-100 visible translate-y-0 p-4 border-t border-gray-100" : "opacity-0 invisible -translate-y-2 pointer-events-none h-0 p-0 overflow-hidden border-none"}`}
           >
             <div className="relative flex items-center">
               <input
-                type="search"
+                type="text"
                 placeholder="Search products..."
-                className="flex-1 h-10 px-4 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-gray-400"
+                className="flex-1 h-11 pl-4 pr-10 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-gray-400"
                 value={searchQuery}
                 onChange={handleSearchChange}
                 onKeyDown={handleSearchKeyDown}
                 autoComplete="off"
               />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-3 text-gray-400 hover:text-black transition-colors"
+                  aria-label="Clear search"
+                >
+                  <X size={18} />
+                </button>
+              )}
             </div>
 
             {/* Search Dropdown - Mobile */}
             {showDropdown && (
-              <div className="mt-3 bg-white border border-black/10 rounded-md p-2 shadow-xl max-h-80 overflow-y-auto">
+              <div className="mt-3 bg-white border border-black/10 rounded-md p-2 h-[calc((100dvh-var(--header-height,71px))*0.5)] overflow-y-auto">
                 <SearchResultsList 
                   results={searchResults} 
                   isSearching={isSearching} 
@@ -256,8 +304,8 @@ export default function Header() {
             )}
           </div>
 
-          {/* Logo */}
-          <Link href="/" className="flex-none">
+          {/* Logo — Desktop only (centered) */}
+          <Link href="/" className="flex-none hidden lg:flex items-center justify-center">
             <img
               src="/images/logo.svg"
               alt="DiscountDrinks logo"
@@ -328,7 +376,7 @@ export default function Header() {
         </div>
 
         {/* Side nav drawer / Desktop Navbar */}
-        <nav className={`fixed top-0 left-0 w-full max-w-[300px] h-full bg-white px-6 py-8 z-[200] transition-transform duration-500 ease-in-out ${isNavOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0 lg:max-w-none lg:h-auto lg:p-0 ${isScrolled ? "lg:fixed lg:top-0 lg:left-0 lg:w-full lg:bg-white lg:shadow-md lg:z-[1000]" : "lg:absolute lg:top-full lg:bg-transparent lg:z-[150]"}`}>
+        <nav className={`fixed top-0 left-0 w-full max-w-[300px] h-full bg-white px-6 py-8 z-[200] transition-transform duration-500 ease-in-out ${isNavOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0 lg:max-w-none lg:h-auto lg:p-0 ${isScrolled ? "lg:fixed lg:top-0 lg:left-0 lg:w-full lg:bg-white lg:z-[1000]" : "lg:absolute lg:top-full lg:bg-transparent lg:z-[150]"}`}>
           <div className="flex justify-between items-center mb-10 lg:hidden">
             <Link href="/">
               <img
@@ -396,15 +444,27 @@ function SearchResultsList({
   setActiveIndex: (index: number) => void
 }) {
   if (isSearching && hasFetched) {
-    return <div className="p-4 text-center text-gray-500 text-sm italic">Filtering list...</div>;
+    return (
+      <div className="h-full flex flex-col items-center justify-center p-4">
+        <p className="text-gray-500 text-sm italic">Filtering list...</p>
+      </div>
+    );
   }
   
   if (isSearching) {
-    return <div className="p-4 text-center text-gray-500 text-sm">Searching products...</div>;
+    return (
+      <div className="h-full flex flex-col items-center justify-center p-4">
+        <p className="text-gray-500 text-sm">Searching products...</p>
+      </div>
+    );
   }
   
   if (results.length === 0) {
-    return <div className="p-4 text-center text-gray-500 text-sm">No products found</div>;
+    return (
+      <div className="h-full flex flex-col items-center justify-center p-4">
+        <p className="text-gray-500 text-sm">No products found</p>
+      </div>
+    );
   }
 
   return (

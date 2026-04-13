@@ -1816,9 +1816,9 @@ h3 > a {
 @media (max-width: 991px) {
   .filter-panel {
     position: fixed;
-    top: 0;
+    top: var(--header-height, 70px);
     left: 0;
-    height: 100vh;
+    height: calc(100vh - var(--header-height, 70px));
     width: 300px;
     background: var(--white);
     z-index: 100;
@@ -2156,9 +2156,9 @@ h3 > a {
   /* Fullscreen sidebar on mobile */
   .filter-panel {
     position: fixed;
-    top: 0;
+    top: var(--header-height, 70px);
     left: 0;
-    height: 100dvh;
+    height: calc(100dvh - var(--header-height, 70px));
     width: 0 !important;
     z-index: 100;
     background: var(--white);
