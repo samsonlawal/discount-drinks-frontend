@@ -267,7 +267,7 @@ export default function Header() {
 
           <div 
             ref={mobileSearchRef}
-            className={`absolute top-full left-0 w-full bg-white z-40 transition-all duration-300 rounded-b-sm lg:hidden ${isMobileSearchOpen ? "opacity-100 visible translate-y-0 p-4 border-t border-gray-100" : "opacity-0 invisible -translate-y-2 pointer-events-none h-0 p-0 overflow-hidden border-none"}`}
+            className={`absolute top-full left-0 w-full bg-white z-40 transition-all duration-300 rounded-b-md lg:hidden ${isMobileSearchOpen ? "opacity-100 visible translate-y-0 p-4 border-t border-gray-100" : "opacity-0 invisible -translate-y-2 pointer-events-none h-0 p-0 overflow-hidden border-none"}`}
           >
             <div className="relative flex items-center">
               <input
@@ -292,7 +292,7 @@ export default function Header() {
 
             {/* Search Dropdown - Mobile */}
             {showDropdown && (
-              <div className="mt-3 bg-white border border-black/10 rounded-sm p-2 h-[calc((100dvh-var(--header-height,71px))*0.5)] overflow-y-auto">
+              <div className="mt-3 bg-white border border-black/10 rounded-md p-2 h-[calc((100dvh-var(--header-height,71px))*0.5)] overflow-y-auto">
                 <SearchResultsList 
                   results={searchResults} 
                   isSearching={isSearching} 
@@ -488,7 +488,7 @@ function SearchResultsList({
                 return (
                   <button
                     key={productId}
-                    className="flex items-center gap-3 w-full p-2.5 text-left transition-all bg-gray-50/50 hover:bg-gray-100 rounded-lg border border-transparent hover:border-gray-200"
+                    className="flex items-center gap-3 w-full p-2.5 text-left transition-all hover:bg-(--sonic-silver) rounded-lg border border-transparent hover:border-gray-200"
                     onClick={() => handleResultClick(productId)}
                   >
                     <div className="w-10 h-10 shrink-0 rounded bg-white overflow-hidden border border-gray-100">
@@ -512,7 +512,7 @@ function SearchResultsList({
     <div className="flex flex-col gap-2 py-1">
       <div className="px-1 py-1 mb-1">
         <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">
-          Found {results.length} {results.length === 1 ? 'result' : 'results'} for "{searchQuery}"
+          Resuult ({results.length})
         </p>
       </div>
       {results.map((product, index) => {
