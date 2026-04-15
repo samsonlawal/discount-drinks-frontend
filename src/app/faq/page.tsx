@@ -132,15 +132,15 @@ export default function FAQPage() {
               className="my-20 px-10 py-14 md:py-16 rounded-xl border border-gray-100 bg-[var(--cultured)] bg-cover bg-center bg-no-repeat relative overflow-hidden"
               style={{ backgroundImage: "url('/images/newsletter-bg.png')" }}
             >
-              <div className="relative z-10 flex flex-col md:flex-row justify-between items-center md:items-center gap-6 text-center md:text-left">
+              <div className="relative z-10 flex flex-col md:flex-row justify-between items-center md:items-center gap-8 text-center md:text-left">
                 <div className="flex flex-col items-center md:items-start">
-                  <h3 className="text-xl md:text-3xl font-semibold text-[var(--eerie-black)] mb-2">Have more questions?</h3>
+                  <h3 className="text-2xl md:text-3xl font-semibold text-[var(--eerie-black)] mb-2">Have more questions?</h3>
                   <p className="text-[var(--sonic-silver)] max-w-md">Our support team is here to help you with any inquiries.</p>
                 </div>
 
                 <a 
                   href="/contact" 
-                  className="btn btn-primary w-max shrink-0"
+                  className="btn btn-primary w-full md:w-max shrink-0"
                 >
                   Contact Us
                 </a>

@@ -208,17 +208,25 @@ export default function Header() {
                 alt="DiscountDrinks logo"
                 width={110}
                 height={26}
-                className="w-[110px] h-auto"
+                className="w-[130px] h-auto"
               />
             </Link>
 
             {/* Desktop search bar */}
             <div className="relative hidden lg:block w-max" ref={searchWrapperRef}>
+
+ <button 
+                className="absolute top-1/2 left-3.75 -translate-y-1/2 text-sm text-gray-400 hover:text-(--ocean-green) transition-colors" 
+                aria-label="Search"
+              >
+                <Search size={18} />
+              </button>
+
               <input
                 type="text"
                 name="search"
                 placeholder="Search products..."
-                className="bg-white h-9.5 w-70 pl-3.75 pr-11.25 border border-black/10 rounded-lg text-sm focus:outline-none focus:border-black transition-all"
+                className="bg-white h-10 w-70 pr-3.75 pl-10 border border-black/10 rounded-md text-sm focus:outline-none focus:border-black transition-all"
                 value={searchQuery}
                 onChange={handleSearchChange}
                 onKeyDown={handleSearchKeyDown}
@@ -227,22 +235,17 @@ export default function Header() {
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery("")}
-                  className="absolute top-1/2 right-10 -translate-y-1/2 text-gray-400 hover:text-black transition-colors"
+                  className="absolute top-1/2 right-3.75 -translate-y-1/2 text-gray-400 hover:text-black transition-colors"
                   aria-label="Clear search"
                 >
                   <X size={16} />
                 </button>
               )}
-              <button 
-                className="absolute top-1/2 right-3.75 -translate-y-1/2 text-black hover:text-(--ocean-green) transition-colors" 
-                aria-label="Search"
-              >
-                <Search size={18} />
-              </button>
+             
 
               {/* Search Dropdown - Desktop */}
               {showDropdown && (
-                <div className="absolute top-[calc(100%+8px)] left-0 w-98 bg-white border border-black/10 rounded-md p-2 z-[1500] min-h-60 max-h-100 overflow-y-auto overflow-x-hidden hidden lg:block">
+                <div className="absolute top-[calc(100%+8px)] left-0 w-98 bg-white border border-black/10 rounded-b-xl p-2 z-[1500] min-h-60 max-h-100 overflow-y-auto overflow-x-hidden hidden lg:block">
                   <SearchResultsList 
                     results={searchResults} 
                     isSearching={isSearching} 
@@ -250,12 +253,13 @@ export default function Header() {
                     activeIndex={activeIndex}
                     handleResultClick={handleResultClick}
                     setActiveIndex={setActiveIndex}
+                    searchQuery={searchQuery}
+                    allProducts={allProductsRef.current}
                   />
                 </div>
               )}
             </div>
           </div>
-
           {/* Mobile Search - Backdrop & Dropdown */}
           {isMobileSearchOpen && (
             <div 
@@ -266,13 +270,13 @@ export default function Header() {
 
           <div 
             ref={mobileSearchRef}
-            className={`absolute top-full left-0 w-full bg-white z-40 transition-all duration-300 lg:hidden ${isMobileSearchOpen ? "opacity-100 visible translate-y-0 p-4 border-t border-gray-100" : "opacity-0 invisible -translate-y-2 pointer-events-none h-0 p-0 overflow-hidden border-none"}`}
+            className={`absolute top-full left-0 w-full bg-white z-40 transition-all duration-300 rounded-b-md lg:hidden ${isMobileSearchOpen ? "opacity-100 visible translate-y-0 p-4 border-t border-gray-100" : "opacity-0 invisible -translate-y-2 pointer-events-none h-0 p-0 overflow-hidden border-none"}`}
           >
             <div className="relative flex items-center">
               <input
                 type="text"
                 placeholder="Search products..."
-                className="flex-1 h-11 pl-4 pr-10 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-gray-400"
+                className="flex-1 h-13 pl-4 pr-10 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-gray-400"
                 value={searchQuery}
                 onChange={handleSearchChange}
                 onKeyDown={handleSearchKeyDown}
@@ -299,6 +303,8 @@ export default function Header() {
                   activeIndex={activeIndex}
                   handleResultClick={handleResultClick}
                   setActiveIndex={setActiveIndex}
+                  searchQuery={searchQuery}
+                  allProducts={allProductsRef.current}
                 />
               </div>
             )}
@@ -434,14 +440,18 @@ function SearchResultsList({
   hasFetched, 
   activeIndex, 
   handleResultClick, 
-  setActiveIndex 
+  setActiveIndex,
+  searchQuery,
+  allProducts
 }: {
   results: Product[],
   isSearching: boolean,
   hasFetched: boolean,
   activeIndex: number,
   handleResultClick: (id: string) => void,
-  setActiveIndex: (index: number) => void
+  setActiveIndex: (index: number) => void,
+  searchQuery: string,
+  allProducts: Product[]
 }) {
   if (isSearching && hasFetched) {
     return (
@@ -454,32 +464,71 @@ function SearchResultsList({
   if (isSearching) {
     return (
       <div className="h-full flex flex-col items-center justify-center p-4">
-        <p className="text-gray-500 text-sm">Searching products...</p>
+        <p className="text-gray-500 text-sm italic animate-pulse">Searching products...</p>
       </div>
     );
   }
   
   if (results.length === 0) {
+    // Get 4 random suggestions from allProducts
+    const suggestions = [...allProducts]
+      .sort(() => 0.5 - Math.random())
+      .slice(0, 4);
+
     return (
-      <div className="h-full flex flex-col items-center justify-center p-4">
-        <p className="text-gray-500 text-sm">No products found</p>
+      <div className="flex flex-col gap-4 py-1">
+        <div className="text-center py-10 bg-(--cultured) rounded-lg">
+          <p className="text-gray-500 text-sm">No products found for "{searchQuery}"</p>
+        </div>
+        
+        {suggestions.length > 0 && (
+          <div className="flex flex-col gap-3">
+            <h4 className="text-xs font-bold py-3 text-gray-400 uppercase tracking-wider px-1">You might like these</h4>
+            <div className="flex flex-col gap-2">
+              {suggestions.map((product) => {
+                const productId = product.id || (product as any)._id;
+                const imageUrl = product.image || (product as any).images?.[0] || "/images/placeholder.jpg";
+                return (
+                  <button
+                    key={productId}
+                    className="flex items-center gap-3 w-full p-2.5 text-left transition-all hover:bg-(--sonic-silver) rounded-lg border border-transparent hover:border-gray-200 bg-(--cultured)"
+                    onClick={() => handleResultClick(productId)}
+                  >
+                    <div className="w-10 h-10 shrink-0 rounded bg-white overflow-hidden border border-gray-100">
+                      <img src={imageUrl} alt={product.name} className="w-full h-full object-cover" />
+                    </div>
+                    <div className="flex flex-col min-w-0">
+                      <span className="text-sm font-medium text-(--eerie-black) truncate">{product.name}</span>
+                      <span className="text-xs font-bold text-(--ocean-green)">£{(Number(product.price) || 0).toFixed(2)}</span>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+        )}
       </div>
     );
   }
 
   return (
-    <>
+    <div className="flex flex-col gap-2 py-1">
+      <div className="px-1 py-1 mb-1">
+        <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">
+          Result ({results.length})
+        </p>
+      </div>
       {results.map((product, index) => {
         const productId = product.id || (product as any)._id;
         const imageUrl = product.image || (product as any).images?.[0] || "/images/placeholder.jpg";
         return (
           <button
             key={productId}
-            className={`flex items-center gap-3 w-full p-2.5 text-left transition-all border-b rounded-md border-gray-50 last:border-b-0 hover:bg-gray-200 ${index === activeIndex ? "bg-gray-100" : ""}`}
+            className={`flex items-center gap-3 w-full p-2.5 text-left transition-all rounded-lg bg-(--cultured) border border-transparent hover:border-gray-200 hover:bg-gray-100 ${index === activeIndex ? "bg-gray-100 border-gray-200" : ""}`}
             onClick={() => handleResultClick(productId)}
             onMouseEnter={() => setActiveIndex(index)}
           >
-            <div className="w-12 h-12 shrink-0 rounded-md bg-gray-50 overflow-hidden border border-gray-100">
+            <div className="w-12 h-12 shrink-0 rounded-md bg-white overflow-hidden border border-gray-100">
               <img
                 src={imageUrl}
                 alt={product.name}
@@ -492,11 +541,11 @@ function SearchResultsList({
             <div className="flex flex-col gap-0.5 flex-1 min-w-0">
               <span className="text-sm font-semibold text-(--eerie-black) truncate leading-tight">{product.name}</span>
               <div className="flex items-center justify-between">
-                <span className="text-xs font-medium text-(--ocean-green)">
+                <span className="text-xs font-bold text-(--ocean-green)">
                   £{(Number((product as any).costPrice ?? product.price) || 0).toFixed(2)}
                 </span>
                 {(product as any).category && (
-                  <span className="text-[10px] text-gray-400 bg-gray-100 px-1.5 py-0.5 rounded uppercase font-medium">
+                  <span className="text-[10px] text-gray-400 bg-white px-1.5 py-0.5 rounded border border-gray-100 uppercase font-medium">
                     {(product as any).category?.name || (product as any).category}
                   </span>
                 )}
@@ -505,7 +554,7 @@ function SearchResultsList({
           </button>
         );
       })}
-    </>
+    </div>
   );
 }
 

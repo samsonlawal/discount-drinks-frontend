@@ -8,7 +8,7 @@ export default function Hero() {
 
   return (
     <section
-      className="hero flex-col justify-between items-start"
+      className="hero flex-col justify-between items-center lg:items-start"
       id="home"
       style={{ backgroundImage: "url('/images/hero-banner.jpg')" }}
     >
@@ -28,8 +28,8 @@ export default function Hero() {
       </div>
 
       {/* Text + button — padded via .container */}
-      <div className="container flex w-fit items-center flex-1">
-        <div className="hero-content">
+      <div className="container flex w-full lg:w-fit items-center flex-1">
+        <div className="hero-content flex flex-col items-center lg:items-start text-center lg:text-left">
           <p className="hero-subtitle">Spirits, Wine and Lager</p>
 
           <h2 className="h1 hero-title">UK's No.1 Bulk Discount Shop</h2>

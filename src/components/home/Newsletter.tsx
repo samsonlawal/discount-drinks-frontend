@@ -9,7 +9,7 @@ export default function Newsletter() {
     useNewsletter();
 
   return (
-    <section className="section newsletter">
+    <section className="section newsletter my-20">
       <div className="container">
         <div
           className="newsletter-card"

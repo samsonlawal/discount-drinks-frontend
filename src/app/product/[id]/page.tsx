@@ -454,7 +454,7 @@ export default function ProductDetailPage() {
 
           {/* Related Products */}
           {!relatedLoading && relatedProducts.length > 0 && (
-            <section className="section">
+            <section className="section py-20">
               <h2 className="h2 section-title">Related Products</h2>
               <ul className="product-list flex flex-row flex-wrap !justify-center items-center">
                 {relatedProducts.map((relatedProduct: any) => (
