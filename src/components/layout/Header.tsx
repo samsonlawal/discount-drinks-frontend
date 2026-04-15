@@ -477,7 +477,7 @@ function SearchResultsList({
 
     return (
       <div className="flex flex-col gap-4 py-1">
-        <div className="text-center py-10 bg-gray-100 rounded-lg">
+        <div className="text-center py-10 bg-(--cultured) rounded-lg">
           <p className="text-gray-500 text-sm">No products found for "{searchQuery}"</p>
         </div>
         
@@ -524,7 +524,7 @@ function SearchResultsList({
         return (
           <button
             key={productId}
-            className={`flex items-center gap-3 w-full p-2.5 text-left transition-all rounded-lg bg-gray-50/50 border border-transparent hover:border-gray-200 hover:bg-gray-100 ${index === activeIndex ? "bg-gray-100 border-gray-200" : ""}`}
+            className={`flex items-center gap-3 w-full p-2.5 text-left transition-all rounded-lg bg-(--cultured) border border-transparent hover:border-gray-200 hover:bg-gray-100 ${index === activeIndex ? "bg-gray-100 border-gray-200" : ""}`}
             onClick={() => handleResultClick(productId)}
             onMouseEnter={() => setActiveIndex(index)}
           >
