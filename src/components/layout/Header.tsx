@@ -214,11 +214,19 @@ export default function Header() {
 
             {/* Desktop search bar */}
             <div className="relative hidden lg:block w-max" ref={searchWrapperRef}>
+
+ <button 
+                className="absolute top-1/2 left-3.75 -translate-y-1/2 text-sm text-gray-400 hover:text-(--ocean-green) transition-colors" 
+                aria-label="Search"
+              >
+                <Search size={18} />
+              </button>
+
               <input
                 type="text"
                 name="search"
                 placeholder="Search products..."
-                className="bg-white h-9.5 w-70 pl-3.75 pr-11.25 border border-black/10 rounded-lg text-sm focus:outline-none focus:border-black transition-all"
+                className="bg-white h-10 w-70 pr-3.75 pl-10 border border-black/10 rounded-md text-sm focus:outline-none focus:border-black transition-all"
                 value={searchQuery}
                 onChange={handleSearchChange}
                 onKeyDown={handleSearchKeyDown}
@@ -227,18 +235,13 @@ export default function Header() {
               {searchQuery && (
                 <button
                   onClick={() => setSearchQuery("")}
-                  className="absolute top-1/2 right-10 -translate-y-1/2 text-gray-400 hover:text-black transition-colors"
+                  className="absolute top-1/2 right-3.75 -translate-y-1/2 text-gray-400 hover:text-black transition-colors"
                   aria-label="Clear search"
                 >
                   <X size={16} />
                 </button>
               )}
-              <button 
-                className="absolute top-1/2 right-3.75 -translate-y-1/2 text-black hover:text-(--ocean-green) transition-colors" 
-                aria-label="Search"
-              >
-                <Search size={18} />
-              </button>
+             
 
               {/* Search Dropdown - Desktop */}
               {showDropdown && (
@@ -473,14 +476,14 @@ function SearchResultsList({
       .slice(0, 4);
 
     return (
-      <div className="flex flex-col gap-4 py-2">
-        <div className="text-center py-6 border-b border-gray-100">
+      <div className="flex flex-col gap-4 py-1">
+        <div className="text-center py-10 bg-gray-100 rounded-lg">
           <p className="text-gray-500 text-sm">No products found for "{searchQuery}"</p>
         </div>
         
         {suggestions.length > 0 && (
           <div className="flex flex-col gap-3">
-            <h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider px-1">You might like these</h4>
+            <h4 className="text-xs font-bold py-3 text-gray-400 uppercase tracking-wider px-1">You might like these</h4>
             <div className="flex flex-col gap-2">
               {suggestions.map((product) => {
                 const productId = product.id || (product as any)._id;
@@ -488,7 +491,7 @@ function SearchResultsList({
                 return (
                   <button
                     key={productId}
-                    className="flex items-center gap-3 w-full p-2.5 text-left transition-all hover:bg-(--sonic-silver) rounded-lg border border-transparent hover:border-gray-200"
+                    className="flex items-center gap-3 w-full p-2.5 text-left transition-all hover:bg-(--sonic-silver) rounded-lg border border-transparent hover:border-gray-200 bg-(--cultured)"
                     onClick={() => handleResultClick(productId)}
                   >
                     <div className="w-10 h-10 shrink-0 rounded bg-white overflow-hidden border border-gray-100">
@@ -511,7 +514,7 @@ function SearchResultsList({
   return (
     <div className="flex flex-col gap-2 py-1">
       <div className="px-1 py-1 mb-1">
-        <p className="text-[11px] font-bold text-gray-400 tracking-widest">
+        <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">
           Result ({results.length})
         </p>
       </div>

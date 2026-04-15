@@ -131,9 +131,9 @@ export default function AboutPage() {
           className="my-16 px-6 py-10 md:px-10 md:py-14 rounded-xl border border-gray-100 bg-[var(--cultured)] bg-cover bg-center bg-no-repeat relative overflow-hidden"
           style={{ backgroundImage: "url('/images/newsletter-bg.png')" }}
         >
-          <div className="relative z-10 flex flex-col md:flex-row justify-between items-center md:items-center gap-6 text-center md:text-left">
+          <div className="relative z-10 flex flex-col md:flex-row justify-between items-center md:items-center gap-8 text-center md:text-left">
             <div className="flex flex-col items-center md:items-start">
-              <h3 className="text-xl md:text-3xl font-semibold text-[var(--eerie-black)] mb-2">
+              <h3 className="text-2xl md:text-3xl font-semibold text-[var(--eerie-black)] mb-2">
                 Have more questions?
               </h3>
               <p className="text-[var(--sonic-silver)] max-w-md">
