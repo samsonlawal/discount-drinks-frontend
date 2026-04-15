@@ -208,7 +208,7 @@ export default function Header() {
                 alt="DiscountDrinks logo"
                 width={110}
                 height={26}
-                className="w-[110px] h-auto"
+                className="w-[130px] h-auto"
               />
             </Link>
 
@@ -273,7 +273,7 @@ export default function Header() {
               <input
                 type="text"
                 placeholder="Search products..."
-                className="flex-1 h-11 pl-4 pr-10 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-gray-400"
+                className="flex-1 h-13 pl-4 pr-10 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-gray-400"
                 value={searchQuery}
                 onChange={handleSearchChange}
                 onKeyDown={handleSearchKeyDown}
@@ -511,8 +511,8 @@ function SearchResultsList({
   return (
     <div className="flex flex-col gap-2 py-1">
       <div className="px-1 py-1 mb-1">
-        <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">
-          Resuult ({results.length})
+        <p className="text-[11px] font-bold text-gray-400 tracking-widest">
+          Result ({results.length})
         </p>
       </div>
       {results.map((product, index) => {
