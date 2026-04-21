@@ -66,10 +66,10 @@ export default function ProfileOverviewPage() {
       <div 
         className="flex flex-col gap-8" 
         style={{ 
-          backgroundColor: '#f9fafb', 
-          padding: '24px', 
+          // backgroundColor: '#f9fafb', 
+          padding: '0px 24px', 
           borderRadius: '12px', 
-          border: '1px solid #f3f4f6' 
+          // border: '1px solid #f3f4f6' 
         }}
       >
         <div className="hidden md:block">
@@ -78,14 +78,13 @@ export default function ProfileOverviewPage() {
           </h2>
         </div>
       
-        <div className="w-full flex flex-col items-start justify-start pb-2">
+        <div className="w-full flex flex-col items-center md:items-start justify-center md:justify-start pb-2">
           <div 
             className="rounded-full flex items-center justify-center text-white overflow-hidden relative group" 
             style={{ 
               width: '80px', 
               height: '80px', 
               borderRadius: '50%', 
-              backgroundColor: !profileImage ? getFallbackColor() : undefined,
               color: '#fff', 
               fontSize: '18px', 
               fontWeight: 500 
@@ -107,7 +106,7 @@ export default function ProfileOverviewPage() {
         </div>
 
         {/* Data Grid with proper alignment */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-10 gap-x-12 lg:gap-x-24">
+        <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-y-10 gap-x-12 lg:gap-x-24">
           <div className="pb-1">
             <p className="text-sm text-gray-500 mb-1.5" style={{ fontWeight: 400 }}>Full Name</p>
             <p className="text-gray-900 font-normal">{user.name || "N/A"}</p>
