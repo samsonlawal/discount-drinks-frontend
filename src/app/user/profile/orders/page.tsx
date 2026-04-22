@@ -44,7 +44,7 @@ export default function ProfileOrdersPage() {
   const formatPrice = (price: number) => `£${(price || 0).toFixed(2)}`;
 
   return (
-    <div className="animate-in fade-in duration-300">
+    <div className="animate-in fade-in duration-300 w-full flex-1">
       <MobileBackButton title="Order History" />
 
       <div className="hidden md:block">
@@ -61,7 +61,7 @@ export default function ProfileOrdersPage() {
         </div>
       ) : orders && orders.length > 0 ? (
         <>
-          <div className="rounded-md overflow-hidden divide-y divide-[var(--cultured)] border border-(--cultured)">
+          <div className="w-full rounded-md overflow-hidden divide-y divide-[var(--cultured)] border border-(--cultured)">
             {orders.map((order: any) => {
               const orderId = order._id || order.id || "N/A";
               const status = (order.status || "pending").toLowerCase();
@@ -73,7 +73,7 @@ export default function ProfileOrdersPage() {
                 <Link
                   key={String(orderId)}
                   href={`/user/profile/orders/${orderId}`}
-                  className="flex items-center justify-between p-4 bg-white hover:bg-[var(--cultured)] transition-all cursor-pointer group rounded-md"
+                  className="flex items-center justify-between w-full p-4 bg-white hover:bg-[var(--cultured)] transition-all cursor-pointer group rounded-md"
                 >
                   {/* Left Section: Visual + Details */}
                   <div className="flex items-center gap-4 flex-1 min-w-0">

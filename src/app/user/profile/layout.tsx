@@ -41,30 +41,30 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
   const isRootProfilePage = pathname === "/user/profile";
 
   return (
-    <main className="min-h-screen pb-10 pt-[0px] lg:pt-[10px]">
-      <div className="container max-w-6xl">
+    <main className="min-h-screen pb-10 pt-[0px] lg:pt-[10px] w-full">
+      <div className="container mx-auto max-w-6xl">
         
         {/* Main Interface Wrapper */}
-        <div className="overflow-hidden flex flex-col md:flex-row min-h-[70vh]">
+        <div className="flex flex-col md:flex-row md:gap-10 w-full min-h-[70vh]">
           
           {/* Sidebar Navigation */}
           {/* On mobile: Render only if we're on the root page. On desktop: Always render */}
-          <aside className={`rounded-md w-full md:w-64 lg:w-72 bg-white/50 h-fit pb-24 flex-shrink-0 flex flex-col ${isRootProfilePage ? 'block' : 'hidden md:flex'}`}>
+          <aside className={`rounded-md w-full md:w-64 lg:w-68 bg-white/50 h-fit pb-24 flex-shrink-0 flex flex-col ${isRootProfilePage ? 'block' : 'hidden md:flex'}`}>
             
-            <div className="py-5 px-0 md:px-8 md:pt-8 md:pb-4 flex-shrink-0">
+            <div className="py-5 px-0 md:px-0 md:pt-8 md:pb-4 flex-shrink-0">
               <h1 className="text-2xl font-semibold text-gray-900">My Account</h1>
             </div>
 
-            <nav className="py-1 md:px-4 md:py-1 flex-grow flex flex-col gap-2">
+            <nav className="py-1 md:px-0 md:py-1 flex-grow flex flex-col gap-2">
               {menuItems.map((item) => {
                 const isActive = pathname === item.path;
                 return (
                   <Link
                     key={item.path}
                     href={item.path}
-                    className={`flex flex-row items-center justify-between px-0 md:px-4 py-2.5 rounded-md text-[14px] transition-all text- ${
+                    className={`flex flex-row items-center justify-between px-0 hover:md:px-4 py-2.5 rounded-md text-[14px] transition-all text- ${
                       isActive 
-                        ? 'md:bg-[var(--cultured)] text-(--eerie-black)' 
+                        ? 'md:bg-[var(--cultured)] text-(--eerie-black) md:px-4' 
                         : 'md:hover:bg-[var(--cultured)] text-(--eerie-black) bg-transparent'
                     }`}
                   >
@@ -80,7 +80,7 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
               
               <button 
                 onClick={handleLogout}
-                className="!flex items-center gap-3 px-0 md:px-4 py-2.5 rounded-lg text-[16px] text-red-600 md:hover:bg-red-100 bg-transparent transition-colors w-full md:text-left text-center"
+                className="!flex items-center gap-3 px-0 hover:md:px-4 py-2.5 rounded-lg text-[16px] text-red-600 md:hover:bg-red-100 bg-transparent transition-colors w-full md:text-left text-center"
               >
                 <LogOut size={20} strokeWidth={1.75} />
                 <span className="font-normal">Sign Out</span>
@@ -90,8 +90,8 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
 
           {/* Main Content Area */}
           {/* On mobile: Render only if we're NOT on the root page. On desktop: Always render */}
-          <div className={`flex-1 flex flex-col ${!isRootProfilePage ? 'block' : 'hidden md:block'}`}>
-            <div className="py-6 px-0 md:px-10 md:py-8 h-full">
+          <div className={`flex-1 min-w-0 flex flex-col ${!isRootProfilePage ? '' : 'hidden md:block'} overflow-hidden`}>
+            <div className="flex flex-col py-6 px-0 md:px-0 md:py-8 h-full">
               {children}
             </div>
           </div>

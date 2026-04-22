@@ -165,7 +165,7 @@ export default function OrderDetailsPage() {
                   #{String(order._id || order.id).toUpperCase()}
                 </span>
               </div>
-              <div className="flex items-center justify-between md:justify-start md:gap-4 text-xs">
+              <div className="flex items-center justify-between text-xs">
                 <span className="text-gray-500 tracking-tight">Status:</span>
                 <span className={`px-3 py-0.5 rounded-sm text-[10px] font-medium uppercase ${statusClass}`}>
                   {status}
@@ -221,7 +221,7 @@ export default function OrderDetailsPage() {
                   <span className="text-gray-500">Method:</span>
                   <span className="text-gray-900 capitalize">{order.paymentMethod || 'Stripe'}</span>
                 </div>
-                <div className="flex items-center justify-between md:justify-start md:gap-4 text-xs">
+                <div className="flex items-center justify-between text-xs">
                   <span className="text-gray-500">Status:</span>
                   <span className={`px-2 py-0.5 rounded text-[10px] font-medium uppercase ${
                     (order.status === 'paid' || order.status === 'processing' || order.status === 'shipped' || order.status === 'delivered') 
@@ -262,13 +262,13 @@ export default function OrderDetailsPage() {
                     )}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-gray-900 truncate uppercase tracking-tight">{item.name}</p>
+                    <p className="text-sm font-medium text-gray-900 truncate uppercase tracking-tight">{item.name}</p>
                     <p className="text-xs text-gray-500 mt-1">
                       {formatPrice(item.price)} × {item.quantity}
                     </p>
                   </div>
                   <div className="text-right">
-                    <p className="text-sm font-bold text-gray-900">
+                    <p className="text-sm font-medium text-gray-900">
                       {formatPrice(item.price * item.quantity)}
                     </p>
                   </div>
