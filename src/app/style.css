@@ -1001,11 +1001,10 @@ h3 > a {
 .product-img {
   width: 100%;
   max-width: 500px;
-  max-height: 500px;
-
-/* height: 370px; */
-  /* object-fit: contain; */
-  /* height: auto; */
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
+  background: var(--white);
+  border-radius: 8px;
 }
 
 .product-info {
@@ -1296,8 +1295,8 @@ h3 > a {
 .product-img {
   width: 100%;
   max-width: 500px;
-   max-height: 500px; 
-   object-fit: contain; 
+  aspect-ratio: 1 / 1;
+  object-fit: contain;
   height: auto; 
 }
 }
