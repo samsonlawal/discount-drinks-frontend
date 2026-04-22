@@ -3,9 +3,8 @@
 import React from "react";
 import Link from "next/link";
 import {
-  CircleUser,
-  User as UserIcon,
-  Package,
+  CircleUserRound,
+  List,
   MapPin,
   Settings,
   LogOut,
@@ -28,7 +27,7 @@ export default function ProfileDropdown({ user, onLogout }: ProfileDropdownProps
               {user && user.profileImage ? (
                 <img src={user.profileImage} alt="Profile" className="w-6 h-6 rounded-full" />
               ) : (
-                <CircleUser size={20} />
+                <CircleUserRound size={20} />
               )}
             </div>
             <span className="text-sm font-medium group-hover:text-black hidden lg:block max-w-[100px] truncate">
@@ -52,11 +51,11 @@ export default function ProfileDropdown({ user, onLogout }: ProfileDropdownProps
 
             <DropdownMenu.Item asChild className="outline-none">
               <Link 
-                href="/user/profile/overview" 
+                href="/user/profile/details" 
                 className="flex items-center gap-3 px-3 py-2.5 rounded-lg cursor-pointer text-gray-700 hover:bg-gray-100 transition-colors focus:bg-gray-100"
               >
-                <UserIcon size={16} />
-                Overview
+                <CircleUserRound size={16} />
+                Profile Details
               </Link>
             </DropdownMenu.Item>
 
@@ -65,7 +64,7 @@ export default function ProfileDropdown({ user, onLogout }: ProfileDropdownProps
                 href="/user/profile/orders" 
                 className="flex items-center gap-3 px-3 py-2.5 rounded-lg cursor-pointer text-gray-700 hover:bg-gray-100 transition-colors focus:bg-gray-100"
               >
-                <Package size={16} />
+                <List size={16} />
                 Order History
               </Link>
             </DropdownMenu.Item>
@@ -82,11 +81,11 @@ export default function ProfileDropdown({ user, onLogout }: ProfileDropdownProps
 
             <DropdownMenu.Item asChild className="outline-none">
               <Link 
-                href="/user/profile/settings" 
+                href="/user/profile/edit-profile" 
                 className="flex items-center gap-3 px-3 py-2.5 rounded-lg cursor-pointer text-gray-700 hover:bg-gray-100 transition-colors focus:bg-gray-100"
               >
                 <Settings size={16} />
-                Settings
+                Edit Profile
               </Link>
             </DropdownMenu.Item>
 

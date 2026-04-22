@@ -5,6 +5,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useGetUserById } from "@/hooks/api/users";
 import { setAuthState } from "@/redux/Slices/authSlice";
+import { Pencil } from "lucide-react";
+import Link from "next/link";
 import MobileBackButton from "../MobileBackButton";
 
 export default function ProfileOverviewPage() {
@@ -66,10 +68,10 @@ export default function ProfileOverviewPage() {
       <div 
         className="flex flex-col gap-8" 
         style={{ 
-          backgroundColor: '#f9fafb', 
-          padding: '24px', 
+          // backgroundColor: '#f9fafb', 
+          padding: '0px 24px', 
           borderRadius: '12px', 
-          border: '1px solid #f3f4f6' 
+          // border: '1px solid #f3f4f6' 
         }}
       >
         <div className="hidden md:block">
@@ -78,36 +80,46 @@ export default function ProfileOverviewPage() {
           </h2>
         </div>
       
-        <div className="w-full flex flex-col items-start justify-start pb-2">
-          <div 
-            className="rounded-full flex items-center justify-center text-white overflow-hidden relative group" 
-            style={{ 
-              width: '80px', 
-              height: '80px', 
-              borderRadius: '50%', 
-              backgroundColor: !profileImage ? getFallbackColor() : undefined,
-              color: '#fff', 
-              fontSize: '18px', 
-              fontWeight: 500 
-            }}
-          >
-            {profileImage ? (
-              <img src={profileImage} alt={user.name} className="w-full h-full object-cover" />
-            ) : (
-              getInitials()
-            )}
-            
-            {/* Subtle loading overlay on top of the current image/initials */}
-            {loading && (
-              <div className="absolute inset-0 bg-white/40 flex items-center justify-center">
-                <div className="w-4 h-4 border-2 border-(--ocean-green) border-t-transparent rounded-full animate-spin" />
-              </div>
-            )}
+        <div className="w-full flex flex-col items-center md:items-start justify-center md:justify-start pb-2">
+          <div className="relative group">
+            <div 
+              className="rounded-full flex items-center justify-center text-white overflow-hidden" 
+              style={{ 
+                width: '100px', 
+                height: '100px', 
+                borderRadius: '50%', 
+                color: '#fff', 
+                fontSize: '18px', 
+                fontWeight: 500 
+              }}
+            >
+              {profileImage ? (
+                <img src={profileImage} alt={user.name} className="w-full h-full object-cover" />
+              ) : (
+                getInitials()
+              )}
+              
+              {/* Subtle loading overlay on top of the current image/initials */}
+              {loading && (
+                <div className="absolute inset-0 bg-white/40 flex items-center justify-center">
+                  <div className="w-4 h-4 border-2 border-(--ocean-green) border-t-transparent rounded-full animate-spin" />
+                </div>
+              )}
+            </div>
+
+            <Link 
+              href="/user/profile/edit-profile"
+              className="absolute -bottom-1 -right-1 w-7 h-7 bg-(--cultured) rounded-full flex items-center justify-center text-gray-400 hover:text-(--ocean-green) transition-all hover:scale-110 z-10"
+              title="Edit Profile"
+            >
+              <Pencil size={14} />
+
+         </Link>
           </div>
         </div>
 
         {/* Data Grid with proper alignment */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-10 gap-x-12 lg:gap-x-24">
+        <div className="grid grid-cols-1 md:grid-cols-1 lg:grid-cols-2 gap-y-10 gap-x-12 lg:gap-x-24">
           <div className="pb-1">
             <p className="text-sm text-gray-500 mb-1.5" style={{ fontWeight: 400 }}>Full Name</p>
             <p className="text-gray-900 font-normal">{user.name || "N/A"}</p>

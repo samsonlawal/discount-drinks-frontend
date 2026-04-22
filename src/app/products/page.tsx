@@ -111,7 +111,7 @@ function ProductsContent() {
             </nav>
             <button
               onClick={toggleSidebar}
-              className={`filter-icon-btn${isSidebarOpen ? " filter-icon-btn--active" : ""}`}
+              className={`filter-icon-btn`}
               aria-label={isSidebarOpen ? "Close filters" : "Open filters"}
               title={isSidebarOpen ? "Close filters" : "Open filters"}
             >

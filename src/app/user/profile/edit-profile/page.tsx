@@ -6,7 +6,7 @@ import { RootState } from "@/redux/store";
 import { setAuthState } from "@/redux/Slices/authSlice";
 import MobileBackButton from "../MobileBackButton";
 import { useUpdateProfile, useUploadProfileImage, useGetUserById } from "@/hooks/api/users";
-import { User as UserIcon, Camera, Loader2, ChevronDown, Check } from "lucide-react";
+import { User as UserIcon, Camera, Loader2, ChevronDown, Check, Calendar } from "lucide-react";
 import { UploadImageModal } from "@/components/modals/UploadImageModal";
 import * as Select from "@radix-ui/react-select";
 
@@ -91,7 +91,7 @@ export default function ProfileSettingsPage() {
   };
 
   const inputClass =
-    "w-full px-4 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-900 text-sm focus:outline-none focus:border-gray-400 transition-colors";
+    "w-full px-4 py-3 border border-gray-200 rounded-lg bg-white text-gray-900 text-sm focus:outline-none focus:border-gray-400 transition-colors";
   const labelClass = "block text-sm font-medium text-gray-700 mb-1";
 
   const profileImage = (user as any)?.profileImage || (user as any)?.image;
@@ -185,7 +185,7 @@ export default function ProfileSettingsPage() {
                 name="email"
                 value={formData.email}
                 disabled
-                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg bg-gray-50 text-gray-400 text-sm cursor-not-allowed"
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-gray-50 text-gray-400 text-sm cursor-not-allowed"
               />
               <p className="text-[10px] text-gray-400 mt-1">Email cannot be changed here. Contact support.</p>
             </div>
@@ -195,11 +195,11 @@ export default function ProfileSettingsPage() {
               <label className={labelClass}>Gender</label>
               <Select.Root value={formData.gender} onValueChange={handleGenderChange}>
                 <Select.Trigger
-                  className="w-full px-4 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-900 text-sm focus:outline-none focus:border-gray-400 transition-colors flex items-center justify-between group"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-white text-gray-900 text-sm focus:outline-none focus:border-gray-400 transition-colors flex items-center justify-between group relative pr-10"
                   aria-label="Gender"
                 >
                   <Select.Value placeholder="Select Gender" />
-                  <Select.Icon>
+                  <Select.Icon className="absolute right-4 top-1/2 -translate-y-1/2">
                     <ChevronDown size={16} className="text-gray-400 group-hover:text-gray-600 transition-colors" />
                   </Select.Icon>
                 </Select.Trigger>
@@ -234,13 +234,21 @@ export default function ProfileSettingsPage() {
 
             <div>
               <label className={labelClass}>Date of Birth</label>
-              <input
-                type="date"
-                name="dob"
-                value={formData.dob}
-                onChange={handleChange}
-                className={inputClass}
-              />
+              <div className="relative group">
+                <input
+                  type="date"
+                  name="dob"
+                  value={formData.dob}
+                  onChange={handleChange}
+                  className={`${inputClass} pr-10 appearance-none relative z-10 bg-transparent custom-date-input`}
+                  style={{
+                    colorScheme: 'light'
+                  }}
+                />
+                <div className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 group-hover:text-gray-600 transition-colors pointer-events-none">
+                  <Calendar size={16} />
+                </div>
+              </div>
             </div>
           </div>
 
