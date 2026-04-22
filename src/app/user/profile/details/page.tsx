@@ -81,37 +81,40 @@ export default function ProfileOverviewPage() {
         </div>
       
         <div className="w-full flex flex-col items-center md:items-start justify-center md:justify-start pb-2">
-          <div 
-            className="rounded-full flex items-center justify-center text-white overflow-hidden relative group" 
-            style={{ 
-              width: '80px', 
-              height: '80px', 
-              borderRadius: '50%', 
-              color: '#fff', 
-              fontSize: '18px', 
-              fontWeight: 500 
-            }}
-          >
+          <div className="relative group">
+            <div 
+              className="rounded-full flex items-center justify-center text-white overflow-hidden" 
+              style={{ 
+                width: '100px', 
+                height: '100px', 
+                borderRadius: '50%', 
+                color: '#fff', 
+                fontSize: '18px', 
+                fontWeight: 500 
+              }}
+            >
+              {profileImage ? (
+                <img src={profileImage} alt={user.name} className="w-full h-full object-cover" />
+              ) : (
+                getInitials()
+              )}
+              
+              {/* Subtle loading overlay on top of the current image/initials */}
+              {loading && (
+                <div className="absolute inset-0 bg-white/40 flex items-center justify-center">
+                  <div className="w-4 h-4 border-2 border-(--ocean-green) border-t-transparent rounded-full animate-spin" />
+                </div>
+              )}
+            </div>
+
             <Link 
               href="/user/profile/edit-profile"
-              className="absolute bottom-0 right-0 w-7 h-7 bg-white rounded-full flex items-center justify-center shadow-sm border border-gray-100 text-gray-400 hover:text-(--ocean-green) transition-colors z-10"
+              className="absolute -bottom-1 -right-1 w-7 h-7 bg-(--cultured) rounded-full flex items-center justify-center text-gray-400 hover:text-(--ocean-green) transition-all hover:scale-110 z-10"
               title="Edit Profile"
             >
               <Pencil size={14} />
-            </Link>
 
-            {profileImage ? (
-              <img src={profileImage} alt={user.name} className="w-full h-full object-cover" />
-            ) : (
-              getInitials()
-            )}
-            
-            {/* Subtle loading overlay on top of the current image/initials */}
-            {loading && (
-              <div className="absolute inset-0 bg-white/40 flex items-center justify-center">
-                <div className="w-4 h-4 border-2 border-(--ocean-green) border-t-transparent rounded-full animate-spin" />
-              </div>
-            )}
+         </Link>
           </div>
         </div>
 
