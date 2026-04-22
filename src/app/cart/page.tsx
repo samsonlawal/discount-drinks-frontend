@@ -168,8 +168,8 @@ export default function CartPage() {
           <button onClick={closeModal} className="btn btn-primary w-full">OK</button>
         </div>
       </BaseModal>
-      <main className="cart-main">
-      <div className="container">
+      <main className="cart-main !flex !flex-col !min-h-[80vh]">
+      <div className="container !flex !flex-col !grow">
         {/* Breadcrumb */}
         <nav className="breadcrumb" aria-label="Breadcrumb">
           <ol className="breadcrumb-list">
@@ -197,17 +197,17 @@ export default function CartPage() {
             </div>
           </div>
         ) : (
-          <div className={`cart-layout ${isEmpty ? 'cart-layout--empty' : ''}`}>
+          <div className={`!flex-grow !flex !flex-col ${!isEmpty ? '!grid gap-10 md:grid-cols-[1fr_380px]' : ''}`}>
             {/* Cart Items Section */}
-            <div className="cart-items-section">
+            <div className="!flex-grow !flex !flex-col">
               {/* Empty Cart State */}
               {isEmpty && (
-                <div className="empty-cart">
-                  <div className="empty-cart-icon">
-                    <ShoppingCart size={100} />
+                <div className="!flex-grow !flex !flex-col items-center justify-center text-center p-5 rounded-xl w-full ">
+                  <div className="text-gray-400 opacity-50 mb-5">
+                    <ShoppingCart size={80} />
                   </div>
-                  <h2 className="empty-cart-title">Your cart is empty</h2>
-                  <p className="empty-cart-text">
+                  <h2 className="text-2xl md:text-3xl text-gray-900 font-medium mb-2.5">Your cart is empty</h2>
+                  <p className="text-gray-500 mb-8">
                     Add some drinks to get started!
                   </p>
                   <a href="/products" className="btn btn-primary">

@@ -4,7 +4,7 @@ import React, {useEffect} from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { usePathname, useRouter } from "next/navigation";
-import { User, Mail, MapPin, Package, Settings, LogOut, ChevronRight } from "lucide-react";
+import { CircleUserRound, Mail, MapPin, Package, Settings, LogOut, ChevronRight, List } from "lucide-react";
 import { useLogout } from "@/hooks/api/auth";
 import Link from "next/link";
 
@@ -31,10 +31,10 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
   };
 
   const menuItems = [
-    { name: "Overview", path: "/user/profile/overview", icon: <User size={20} strokeWidth={1.5} /> },
-    { name: "Order History", path: "/user/profile/orders", icon: <Package size={20} strokeWidth={1.5} /> },
-    { name: "Saved Addresses", path: "/user/profile/addresses", icon: <MapPin size={20} strokeWidth={1.5} /> },
-    { name: "Settings", path: "/user/profile/settings", icon: <Settings size={20} strokeWidth={1.5} /> },
+    { name: "Overview", path: "/user/profile/overview", icon: <CircleUserRound size={21} strokeWidth={1.75} /> },
+    { name: "Order History", path: "/user/profile/orders", icon: <List size={21} strokeWidth={1.75} /> },
+    { name: "Saved Addresses", path: "/user/profile/addresses", icon: <MapPin size={21} strokeWidth={1.75} /> },
+    { name: "Settings", path: "/user/profile/settings", icon: <Settings size={21} strokeWidth={1.75} /> },
   ];
 
   // Determine if we're on the root profile page (which acts as the menu on mobile)
@@ -62,7 +62,7 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
                   <Link
                     key={item.path}
                     href={item.path}
-                    className={`flex flex-row items-center justify-between px-2 md:px-4 py-2 rounded-md text-[14px] transition-all text- ${
+                    className={`flex flex-row items-center justify-between px-0 md:px-4 py-2.5 rounded-md text-[14px] transition-all text- ${
                       isActive 
                         ? 'md:bg-[var(--cultured)] text-(--eerie-black)' 
                         : 'md:hover:bg-[var(--cultured)] text-(--eerie-black) bg-transparent'
@@ -72,7 +72,7 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
                       {item.icon}
                       <span className="text-[16px] font-normal">{item.name}</span>
                     </p>
-                    <ChevronRight size={20} className="flex md:hidden text-gray-400" />
+                    <ChevronRight size={21} className="flex md:hidden text-gray-400" />
                   </Link>
                 );
               })}
@@ -80,9 +80,9 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
               
               <button 
                 onClick={handleLogout}
-                className="!flex items-center gap-3 px-2 md:px-4 py-2 rounded-lg text-[16px] text-red-600 md:hover:bg-red-100 bg-transparent transition-colors w-full md:text-left text-center"
+                className="!flex items-center gap-3 px-0 md:px-4 py-2.5 rounded-lg text-[16px] text-red-600 md:hover:bg-red-100 bg-transparent transition-colors w-full md:text-left text-center"
               >
-                <LogOut size={20} strokeWidth={1.5} />
+                <LogOut size={20} strokeWidth={1.75} />
                 <span className="font-normal">Sign Out</span>
               </button>
             </nav>

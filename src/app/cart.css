@@ -59,8 +59,8 @@
    ============================================ */
 
 .cart-main {
-  padding-block: 80px 60px;
-  min-height: 60vh;
+  padding-block: 20px 80px;
+  min-height: 100vh;
 }
 
 /* Big screens (Desktop) */
@@ -134,9 +134,10 @@
   justify-content: center;
   text-align: center;
   padding: 80px 20px;
-  background: var(--cultured);
+  /* background: var(--cultured); */
   border-radius: 12px;
   width: 100%;
+  height: 100%;
 }
 
 .empty-cart-icon {
@@ -571,6 +572,12 @@
     justify-content: space-between;
     gap: 10px;
   }
+
+  /* .cart-layout--empty {
+    grid-template-columns: 1fr;
+    height: 100vh;
+  } */
+
 }
 
 /* Extra Small Mobile */

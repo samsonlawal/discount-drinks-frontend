@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { useCart } from "@/contexts/CartContext";
 import { useWishlist } from "@/contexts/WishlistContext";
 import {
-  CircleUser,
+  CircleUserRound,
   Search,
   ShoppingCart,
   Heart,
@@ -178,7 +178,7 @@ export default function Header() {
   const { onLogout } = useLogout();
 
   return (
-    <header className={`w-full bg-white transition-all duration-200 z-50 ${isScrolled ? "fixed top-0 left-0 lg:static lg:shadow-none lg:border-b lg:border-black/10" : "relative lg:py-2 lg:border-b lg:border-black/10 lg:mb-[50px]"}`}>
+    <header className={`w-full bg-(--cultured) transition-all duration-200 z-50 ${isScrolled ? "fixed top-0 left-0 lg:static lg:shadow-none lg:border-b lg:border-black/10" : "relative lg:py-2 lg:border-b lg:border-black/10 lg:mb-[50px]"}`}>
       <div className="container mx-auto px-4 sm:px-10 max-w-[1350px]">
         
         {/* Main Header Row */}
@@ -342,7 +342,7 @@ export default function Header() {
                   {user.profileImage ? (
                     <img src={user.profileImage} alt="Profile" className="w-[22px] h-[22px] rounded-full" />
                   ) : (
-                    <CircleUser size={22} />
+                    <CircleUserRound size={22} />
                   )}
                   <p className="hidden">Account</p>
 
@@ -361,7 +361,7 @@ export default function Header() {
                 href="/auth/sign-in"
                 className="relative flex items-center justify-center w-[36px] h-[36px] text-(--eerie-black) rounded-lg transition-colors lg:w-auto lg:gap-1.5 lg:h-auto group hover:text-(--ocean-green)"
               >
-                <CircleUser size={24} aria-hidden="true" />
+                <CircleUserRound size={24} aria-hidden="true" />
                 <span className="hidden lg:block text-(--sonic-silver) text-[14px] group-hover:text-(--ocean-green) font-medium">Account</span>
               </Link>
             )}
