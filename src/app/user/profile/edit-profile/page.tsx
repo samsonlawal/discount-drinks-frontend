@@ -91,7 +91,7 @@ export default function ProfileSettingsPage() {
   };
 
   const inputClass =
-    "w-full px-4 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-900 text-sm focus:outline-none focus:border-gray-400 transition-colors";
+    "w-full px-4 py-3 border border-gray-200 rounded-lg bg-white text-gray-900 text-sm focus:outline-none focus:border-gray-400 transition-colors";
   const labelClass = "block text-sm font-medium text-gray-700 mb-1";
 
   const profileImage = (user as any)?.profileImage || (user as any)?.image;
@@ -185,7 +185,7 @@ export default function ProfileSettingsPage() {
                 name="email"
                 value={formData.email}
                 disabled
-                className="w-full px-4 py-2.5 border border-gray-200 rounded-lg bg-gray-50 text-gray-400 text-sm cursor-not-allowed"
+                className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-gray-50 text-gray-400 text-sm cursor-not-allowed"
               />
               <p className="text-[10px] text-gray-400 mt-1">Email cannot be changed here. Contact support.</p>
             </div>
@@ -195,7 +195,7 @@ export default function ProfileSettingsPage() {
               <label className={labelClass}>Gender</label>
               <Select.Root value={formData.gender} onValueChange={handleGenderChange}>
                 <Select.Trigger
-                  className="w-full px-4 py-2.5 border border-gray-200 rounded-lg bg-white text-gray-900 text-sm focus:outline-none focus:border-gray-400 transition-colors flex items-center justify-between group"
+                  className="w-full px-4 py-3 border border-gray-200 rounded-lg bg-white text-gray-900 text-sm focus:outline-none focus:border-gray-400 transition-colors flex items-center justify-between group"
                   aria-label="Gender"
                 >
                   <Select.Value placeholder="Select Gender" />

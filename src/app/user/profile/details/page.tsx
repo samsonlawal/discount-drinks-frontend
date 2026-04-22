@@ -5,6 +5,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "@/redux/store";
 import { useGetUserById } from "@/hooks/api/users";
 import { setAuthState } from "@/redux/Slices/authSlice";
+import { Pencil } from "lucide-react";
+import Link from "next/link";
 import MobileBackButton from "../MobileBackButton";
 
 export default function ProfileOverviewPage() {
@@ -90,6 +92,14 @@ export default function ProfileOverviewPage() {
               fontWeight: 500 
             }}
           >
+            <Link 
+              href="/user/profile/edit-profile"
+              className="absolute bottom-0 right-0 w-7 h-7 bg-white rounded-full flex items-center justify-center shadow-sm border border-gray-100 text-gray-400 hover:text-(--ocean-green) transition-colors z-10"
+              title="Edit Profile"
+            >
+              <Pencil size={14} />
+            </Link>
+
             {profileImage ? (
               <img src={profileImage} alt={user.name} className="w-full h-full object-cover" />
             ) : (

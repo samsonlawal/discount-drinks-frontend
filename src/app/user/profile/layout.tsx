@@ -31,10 +31,10 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
   };
 
   const menuItems = [
-    { name: "Overview", path: "/user/profile/overview", icon: <CircleUserRound size={21} strokeWidth={1.75} /> },
+    { name: "Profile Details", path: "/user/profile/details", icon: <CircleUserRound size={21} strokeWidth={1.75} /> },
     { name: "Order History", path: "/user/profile/orders", icon: <List size={21} strokeWidth={1.75} /> },
     { name: "Saved Addresses", path: "/user/profile/addresses", icon: <MapPin size={21} strokeWidth={1.75} /> },
-    { name: "Settings", path: "/user/profile/settings", icon: <Settings size={21} strokeWidth={1.75} /> },
+    { name: "Edit Profile", path: "/user/profile/edit-profile", icon: <Settings size={21} strokeWidth={1.75} /> },
   ];
 
   // Determine if we're on the root profile page (which acts as the menu on mobile)
@@ -64,8 +64,8 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
                     href={item.path}
                     className={`flex flex-row items-center justify-between px-0 hover:md:px-4 py-2.5 rounded-md text-[14px] transition-all text- ${
                       isActive 
-                        ? 'md:bg-[var(--cultured)] text-(--eerie-black) md:px-4' 
-                        : 'md:hover:bg-[var(--cultured)] text-(--eerie-black) bg-transparent'
+                        ? 'md:bg-(--cultured) text-(--eerie-black) md:px-4' 
+                        : 'md:hover:bg-(--cultured) text-(--eerie-black) bg-transparent'
                     }`}
                   >
                     <p className="flex items-center gap-3">

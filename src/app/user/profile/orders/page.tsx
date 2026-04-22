@@ -54,14 +54,14 @@ export default function ProfileOrdersPage() {
       </div>
 
       {loading ? (
-        <div className="rounded-md overflow-hidden divide-y divide-[var(--cultured)]">
+        <div className="rounded-md overflow-hidden divide-y divide-(--cultured)">
           {[1, 2, 3, 4, 5].map((i) => (
             <div key={i} className="flex items-center justify-between p-4 bg-white animate-shade h-[88px]" />
           ))}
         </div>
       ) : orders && orders.length > 0 ? (
         <>
-          <div className="w-full rounded-md overflow-hidden divide-y divide-[var(--cultured)] border border-(--cultured)">
+          <div className="w-full rounded-md overflow-hidden divide-y divide-(--cultured) border border-(--cultured)">
             {orders.map((order: any) => {
               const orderId = order._id || order.id || "N/A";
               const status = (order.status || "pending").toLowerCase();
@@ -73,7 +73,7 @@ export default function ProfileOrdersPage() {
                 <Link
                   key={String(orderId)}
                   href={`/user/profile/orders/${orderId}`}
-                  className="flex items-center justify-between w-full p-4 bg-white hover:bg-[var(--cultured)] transition-all cursor-pointer group rounded-md"
+                  className="flex items-center justify-between w-full p-4 bg-white hover:bg-(--cultured) transition-all cursor-pointer group rounded-md"
                 >
                   {/* Left Section: Visual + Details */}
                   <div className="flex items-center gap-4 flex-1 min-w-0">
@@ -106,7 +106,7 @@ export default function ProfileOrdersPage() {
 
                     {/* Details */}
                     <div className="flex-1 min-w-0 flex flex-col">
-                      <h4 className="text-[15px] font-medium text-gray-900 truncate group-hover:text-[var(--ocean-green)] transition-colors">
+                      <h4 className="text-[15px] font-medium text-gray-900 truncate group-hover:text-(--ocean-green) transition-colors">
                         {productNames || "Order Details"}
                       </h4>
                       <p className="text-xs text-gray-400 ">Order {String(orderId).slice(-8).toUpperCase()}</p>
@@ -118,7 +118,7 @@ export default function ProfileOrdersPage() {
 
                   {/* Right Section: Price + Status */}
                   <div className="flex flex-col items-end justify-between gap-2 ml-4 flex-shrink-0">
-                    <span className="text-[14px] font-medium text-gray-900 group-hover:text-[var(--eerie-black)] transition-colors">
+                    <span className="text-[14px] font-medium text-gray-900 group-hover:text-(--eerie-black) transition-colors">
                       {formatPrice(order.totalAmount || order.total || 0)}
                     </span>
                     <span className={`text-[10px] px-2 py-0.5 rounded-sm uppercase ${statusClass}`}>
