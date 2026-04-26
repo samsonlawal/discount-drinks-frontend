@@ -8,8 +8,7 @@ import env from "@/config/env";
 import axios, { AxiosError } from "axios";
 import AuthService from "@/services/auth";
 import { getErrorMessage } from "@/utils/errorUtils";
-import { useRouter } from "next/navigation";
-import router from "next/router";
+import { useRouter, usePathname } from "next/navigation";
 
 
 // For logout to set the initial state to the empty
@@ -117,21 +116,26 @@ export const useRegister = () => {
 
 
 export const useLogout = () => {
-  // const updateAppState = useUpdateAuthContext();
   const dispatch = useDispatch();
+  const router = useRouter();
+  const pathname = usePathname();
 
-  const onLogout = async () => {
-    // Navigate FIRST — this tears down the React tree immediately,
-    // preventing the naked header/footer flash while async cleanup runs
-    window.location.href = "/";
+  const onLogout = () => {
+    // Check if we are on a protected route
+    const isProtected = pathname?.startsWith("/user") || 
+                        pathname?.startsWith("/checkout") || 
+                        pathname?.startsWith("/order");
 
-    // Clear Redux state
-    dispatch(clearAuthState());
+    // Clear persistence immediately so the next load is clean
+    localStorage.removeItem("persist:DISCOUNT_DRINKS_PERSISTOR");
 
-    // Purge persistent storage in the background (page is already navigating)
-    const { persistor } = await import("@/redux/store");
-    if (persistor) {
-      await persistor.purge();
+    if (isProtected) {
+      // For protected pages, a hard reload is the ONLY way to avoid 
+      // the jarring React re-render of a profile page without user data.
+      window.location.href = "/";
+    } else {
+      // For public pages, stay on the page and just clear the memory state.
+      dispatch(clearAuthState());
     }
   };
 

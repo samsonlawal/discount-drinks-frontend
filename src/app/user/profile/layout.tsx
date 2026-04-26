@@ -26,8 +26,6 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
 
   const handleLogout = () => {
     onLogout();
-    // Use window.location for a hard redirect to avoid the "Redirecting..." flash in the layout
-    window.location.href = "/";
   };
 
   const menuItems = [
