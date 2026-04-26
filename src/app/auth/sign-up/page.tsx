@@ -13,6 +13,10 @@ import {
   RefreshCw,
   ShieldCheck,
   CircleCheck,
+  TicketPercent,
+  History,
+  Zap,
+  WandSparkles,
 } from "lucide-react";
 import { showErrorToast, showSuccessToast } from "@/utils/toaster";
 import { useRegister } from "@/hooks/api/auth";
@@ -74,9 +78,9 @@ export default function SignUpPage() {
     <main className="auth-page">
       {/* Main Auth Section */}
       <main className="auth-main">
-        <div className="container">
+        <div className="auth-main-container">
           {/* Logo Navigation */}
-          <div className="flex justify-center mb-6">
+          <div className="flex justify-center mb-10 h-fit w-full mdl:hidden">
             <Link href="/">
               <Image 
                 src="/images/logo.svg" 
@@ -213,7 +217,7 @@ export default function SignUpPage() {
                       aria-label="Toggle password visibility"
                       onClick={() => setShowPassword(!showPassword)}
                     >
-                      {showPassword ? <EyeOff /> : <Eye />}
+                      {showPassword ? <EyeOff strokeWidth={1.5} size={20}/> : <Eye strokeWidth={1.5} size={20}/>}
                     </button>
                   </div>
                 </div>
@@ -246,7 +250,7 @@ export default function SignUpPage() {
                       aria-label="Toggle password visibility"
                       onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                     >
-                      {showConfirmPassword ? <EyeOff /> : <Eye />}
+                      {showConfirmPassword ? <EyeOff strokeWidth={1.5} size={20}/> : <Eye strokeWidth={1.5} size={20}/>}
                     </button>
                   </div>
                 </div>
@@ -299,39 +303,54 @@ export default function SignUpPage() {
                 </p>
               </div>
 
-              {/* Security Notice */}
-              <div className="security-notice">
-                <ShieldCheck />
-                <span>Your information is secure and encrypted</span>
-              </div>
             </div>
 
             {/* Side Image/Info */}
             <div className="auth-side">
+              {/* Logo Navigation */}
+              <div className="md:flex justify-start h-fit w-full hidden">
+                <Link href="/" className="w-fit h-auto">
+                  <Image 
+                    src="/logo-white.svg" 
+                    alt="Discount Drinks Logo" 
+                    width={180} 
+                    height={50} 
+                    priority 
+                    className="h-16 sm:h-20 w-auto" 
+                  />
+                </Link>
+              </div>
+
               <div className="auth-side-content">
                 <h2 className="side-title">Join Our Community</h2>
                 <p className="side-text">
                   Create your account today and unlock exclusive benefits tailored just for you.
                 </p>
 
-                <ul className="feature-list">
-                  <li className="feature-item">
-                    <CircleCheck />
+                <ul className="feature-list text-(--sonic-silver)">
+                  <li className="feature-item hover:text-white transition-colors duration-300">
+                    <TicketPercent strokeWidth={1.5}/>
                     <span>Exclusive member discounts</span>
                   </li>
-                  <li className="feature-item">
-                    <CircleCheck />
+                  <li className="feature-item hover:text-white transition-colors duration-300">
+                    <History strokeWidth={1.5}/>
                     <span>Order tracking & history</span>
                   </li>
-                  <li className="feature-item">
-                    <CircleCheck />
+                  <li className="feature-item hover:text-white transition-colors duration-300">
+                    <Zap strokeWidth={1.5}/>
                     <span>Faster checkout process</span>
                   </li>
-                  <li className="feature-item">
-                    <CircleCheck />
+                  <li className="feature-item hover:text-white transition-colors duration-300">
+                    <WandSparkles strokeWidth={1.5}/>
                     <span>Personalized recommendations</span>
                   </li>
                 </ul>
+              </div>
+
+              {/* Security Notice */}
+                <div className="security-notice bg-white/10">
+                <ShieldCheck strokeWidth={1.5}/>
+                <span>Your information is secure and encrypted</span>
               </div>
             </div>
           </div>

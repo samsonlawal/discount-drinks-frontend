@@ -6,6 +6,10 @@
    * colors
    */
 
+     @theme {
+    --breakpoint-mdl: 991px;
+  }
+
   --middle-blue-green: hsl(353, 42%, 32%);
   --sonic-silver: hsl(0, 0%, 44%);
   --eerie-black: hsl(0, 0%, 9%);
