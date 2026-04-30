@@ -178,7 +178,7 @@ export default function Header() {
   const { onLogout } = useLogout();
 
   return (
-    <header className={`w-full bg-(--cultured) transition-all duration-200 z-50 ${isScrolled ? "fixed top-0 left-0 lg:static lg:shadow-none lg:border-b lg:border-black/10" : "relative lg:py-2 lg:border-b lg:border-black/10 lg:mb-[50px]"}`}>
+    <header className={`w-full bg-(--cultured) transition-all duration-200 z-50 ${isScrolled ? "fixed top-0 left-0 lg:static " : "relative lg:py-2 lg:mb-[50px]"}`}>
       <div className="container mx-auto px-4 sm:px-10 max-w-[1350px]">
         
         {/* Main Header Row */}
