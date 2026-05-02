@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default function Footer() {
   return (
-    <footer className="bg-(--cultured) pt-16 pb-8 px-3">
+    <footer className="bg-(--cultured) pt-16 pb-8">
       <div className="container mx-auto max-w-[1350px]">
         {/* Footer Top */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 mb-12 lg:mb-16">
@@ -47,31 +47,31 @@ export default function Footer() {
             <p className="text-(--eerie-black) text-[22px] font-semibold mb-2">Information</p>
             <ul className="flex flex-col gap-1">
               <li>
-                <Link href="/about" className="relative !text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
+                <Link href="/about" className="relative !text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 inline-block group">
                   <span className="absolute left-[-15px] top-1/2 -translate-y-1/2 w-[10px] h-[2px] bg-(--sonic-silver) scale-x-0 origin-right transition-transform duration-250 group-hover:scale-x-100"></span>
                   About Us
                 </Link>
               </li>
               <li>
-                <Link href="/faq" className="relative !text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
+                <Link href="/faq" className="relative !text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 inline-block group">
                   <span className="absolute left-[-15px] top-1/2 -translate-y-1/2 w-[10px] h-[2px] bg-(--sonic-silver) scale-x-0 origin-right transition-transform duration-250 group-hover:scale-x-100"></span>
                   FAQ
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="relative !text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
+                <Link href="/contact" className="relative !text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 inline-block group">
                   <span className="absolute left-[-15px] top-1/2 -translate-y-1/2 w-[10px] h-[2px] bg-(--sonic-silver) scale-x-0 origin-right transition-transform duration-250 group-hover:scale-x-100"></span>
                   Contact Us
                 </Link>
               </li>
               <li>
-                <Link href="/legal/terms-and-conditions" className="relative !text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
+                <Link href="/legal/terms-and-conditions" className="relative !text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 inline-block group">
                   <span className="absolute left-[-15px] top-1/2 -translate-y-1/2 w-[10px] h-[2px] bg-(--sonic-silver) scale-x-0 origin-right transition-transform duration-250 group-hover:scale-x-100"></span>
                   Terms & Conditions
                 </Link>
               </li>
               <li>
-                <Link href="/legal/privacy-policy" className="relative !text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
+                <Link href="/legal/privacy-policy" className="relative !text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 inline-block group">
                   <span className="absolute left-[-15px] top-1/2 -translate-y-1/2 w-[10px] h-[2px] bg-(--sonic-silver) scale-x-0 origin-right transition-transform duration-250 group-hover:scale-x-100"></span>
                   Privacy Policy
                 </Link>
@@ -83,37 +83,37 @@ export default function Footer() {
             <p className="text-(--eerie-black) text-[22px] font-semibold mb-2">Category</p>
             <ul className="flex flex-col gap-1">
               <li>
-                <Link href="/products?category=Rum" className="relative !text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
+                <Link href="/products?category=Rum" className="relative !text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 inline-block group">
                   <span className="absolute left-[-15px] top-1/2 -translate-y-1/2 w-[10px] h-[2px] bg-(--sonic-silver) scale-x-0 origin-right transition-transform duration-250 group-hover:scale-x-100"></span>
                   Rum
                 </Link>
               </li>
               <li>
-                <Link href="/products?category=Whiskey" className="relative !text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
+                <Link href="/products?category=Whiskey" className="relative !text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 inline-block group">
                   <span className="absolute left-[-15px] top-1/2 -translate-y-1/2 w-[10px] h-[2px] bg-(--sonic-silver) scale-x-0 origin-right transition-transform duration-250 group-hover:scale-x-100"></span>
                   Whiskey
                 </Link>
               </li>
               <li>
-                <Link href="/products?category=Vodka" className="relative !text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
+                <Link href="/products?category=Vodka" className="relative !text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 inline-block group">
                   <span className="absolute left-[-15px] top-1/2 -translate-y-1/2 w-[10px] h-[2px] bg-(--sonic-silver) scale-x-0 origin-right transition-transform duration-250 group-hover:scale-x-100"></span>
                   Vodka
                 </Link>
               </li>
               <li>
-                <Link href="/products?category=Spirit" className="relative !text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
+                <Link href="/products?category=Spirit" className="relative !text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 inline-block group">
                   <span className="absolute left-[-15px] top-1/2 -translate-y-1/2 w-[10px] h-[2px] bg-(--sonic-silver) scale-x-0 origin-right transition-transform duration-250 group-hover:scale-x-100"></span>
                   Spirit
                 </Link>
               </li>
               <li>
-                <Link href="/products?category=Beer" className="relative !text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
+                <Link href="/products?category=Beer" className="relative !text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 inline-block group">
                   <span className="absolute left-[-15px] top-1/2 -translate-y-1/2 w-[10px] h-[2px] bg-(--sonic-silver) scale-x-0 origin-right transition-transform duration-250 group-hover:scale-x-100"></span>
                   Beer
                 </Link>
               </li>
               <li>
-                <Link href="/products?category=Tequila" className="relative !text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 block group">
+                <Link href="/products?category=Tequila" className="relative !text-(--sonic-silver) py-[5px] hover:text-(--eerie-black) hover:translate-x-[15px] transition-all duration-250 inline-block group">
                   <span className="absolute left-[-15px] top-1/2 -translate-y-1/2 w-[10px] h-[2px] bg-(--sonic-silver) scale-x-0 origin-right transition-transform duration-250 group-hover:scale-x-100"></span>
                   Tequila
                 </Link>
@@ -131,7 +131,7 @@ export default function Footer() {
           <div className="flex items-center gap-4 flex-wrap justify-center">
             <p className="text-[15px]">We Support</p>
             <div className="flex items-center gap-3">
-              <img src="/images/mastercard.svg" alt="Mastercard" className="w-[45px] opacity-90" />
+              <img src="/images/mastercard.svg" alt="Mastercard" className="w-[45px] bg-white rounded-sm opacity-90" />
               <img src="/images/visa.svg" alt="Visa" className="w-[45px] opacity-90" />
             </div>
           </div>
