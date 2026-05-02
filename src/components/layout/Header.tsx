@@ -17,7 +17,9 @@ import {
   Info,
   Mail,
   Check,
-  HelpCircle
+  HelpCircle,
+  ChevronDown
+
 } from "lucide-react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
@@ -340,7 +342,14 @@ export default function Header() {
                   className="relative flex items-center justify-center w-[36px] h-[36px] text-(--eerie-black) lg:hidden" 
                 >
                   {user.profileImage ? (
-                    <img src={user.profileImage} alt="Profile" className="w-[22px] h-[22px] rounded-full" />
+                    <div className="w-[22px] h-[22px] rounded-full overflow-hidden shrink-0">
+                      <img 
+                        src={user.profileImage} 
+                        alt="Profile" 
+                        className="w-full h-full object-cover" 
+                        style={{ objectFit: 'cover', width: '100%', height: '100%', aspectRatio: '1/1' }}
+                      />
+                    </div>
                   ) : (
                     <CircleUserRound size={22} />
                   )}
@@ -359,17 +368,20 @@ export default function Header() {
             ) : (
               <Link
                 href="/auth/sign-in"
-                className="relative flex items-center justify-center w-[36px] h-[36px] text-(--eerie-black) rounded-lg transition-colors lg:w-auto lg:gap-1.5 lg:h-auto group hover:text-(--ocean-green)"
+                className="relative flex items-center justify-center w-[36px] h-[36px] text-(--eerie-black) rounded-md transition-colors lg:w-auto lg:gap-1.5 lg:px-3 lg:py-1.5 lg:h-auto group hover:bg-(--cultured)"
               >
-                <CircleUserRound size={24} aria-hidden="true" />
-                <span className="hidden lg:block text-(--sonic-silver) text-[14px] group-hover:text-(--ocean-green) font-medium">Account</span>
+                <CircleUserRound size={22} aria-hidden="true" />
+                <span className="hidden lg:block text-(--sonic-silver) text-[14px] group-hover:text-(--eerie-black) font-medium">Account</span>
+
+                            <ChevronDown size={14} className="hidden lg:flex text-(--sonic-silver) group-hover:text-(--eerie-black) transition-transform duration-200 group-data-[state=open]:rotate-180 " />
+                
               </Link>
             )}
 
             {/* Cart */}
             <Link href="/cart" className="relative flex items-center justify-center w-[36px] h-[36px] text-(--eerie-black) rounded-lg transition-colors lg:w-auto lg:gap-1.5 lg:h-auto group hover:text-(--ocean-green)">
               <div className="relative flex justify-center items-center">
-                <ShoppingCart size={24} aria-hidden="true" />
+                <ShoppingCart size={22} aria-hidden="true" />
                 {!isLoading && (
                   <div className="absolute -top-1.5 -right-2 flex items-center justify-center min-w-[18px] h-[18px] bg-(--ocean-green) text-white text-[10px] rounded-full px-1">
                     {getCartCount()}

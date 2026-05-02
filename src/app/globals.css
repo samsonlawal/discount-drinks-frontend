@@ -187,7 +187,7 @@ h3 > a {
   align-items: center;
 }
 
-.btn-primary:is(:hover, :focus) {
+.btn-primary:is(:hover, :focus-visible) {
   --background: var(--white);
   --color: var(--eerie-black);
   --border-color: var(--eerie-black);
@@ -199,7 +199,7 @@ h3 > a {
   --border-color: var(--white);
 }
 
-.btn-secondary:is(:hover, :focus) {
+.btn-secondary:is(:hover, :focus-visible) {
   --background: var(--eerie-black);
   --color: var(--white);
   --border-color: var(--eerie-black);
@@ -212,7 +212,7 @@ h3 > a {
   padding-inline: 40px;
 }
 
-.btn-outline:is(:hover, :focus) {
+.btn-outline:is(:hover, :focus-visible) {
   --background: var(--eerie-black);
   --color: var(--white);
   --border-color: var(--eerie-black);
@@ -231,7 +231,7 @@ h3 > a {
   transition: background var(--transition-1), color var(--transition-1), border-color var(--transition-1);
 }
 
-.btn-dark:is(:hover, :focus):not(:disabled) {
+.btn-dark:is(:hover, :focus-visible):not(:disabled) {
   background: var(--white);
   color: var(--eerie-black);
   border-color: var(--eerie-black);
@@ -2259,12 +2259,12 @@ ion-icon {
 } */
 
 .product-showcase {
-  align-items: center;
+  /* align-items: center; */
   /* background: var(--cultured); */
-  border-radius: 12px;
+  /* border-radius: 12px;
   display: flex;
   overflow: hidden;
-  padding: 20px
+  padding: 20px */
 }
 
 .product-img {
