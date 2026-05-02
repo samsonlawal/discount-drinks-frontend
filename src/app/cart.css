@@ -179,6 +179,7 @@
 .cart-items-title {
   font-size: var(--fs-8);
   color: var(--eerie-black);
+  font-weight: var(--fw-500);
 }
 
 .btn-text {
@@ -211,16 +212,16 @@
 
 /* Cart Item */
 .cart-item {
-  background: var(--white);
+  /* background: var(--cultured); */
   border: 1px solid var(--cultured);
   border-radius: 12px;
   overflow: hidden;
   transition: var(--transition-1);
 }
 
-.cart-item:hover {
+/* .cart-item:hover {
   box-shadow: 0 4px 20px hsla(0, 0%, 0%, 0.08);
-}
+} */
 
 .cart-item--removing {
   opacity: 0;
@@ -258,7 +259,7 @@
 .cart-item-title {
   font-size: var(--fs-6);
   color: var(--eerie-black);
-  font-weight: var(--fw-600);
+  font-weight: var(--fw-500);
   margin: 0;
 }
 
@@ -341,7 +342,7 @@
 .cart-item-total {
   font-size: var(--fs-5);
   color: var(--eerie-black);
-  font-weight: var(--fw-600);
+  font-weight: var(--fw-500);
   margin: 0;
 }
 
