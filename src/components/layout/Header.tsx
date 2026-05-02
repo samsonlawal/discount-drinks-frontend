@@ -140,6 +140,7 @@ export default function Header() {
 
   const handleResultClick = (id: string) => {
     setShowDropdown(false);
+    setIsMobileSearchOpen(false);
     setSearchQuery("");
     router.push(`/product/${id}`);
   };
@@ -157,10 +158,12 @@ export default function Header() {
         handleResultClick(product.id || (product as any)._id);
       } else if (searchQuery.trim()) {
         setShowDropdown(false);
+        setIsMobileSearchOpen(false);
         router.push(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
       }
     } else if (e.key === "Escape") {
       setShowDropdown(false);
+      setIsMobileSearchOpen(false);
     }
   };
 
@@ -421,7 +424,7 @@ export default function Header() {
             </li>
             <li className="border-b border-(--cultured) lg:border-none">
               <Link href="/products" className="flex items-center gap-3 py-3 text-(--eerie-black) text-[18px] lg:text-[15px] lg:font-medium lg:py-3 transition-colors hover:text-(--ocean-green)" onClick={closeNav}>
-                <Store size={18} className="shrink-0 text-(--sonic-silver) lg:hidden" /> Shop
+                <Store size={18} className="shrink-0 text-(--sonic-silver) lg:hidden" /> Products
               </Link>
             </li>
             <li className="border-b border-(--cultured) lg:border-none">
