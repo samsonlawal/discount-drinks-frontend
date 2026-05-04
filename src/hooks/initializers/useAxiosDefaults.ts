@@ -2,13 +2,16 @@
 import * as React from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { clearAuthState } from "@/redux/Slices/authSlice";
+import { clearAuthState, setAuthState } from "@/redux/Slices/authSlice";
 import { persistor } from "@/redux/store";
 import { useRouter } from "next/navigation";
 
 import { showErrorToast } from "@/utils/toaster";
+import AuthService from '@/services/auth';
+// import { useRefreshToken } from './../api/';
 
-function useAxiosDefaults({ accessToken, user }: { accessToken?: string; user?: any }) {
+
+function useAxiosDefaults({ accessToken, refreshToken, user }: { accessToken?: string; refreshToken: string; user?: any }) {
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -35,12 +38,36 @@ function useAxiosDefaults({ accessToken, user }: { accessToken?: string; user?: 
     const responseInterceptor = axios.interceptors.response.use(
       (response) => response,
       async (error) => {
+
+        const originalRequest = error.config;
+
         // If we get a 401, it means the session/token is invalid or expired
         // But do not redirect / clear if we are in the middle of a login attempt
         const isLoginRequest = error.config?.url?.includes("/login") || error.config?.url?.includes("/sign-in") || false;
         
-        if (error.response?.status === 401 && !isLoginRequest) {
-          console.warn("Unauthorized! Clearing session data...");
+        if (error.response?.status === 401 && !isLoginRequest && !originalRequest._retry) {
+
+          originalRequest._retry = true;
+
+          try {
+            const res = await AuthService.refreshToken({
+              payload: {
+                refreshToken
+              }})
+
+              console.log("Interceptor:", res.data)
+
+            const newAccessToken = res?.data?.token;
+            dispatch(setAuthState({
+              accessToken: newAccessToken,
+              refreshToken
+            }))
+
+            originalRequest.headers.Authorization = `Beaerer ${newAccessToken}`
+            return axios(originalRequest)
+          } catch(refreshError) {
+            
+                      console.warn("Unauthorized! Clearing session data...");
 
           // 1. Notify the user
           showErrorToast({ 
@@ -72,7 +99,7 @@ function useAxiosDefaults({ accessToken, user }: { accessToken?: string; user?: 
           const currentPath = window.location.pathname;
           const callbackParam = currentPath !== "/" ? `?callbackUrl=${encodeURIComponent(currentPath)}` : "";
           router.push(`/auth/sign-in${callbackParam}`);
-        }
+          }}
         return Promise.reject(error);
       }
     );

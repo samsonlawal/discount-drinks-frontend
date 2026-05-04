@@ -22,6 +22,12 @@ export type TLoginService = {
   };
 };
 
+export type TRefreshToken = {
+  payload: {
+    refreshToken: string;
+  }
+}
+
 export type TActivateAccountService = {
   token: string;
 };

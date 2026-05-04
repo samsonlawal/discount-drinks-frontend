@@ -44,13 +44,14 @@ export const useLogin = () => {
       const user = {
         ...res?.data?.user
       };
-      // console.log(res?.data)
+      console.log(res?.data)
       const accessToken = res?.data.token;
+      const refreshToken = res?.data.refreshToken; 
 
       dispatch(
         setAuthState({
           accessToken,
-          //    refreshToken,
+             refreshToken,
           //    expiresIn,
           user,
         }),
@@ -74,6 +75,69 @@ export const useLogin = () => {
 
   return { onLogin, loading };
 };
+
+
+export const useRefreshToken = () => {
+const [loading, setLoading] = useState<boolean>(false);
+const dispatch = useDispatch();
+
+const onRefrersh = async ({
+  payload,
+  successCallback,
+  errorCallback
+}: {
+  payload: { refreshToken: string };
+  successCallback?: () => void;
+  errorCallback?: (props: { message?: string; description?: string }) => void;
+}) => {
+
+  try {
+    setLoading(true);
+    const res = await AuthService.refreshToken({ payload });
+    const accessToken = res?.data.accessToken;
+
+    dispatch(setAuthState({
+      accessToken,
+    }))
+
+    showSuccessToast({
+      message: "Token refreshed Successfully",
+      description:res?.data?.description
+    })
+
+    setLoading(false)
+
+  } catch(error: Error | AxiosError | any) {
+    errorCallback?.({
+      message: getErrorMessage(error, "An error occured!"),
+      description: ""
+    })
+
+    setLoading(false);
+    } finally {
+
+    }
+}
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export const useRegister = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -233,3 +297,4 @@ export const useResetPassword = () => {
 
   return { onResetPassword, loading };
 };
+
