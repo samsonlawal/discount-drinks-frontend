@@ -20,8 +20,8 @@ import useScrollToTop from "@/hooks/initializers/useScrollToTop";
 
 // Inner component so it has access to Redux store (must be inside <Provider>)
 function AxiosInitializer() {
-  const { accessToken, user } = useSelector((state: RootState) => state.auth);
-  useAxiosDefaults({ accessToken, user });
+  const { accessToken, refreshToken, user } = useSelector((state: RootState) => state.auth);
+  useAxiosDefaults({ accessToken, refreshToken, user });
   useScrollToTop();
   return null;
 }

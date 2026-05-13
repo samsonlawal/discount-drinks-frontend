@@ -13,6 +13,10 @@ import {
   RefreshCw,
   ShieldCheck,
   CircleCheck,
+  TicketPercent,
+  History,
+  Zap,
+  WandSparkles,
 } from "lucide-react";
 import { showErrorToast, showSuccessToast } from "@/utils/toaster";
 import "../../style.css";
@@ -60,17 +64,17 @@ export default function SignInPage() {
     <main className="auth-page">
       {/* Main Auth Section */}
       <main className="auth-main">
-        <div className="container">
+        <div className="auth-main-container">
           {/* Logo Navigation */}
-          <div className="flex justify-center mb-6">
-            <Link href="/">
+          <div className="flex justify-center mb-10 md:mb-10 h-fit w-full mdl:hidden">
+            <Link href="/" className="w-fit h-auto">
               <Image 
                 src="/images/logo.svg" 
                 alt="Discount Drinks Logo" 
                 width={180} 
                 height={50} 
                 priority 
-                className="h-10 sm:h-12 w-auto" 
+                className="h-16 sm:h-20 w-auto" 
               />
             </Link>
           </div>
@@ -130,7 +134,7 @@ export default function SignInPage() {
                 </div>
 
                 {/* Password Field */}
-                <div className="form-group">
+                <div className="form-group-password">
                   <label htmlFor="password" className="form-label">
                     Password
                     <span className="form-required" aria-label="required">
@@ -156,9 +160,9 @@ export default function SignInPage() {
                       type="button"
                       className="password-toggle"
                       aria-label="Toggle password visibility"
-                      onClick={() => setShowPassword(!showPassword)}
+                      onClick={() => setShowPassword(!showPassword)}  
                     >
-                      {showPassword ? <EyeOff /> : <Eye />}
+                      {showPassword ? <EyeOff strokeWidth={1.5} size={ 20} className=""/> : <Eye strokeWidth={1.5} size={20} className=""/>}
                     </button>
                   </div>
                   <span
@@ -175,6 +179,7 @@ export default function SignInPage() {
                       type="checkbox"
                       name="remember"
                       data-remember-checkbox
+                      className="w-[16px] h-[16px] lg:w-[14px] lg:h-[14px]" 
                     />
                     <span>Remember me</span>
                   </label>
@@ -231,14 +236,28 @@ export default function SignInPage() {
               </div>
 
               {/* Security Notice */}
-              <div className="security-notice">
+              {/* <div className="security-notice">
                 <ShieldCheck />
                 <span>Your information is secure and encrypted</span>
-              </div>
+              </div> */}
             </div>
 
             {/* Side Image/Info (Optional) */}
             <div className="auth-side">
+          {/* Logo Navigation */}
+          <div className="md:flex justify-start h-fit w-full hidden">
+            <Link href="/" className="w-fit h-auto">
+              <Image 
+                src="/logo-white.svg" 
+                alt="Discount Drinks Logo" 
+                width={180} 
+                height={50} 
+                priority 
+                className="h-16 sm:h-20 w-auto" 
+              />
+            </Link>
+          </div>
+
               <div className="auth-side-content">
                 <h2 className="side-title">Start Shopping Today</h2>
                 <p className="side-text">
@@ -246,25 +265,33 @@ export default function SignInPage() {
                   personalized shopping experience.
                 </p>
 
-                <ul className="feature-list">
-                  <li className="feature-item">
-                    <CircleCheck />
+                <ul className="feature-list text-(--sonic-silver)">
+                  <li className="feature-item hover:text-white transition-colors duration-300">
+                    <TicketPercent strokeWidth={1.5}/>
                     <span>Exclusive member discounts</span>
                   </li>
-                  <li className="feature-item">
-                    <CircleCheck />
+                  <li className="feature-item hover:text-white transition-colors duration-300">
+                    <History strokeWidth={1.5}/>
                     <span>Order tracking & history</span>
                   </li>
-                  <li className="feature-item">
-                    <CircleCheck />
+                  <li className="feature-item hover:text-white transition-colors duration-300">
+                    <Zap strokeWidth={1.5}/>
                     <span>Faster checkout process</span>
                   </li>
-                  <li className="feature-item">
-                    <CircleCheck />
+                  <li className="feature-item hover:text-white transition-colors duration-300">
+                    <WandSparkles strokeWidth={1.5}/>
                     <span>Personalized recommendations</span>
                   </li>
                 </ul>
+
+
               </div>
+
+                <div className="security-notice bg-white/10">
+                <ShieldCheck strokeWidth={1.5}/>
+                <span>Your information is secure and encrypted</span>
+              </div>
+              
             </div>
           </div>
         </div>

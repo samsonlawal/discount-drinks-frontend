@@ -22,10 +22,15 @@ export default function ProfileDropdown({ user, onLogout }: ProfileDropdownProps
     <div className="hidden lg:block">
       <DropdownMenu.Root>
         <DropdownMenu.Trigger asChild>
-          <button className="flex items-center gap-2 group focus:outline-none rounded-sm px-3 py-1.5 hover:bg-(--cultured) transition-colors text-(--eerie-black)/70 hover:text-(--eerie-black)">
-            <div className="flex items-center justify-center rounded-full transition-colors">
+          <button className="flex items-center gap-2 group focus:outline-none rounded-sm px-3 py-1.5 transition-colors text-(--eerie-black)/70 hover:text-(--eerie-black)">
+            <div className="flex items-center justify-center rounded-full transition-colors h-6 w-6 overflow-hidden shrink-0">
               {user && user.profileImage ? (
-                <img src={user.profileImage} alt="Profile" className="w-6 h-6 rounded-full" />
+                <img 
+                  src={user.profileImage} 
+                  alt="Profile" 
+                  className="w-full h-full object-cover" 
+                  style={{ objectFit: 'cover', width: '100%', height: '100%', aspectRatio: '1/1' }}
+                />
               ) : (
                 <CircleUserRound size={20} />
               )}

@@ -7,6 +7,7 @@ import {
   TForgotPasswordService,
   TVerifyCodeService,
   TResetPasswordService,
+  TRefreshToken
 } from "./types";
 
 class Service implements AuthInterface {
@@ -14,6 +15,10 @@ class Service implements AuthInterface {
     return axios.post(env.api.auth + "/login", payload, {
       withCredentials: true,
     });
+  }
+
+  refreshToken({payload}: TRefreshToken) {
+    return axios.post(env.api.auth + "/refresh-token", payload)
   }
 
   register({ payload }: TRegisterService) {

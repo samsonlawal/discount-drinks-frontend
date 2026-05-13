@@ -24,8 +24,11 @@ export default function ProductDetailPage() {
   const [loadingIconIndex, setLoadingIconIndex] = useState(0);
 
   // Try to find in mock if API fails/isn't set up yet, to avoid totally breaking
-  const mockFallback = products.find((p) => p.id === productId || p._id === productId);
-  const product = apiProduct || mockFallback;
+  // const mockFallback = products.find((p) => p.id === productId || p._id === productId);
+  // const product = apiProduct || mockFallback;
+
+  const product = apiProduct;
+
 
   const [activeImage, setActiveImage] = useState("");
   const [galleryImages, setGalleryImages] = useState<string[]>([]);
@@ -56,7 +59,7 @@ export default function ProductDetailPage() {
       
       const imagesList = (product as any).images && Array.isArray((product as any).images) && (product as any).images.length > 0 
         ? (product as any).images 
-        : [productImage, "/images/product-1.jpg", "/images/product-2.jpg", "/images/product-4.jpg"];
+        : [productImage];
       
       setGalleryImages(Array.from(new Set(imagesList as string[])));
 
@@ -185,8 +188,7 @@ export default function ProductDetailPage() {
                 
                 {/* Thumbnails */}
                 <div className="flex flex-row gap-2 md:gap-4 h-fit w-full items-center justify-center py-2 px-2">
-                  {Array.from({ length: 5 }).map((_, idx) => {
-                    const img = galleryImages[idx];
+                  {galleryImages.map((img, idx) => {
                     const hasImage = !!img && !(typeof img === 'string' && (img.trim() === '' || img === 'null' || img === 'undefined'));
                     const isActive = activeImage === img;
 
@@ -194,23 +196,18 @@ export default function ProductDetailPage() {
                       <button
                         key={idx}
                         onClick={() => hasImage && setActiveImage(img)}
-                        disabled={!hasImage}
-                        className={`relative shrink-0 overflow-hidden transition-all duration-200 w-8 h-8 sm:w-12 sm:h-12 ${
+                        className={`relative shrink-0 overflow-hidden transition-all duration-200 w-8 h-8 sm:w-12 sm:h-12 rounded-[3px] ${
                           isActive
                             ? "ring-2 ring-black ring-offset-1 opacity-100"
-                            : hasImage
-                            ? "ring-1 ring-gray-200 hover:ring-gray-300 cursor-pointer"
-                            : "bg-gray-200 cursor-not-allowed"
+                            : "ring-1 ring-(--sonic-silver) hover:ring-(--ocean-green) cursor-pointer"
                         }`}
-                        aria-label={hasImage ? `${product.name} thumbnail ${idx + 1}` : "Empty image slot"}
+                        aria-label={`${product.name} thumbnail ${idx + 1}`}
                       >
-                        {hasImage ? (
-                          <img
-                            src={typeof img === 'string' ? img : (img as any)?.src || img}
-                            alt=""
-                            className="w-full h-full object-cover bg-white block"
-                          />
-                        ) : null}
+                        <img
+                          src={typeof img === 'string' ? img : (img as any)?.src || img}
+                          alt=""
+                          className="w-full h-full object-cover bg-white block"
+                        />
                       </button>
                     );
                   })}
@@ -221,7 +218,7 @@ export default function ProductDetailPage() {
                   alt={product.name || "Product"}
                   width={400}
                   height={400}
-                  className="product-img"
+                  className="product-img border-[1px] border-(--cultured) bg-(--cultured)"
                   priority
                 />
               </div>
@@ -371,7 +368,7 @@ export default function ProductDetailPage() {
               </div>
 
               {/* Buy Box Widget */}
-              <div className="bg-(--cultured) border border-gray-100 rounded-sm p-[24px] shadow-sm transition-all duration-300 hover:border-gray-200 lg:sticky lg:top-[120px]">
+              <div className="bg-(--cultured) border border-gray-100 rounded-[8px] p-[24px] transition-all duration-300  lg:sticky lg:top-[120px]">
                 <div className="mb-4">
                   <div className="flex items-end gap-2 text-(--eerie-black) mb-1.5 border-b border-gray-200 pb-3">
                     <data className="font-semibold text-[28px] leading-none" value={widgetCurrentPrice}>
@@ -454,7 +451,7 @@ export default function ProductDetailPage() {
 
           {/* Related Products */}
           {!relatedLoading && relatedProducts.length > 0 && (
-            <section className="section py-20">
+            <section className="section py-20 border-t border-gray-100 mt-10">
               <h2 className="h2 section-title">Related Products</h2>
               <ul className="product-list flex flex-row flex-wrap !justify-center items-center">
                 {relatedProducts.map((relatedProduct: any) => (

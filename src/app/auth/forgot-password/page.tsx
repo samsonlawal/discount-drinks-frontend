@@ -14,6 +14,10 @@ import {
   ShieldCheck,
   CircleCheck,
   ArrowLeft,
+  FastForward,
+  MailCheck,
+  LockKeyhole,
+  Clock
 } from "lucide-react";
 import { showErrorToast, showSuccessToast } from "@/utils/toaster";
 import {
@@ -162,17 +166,17 @@ export default function ForgotPasswordPage() {
   return (
     <main className="auth-page">
       <main className="auth-main">
-        <div className="container">
+        <div className="auth-main-container">
           {/* Logo Navigation */}
-          <div className="flex justify-center mb-6">
-            <Link href="/">
+          <div className="flex justify-center mb-10 h-fit w-full mdl:hidden">
+            <Link href="/" className="w-fit h-auto">
               <Image 
                 src="/images/logo.svg" 
                 alt="Discount Drinks Logo" 
                 width={180} 
                 height={50} 
                 priority 
-                className="h-10 sm:h-12 w-auto" 
+                className="h-16 sm:h-20 w-auto" 
               />
             </Link>
           </div>
@@ -447,15 +451,24 @@ export default function ForgotPasswordPage() {
                 </>
               )}
 
-              {/* Security Notice */}
-              <div className="security-notice">
-                <ShieldCheck />
-                <span>Your information is secure and encrypted</span>
-              </div>
             </div>
 
             {/* Side Image/Info */}
             <div className="auth-side">
+              {/* Logo Navigation */}
+              <div className="md:flex justify-start h-fit w-full hidden">
+                <Link href="/" className="w-fit h-auto">
+                  <Image 
+                    src="/logo-white.svg" 
+                    alt="Discount Drinks Logo" 
+                    width={180} 
+                    height={50} 
+                    priority 
+                    className="h-16 sm:h-20 w-auto" 
+                  />
+                </Link>
+              </div>
+
               <div className="auth-side-content">
                 <h2 className="side-title">Reset Your Password</h2>
                 <p className="side-text">
@@ -463,24 +476,30 @@ export default function ForgotPasswordPage() {
                   regain access to your account.
                 </p>
 
-                <ul className="feature-list">
-                  <li className="feature-item ">
-                    {/* <CircleCheck /> */}
-                    <span >Quick 3-step process</span>
+                <ul className="feature-list text-(--sonic-silver)">
+                  <li className="feature-item hover:text-white transition-colors duration-300">
+                    <FastForward strokeWidth={1.5} />
+                    <span>Quick 3-step process</span>
                   </li>
-                  <li className="feature-item">
-                    <CircleCheck />
+                  <li className="feature-item hover:text-white transition-colors duration-300">
+                    <MailCheck strokeWidth={1.5} />
                     <span>Secure email verification</span>
                   </li>
-                  <li className="feature-item">
-                    <CircleCheck />
+                  <li className="feature-item hover:text-white transition-colors duration-300">
+                    <LockKeyhole strokeWidth={1.5} />
                     <span>Encrypted password storage</span>
                   </li>
-                  <li className="feature-item">
-                    <CircleCheck />
+                  <li className="feature-item hover:text-white transition-colors duration-300">
+                    <Clock strokeWidth={1.5} />
                     <span>24/7 account protection</span>
                   </li>
                 </ul>
+              </div>
+
+              {/* Security Notice */}
+                <div className="security-notice bg-white/10">
+                <ShieldCheck strokeWidth={1.5}/>
+                <span>Your information is secure and encrypted</span>
               </div>
             </div>
           </div>

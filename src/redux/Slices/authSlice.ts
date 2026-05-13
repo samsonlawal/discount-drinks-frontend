@@ -13,12 +13,13 @@ interface User {
 
 interface AuthState {
   accessToken: string;
+  refreshToken: string;
   user: User | undefined;
 }
 
 const INITIAL_STATE: AuthState = {
   accessToken: "",
-  //   refreshToken: "",
+    refreshToken: "",
   //   expiresIn: undefined,
   user: undefined,
 };

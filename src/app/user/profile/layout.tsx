@@ -13,21 +13,31 @@ export default function ProfileLayout({ children }: { children: React.ReactNode 
   const router = useRouter();
   const pathname = usePathname();
   const { onLogout } = useLogout();
+  const [isLoggingOut, setIsLoggingOut] = React.useState(false);
 
   useEffect(() => {
-    if (!user) {
+    if (!user && !isLoggingOut) {
       router.push("/auth/sign-in?redirect=" + pathname);
     }
-  }, [user, router, pathname]);
+  }, [user, router, pathname, isLoggingOut]);
+
+  if (isLoggingOut) {
+    return (
+      <div className="min-h-[70vh] flex flex-col items-center justify-center text-center px-4 w-full">
+        <div className="w-12 h-12 border-4 border-(--ocean-green) border-t-transparent rounded-full animate-spin mb-6" />
+        <h2 className="text-xl font-bold text-(--eerie-black) mb-2">Logging you out...</h2>
+        <p className="text-(--sonic-silver) text-sm">Please wait while we secure your session.</p>
+      </div>
+    );
+  }
 
   if (!user) {
     return null;
   }
 
   const handleLogout = () => {
+    setIsLoggingOut(true);
     onLogout();
-    // Use window.location for a hard redirect to avoid the "Redirecting..." flash in the layout
-    window.location.href = "/";
   };
 
   const menuItems = [

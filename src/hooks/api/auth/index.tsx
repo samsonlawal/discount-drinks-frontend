@@ -8,8 +8,7 @@ import env from "@/config/env";
 import axios, { AxiosError } from "axios";
 import AuthService from "@/services/auth";
 import { getErrorMessage } from "@/utils/errorUtils";
-import { useRouter } from "next/navigation";
-import router from "next/router";
+import { useRouter, usePathname } from "next/navigation";
 
 
 // For logout to set the initial state to the empty
@@ -45,13 +44,14 @@ export const useLogin = () => {
       const user = {
         ...res?.data?.user
       };
-      // console.log(res?.data)
+      console.log(res?.data)
       const accessToken = res?.data.token;
+      const refreshToken = res?.data.refreshToken; 
 
       dispatch(
         setAuthState({
           accessToken,
-          //    refreshToken,
+             refreshToken,
           //    expiresIn,
           user,
         }),
@@ -75,6 +75,69 @@ export const useLogin = () => {
 
   return { onLogin, loading };
 };
+
+
+export const useRefreshToken = () => {
+const [loading, setLoading] = useState<boolean>(false);
+const dispatch = useDispatch();
+
+const onRefrersh = async ({
+  payload,
+  successCallback,
+  errorCallback
+}: {
+  payload: { refreshToken: string };
+  successCallback?: () => void;
+  errorCallback?: (props: { message?: string; description?: string }) => void;
+}) => {
+
+  try {
+    setLoading(true);
+    const res = await AuthService.refreshToken({ payload });
+    const accessToken = res?.data.accessToken;
+
+    dispatch(setAuthState({
+      accessToken,
+    }))
+
+    showSuccessToast({
+      message: "Token refreshed Successfully",
+      description:res?.data?.description
+    })
+
+    setLoading(false)
+
+  } catch(error: Error | AxiosError | any) {
+    errorCallback?.({
+      message: getErrorMessage(error, "An error occured!"),
+      description: ""
+    })
+
+    setLoading(false);
+    } finally {
+
+    }
+}
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 export const useRegister = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -117,21 +180,26 @@ export const useRegister = () => {
 
 
 export const useLogout = () => {
-  // const updateAppState = useUpdateAuthContext();
   const dispatch = useDispatch();
+  const router = useRouter();
+  const pathname = usePathname();
 
-  const onLogout = async () => {
-    // Navigate FIRST — this tears down the React tree immediately,
-    // preventing the naked header/footer flash while async cleanup runs
-    window.location.href = "/";
+  const onLogout = () => {
+    // Check if we are on a protected route
+    const isProtected = pathname?.startsWith("/user") || 
+                        pathname?.startsWith("/checkout") || 
+                        pathname?.startsWith("/order");
 
-    // Clear Redux state
-    dispatch(clearAuthState());
+    // Clear persistence immediately so the next load is clean
+    localStorage.removeItem("persist:DISCOUNT_DRINKS_PERSISTOR");
 
-    // Purge persistent storage in the background (page is already navigating)
-    const { persistor } = await import("@/redux/store");
-    if (persistor) {
-      await persistor.purge();
+    if (isProtected) {
+      // For protected pages, a hard reload is the ONLY way to avoid 
+      // the jarring React re-render of a profile page without user data.
+      window.location.href = "/";
+    } else {
+      // For public pages, stay on the page and just clear the memory state.
+      dispatch(clearAuthState());
     }
   };
 
@@ -229,3 +297,4 @@ export const useResetPassword = () => {
 
   return { onResetPassword, loading };
 };
+

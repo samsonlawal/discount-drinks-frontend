@@ -17,7 +17,9 @@ import {
   Info,
   Mail,
   Check,
-  HelpCircle
+  HelpCircle,
+  ChevronDown
+
 } from "lucide-react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
@@ -138,6 +140,7 @@ export default function Header() {
 
   const handleResultClick = (id: string) => {
     setShowDropdown(false);
+    setIsMobileSearchOpen(false);
     setSearchQuery("");
     router.push(`/product/${id}`);
   };
@@ -155,10 +158,12 @@ export default function Header() {
         handleResultClick(product.id || (product as any)._id);
       } else if (searchQuery.trim()) {
         setShowDropdown(false);
+        setIsMobileSearchOpen(false);
         router.push(`/products?search=${encodeURIComponent(searchQuery.trim())}`);
       }
     } else if (e.key === "Escape") {
       setShowDropdown(false);
+      setIsMobileSearchOpen(false);
     }
   };
 
@@ -178,7 +183,7 @@ export default function Header() {
   const { onLogout } = useLogout();
 
   return (
-    <header className={`w-full bg-(--cultured) transition-all duration-200 z-50 ${isScrolled ? "fixed top-0 left-0 lg:static lg:shadow-none lg:border-b lg:border-black/10" : "relative lg:py-2 lg:border-b lg:border-black/10 lg:mb-[50px]"}`}>
+    <header className={`w-full border-b-[1px] border-(--cultured) transition-all duration-200 z-50 ${isScrolled ? "fixed top-0 left-0 lg:static " : "relative lg:py-2 lg:mb-[50px]"}`}>
       <div className="container mx-auto px-4 sm:px-10 max-w-[1350px]">
         
         {/* Main Header Row */}
@@ -340,7 +345,14 @@ export default function Header() {
                   className="relative flex items-center justify-center w-[36px] h-[36px] text-(--eerie-black) lg:hidden" 
                 >
                   {user.profileImage ? (
-                    <img src={user.profileImage} alt="Profile" className="w-[22px] h-[22px] rounded-full" />
+                    <div className="w-[22px] h-[22px] rounded-full overflow-hidden shrink-0">
+                      <img 
+                        src={user.profileImage} 
+                        alt="Profile" 
+                        className="w-full h-full object-cover" 
+                        style={{ objectFit: 'cover', width: '100%', height: '100%', aspectRatio: '1/1' }}
+                      />
+                    </div>
                   ) : (
                     <CircleUserRound size={22} />
                   )}
@@ -359,17 +371,20 @@ export default function Header() {
             ) : (
               <Link
                 href="/auth/sign-in"
-                className="relative flex items-center justify-center w-[36px] h-[36px] text-(--eerie-black) rounded-lg transition-colors lg:w-auto lg:gap-1.5 lg:h-auto group hover:text-(--ocean-green)"
+                className="relative flex items-center justify-center w-[36px] h-[36px] text-(--eerie-black) rounded-md transition-colors lg:w-auto lg:gap-1.5 lg:px-3 lg:py-1.5 lg:h-auto group"
               >
-                <CircleUserRound size={24} aria-hidden="true" />
-                <span className="hidden lg:block text-(--sonic-silver) text-[14px] group-hover:text-(--ocean-green) font-medium">Account</span>
+                <CircleUserRound size={22} aria-hidden="true" />
+                <span className="hidden lg:block text-(--sonic-silver) text-[14px] group-hover:text-(--eerie-black) font-medium">Account</span>
+
+                            <ChevronDown size={14} className="hidden lg:flex text-(--sonic-silver) group-hover:text-(--eerie-black) transition-transform duration-200 group-data-[state=open]:rotate-180 " />
+                
               </Link>
             )}
 
             {/* Cart */}
             <Link href="/cart" className="relative flex items-center justify-center w-[36px] h-[36px] text-(--eerie-black) rounded-lg transition-colors lg:w-auto lg:gap-1.5 lg:h-auto group hover:text-(--ocean-green)">
               <div className="relative flex justify-center items-center">
-                <ShoppingCart size={24} aria-hidden="true" />
+                <ShoppingCart size={22} aria-hidden="true" />
                 {!isLoading && (
                   <div className="absolute -top-1.5 -right-2 flex items-center justify-center min-w-[18px] h-[18px] bg-(--ocean-green) text-white text-[10px] rounded-full px-1">
                     {getCartCount()}
@@ -409,7 +424,7 @@ export default function Header() {
             </li>
             <li className="border-b border-(--cultured) lg:border-none">
               <Link href="/products" className="flex items-center gap-3 py-3 text-(--eerie-black) text-[18px] lg:text-[15px] lg:font-medium lg:py-3 transition-colors hover:text-(--ocean-green)" onClick={closeNav}>
-                <Store size={18} className="shrink-0 text-(--sonic-silver) lg:hidden" /> Shop
+                <Store size={18} className="shrink-0 text-(--sonic-silver) lg:hidden" /> Products
               </Link>
             </li>
             <li className="border-b border-(--cultured) lg:border-none">
