@@ -36,7 +36,7 @@ export const useGetTags = () => {
       //    totalPages: res?.data?.data?.totalPages,
       //    totalRecords: res?.data?.data?.totalRecords,
       //  });
-      console.log(res);
+      // console.log(res);
       return mappedData;
     } catch (error: Error | AxiosError | any) {
       showErrorToast({

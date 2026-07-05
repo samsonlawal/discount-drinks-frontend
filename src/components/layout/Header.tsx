@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useCart } from "@/contexts/CartContext";
 import { useWishlist } from "@/contexts/WishlistContext";
 import {
@@ -29,6 +29,9 @@ import { useGetProducts } from "@/hooks/api/products";
 import { Product } from "@/types";
 
 export default function Header() {
+  
+  const pathname = usePathname() || "";
+
   const [isNavOpen, setIsNavOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
@@ -47,6 +50,18 @@ export default function Header() {
   const mobileSearchRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const { fetchProducts } = useGetProducts();
+
+ const isActive = (path: string) => {
+  if (path === "/") {
+    return pathname === "/"
+  } 
+
+  return pathname.startsWith(path)
+ }
+
+ useEffect(() => {
+console.log(pathname)
+ }, [pathname])
 
   useEffect(() => {
     const handleScroll = () => setIsScrolled(window.scrollY > 0);
@@ -265,6 +280,8 @@ export default function Header() {
               )}
             </div>
           </div>
+
+
           {/* Mobile Search - Backdrop & Dropdown */}
           {isMobileSearchOpen && (
             <div 
@@ -325,6 +342,8 @@ export default function Header() {
             />
           </Link>
 
+          
+
           {/* Action icons */}
           <div className="flex-1 flex items-center gap-1 lg:gap-4 justify-end">
             {/* Search Toggle — mobile only */}
@@ -382,16 +401,16 @@ export default function Header() {
             )}
 
             {/* Cart */}
-            <Link href="/cart" className="relative flex items-center justify-center w-[36px] h-[36px] text-(--eerie-black) rounded-lg transition-colors lg:w-auto lg:gap-1.5 lg:h-auto group hover:text-(--ocean-green)">
+            <Link href="/cart" className="relative flex group items-center justify-center w-[36px] h-[36px] text-(--eerie-black) rounded-lg transition-colors lg:w-auto lg:gap-1.5 lg:h-auto group hover:text-(--ocean-green)">
               <div className="relative flex justify-center items-center">
-                <ShoppingCart size={22} aria-hidden="true" />
+                <ShoppingCart size={20} aria-hidden="true" className="group-hover:text-(--ocean-green)" />
                 {!isLoading && (
-                  <div className="absolute -top-1.5 -right-2 flex items-center justify-center min-w-[18px] h-[18px] bg-(--ocean-green) text-white text-[10px] rounded-full px-1">
+                  <div className="absolute -top-1.5 -right-2 flex items-center justify-center min-w-[17px] h-[17px] bg-(--ocean-green) text-white text-[10px] rounded-full px-1">
                     {getCartCount()}
                   </div>
                 )}
               </div>
-              <span className="hidden lg:block text-(--sonic-silver) text-[14px] group-hover:text-(--ocean-green) font-medium">Cart</span>
+              <span className="hidden lg:block text-(--eerie-black) text-[14px] group-hover:text-(--ocean-green) font-medium">Cart</span>
             </Link>
           </div>
         </div>
@@ -417,29 +436,54 @@ export default function Header() {
           </div>
 
           <ul className="flex flex-col w-full lg:flex-row lg:justify-center lg:items-center lg:gap-10 lg:px-10 lg:h-[50px] ">
+
             <li className="border-b border-(--cultured) lg:border-none">
-              <Link href="/" className="flex items-center gap-3 py-3 text-(--eerie-black) text-[18px] lg:text-[15px] lg:font-medium lg:py-3 transition-colors hover:text-(--ocean-green)" onClick={closeNav}>
-                <Home size={18} className="shrink-0 text-(--sonic-silver) lg:hidden" /> Home
+              <Link href="/" className={`flex items-center gap-3 py-3 text-[18px] lg:text-[15px] lg:font-medium lg:py-3 transition-colors  ${
+              isActive("/") ? "text-(--ocean-green)" : "text-(--eerie-black) hover:text-(--ocean-green)"
+      }`} onClick={closeNav}>
+                <Home size={18} className="shrink-0 text-(--sonic-silver) lg:hidden" /> 
+                Home
               </Link>
             </li>
+
             <li className="border-b border-(--cultured) lg:border-none">
-              <Link href="/products" className="flex items-center gap-3 py-3 text-(--eerie-black) text-[18px] lg:text-[15px] lg:font-medium lg:py-3 transition-colors hover:text-(--ocean-green)" onClick={closeNav}>
-                <Store size={18} className="shrink-0 text-(--sonic-silver) lg:hidden" /> Products
+              <Link href="/products" className={`flex items-center gap-3 py-3 text-[18px] lg:text-[15px] lg:font-medium lg:py-3 transition-colors ${
+        isActive("/products") ? "text-(--ocean-green)" : "text-(--eerie-black) hover:text-(--ocean-green)"
+      }`} onClick={closeNav}>
+                <Store size={18} className="shrink-0 text-(--sonic-silver) lg:hidden" />
+<p>
+                 Products
+
+</p>
               </Link>
             </li>
+
             <li className="border-b border-(--cultured) lg:border-none">
-              <Link href="/about" className="flex items-center gap-3 py-3 text-(--eerie-black) text-[18px] lg:text-[15px] lg:font-medium lg:py-3 transition-colors hover:text-(--ocean-green)" onClick={closeNav}>
-                <Info size={18} className="shrink-0 text-(--sonic-silver) lg:hidden" /> About
+              <Link href="/about" className={`flex items-center gap-3 py-3 text-[18px] lg:text-[15px] lg:font-medium lg:py-3 transition-colors  ${
+        isActive("/about") ? "text-(--ocean-green)" : "text-(--eerie-black) hover:text-(--ocean-green)"
+      }`} onClick={closeNav}>
+                <Info size={18} className="shrink-0 text-(--sonic-silver) lg:hidden" /> 
+                <p>About</p>
               </Link>
             </li>
+
             <li className="border-b border-(--cultured) lg:border-none">
-              <Link href="/faq" className="flex items-center gap-3 py-3 text-(--eerie-black) text-[18px] lg:text-[15px] lg:font-medium lg:py-3 transition-colors hover:text-(--ocean-green)" onClick={closeNav}>
-                <HelpCircle size={18} className="shrink-0 text-(--sonic-silver) lg:hidden" /> FAQ
+              <Link href="/faq" className={`flex items-center gap-3 py-3 text-[18px] lg:text-[15px] lg:font-medium lg:py-3 transition-colors  ${
+        isActive("/faq") ? "text-(--ocean-green)" : "text-(--eerie-black) hover:text-(--ocean-green)"
+      }`} onClick={closeNav}>
+                <HelpCircle size={18} className="shrink-0 text-(--sonic-silver) lg:hidden" /> 
+                <p>FAQ</p>
               </Link>
             </li>
+
             <li className="lg:border-none">
-              <Link href="/contact" className="flex items-center gap-3 py-3 text-(--eerie-black) text-[18px] lg:text-[15px] lg:font-medium lg:py-3 transition-colors hover:text-(--ocean-green)" onClick={closeNav}>
-                <Mail size={18} className="shrink-0 text-(--sonic-silver) lg:hidden" /> Contact
+              <Link href="/contact" className={`flex items-center gap-3 py-3 text-[18px] lg:text-[15px] lg:font-medium lg:py-3 transition-colors  ${
+        isActive("/contact") ? "text-(--ocean-green)" : "text-(--eerie-black) hover:text-(--ocean-green)"
+      }`} onClick={closeNav}>
+                <Mail size={18} className="shrink-0 text-(--sonic-silver) lg:hidden" /> 
+                <p>
+                  Contact
+                </p>
               </Link>
             </li>
           </ul>

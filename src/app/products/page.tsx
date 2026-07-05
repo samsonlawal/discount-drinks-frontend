@@ -18,7 +18,7 @@ function ProductsContent() {
   const categoryParam = searchParams.get("category");
 
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedCategory, setSelectedCategory] = useState(categoryParam || "All");
   const [selectedBadge, setSelectedBadge] = useState("All");
   const [selectedBrand, setSelectedBrand] = useState("All");
   const [priceRange, setPriceRange] = useState<[number, number]>([0, 9999]);
@@ -158,7 +158,7 @@ function ProductsContent() {
                   </ul>
 
                   {formattedProducts.length === 0 && !productsLoading && (
-                    <div className="flex flex-col justify-center items-center py-20 w-full min-h-[50vh] text-center px-4">
+                    <div className="flex flex-col justify-center items-center w-full min-h-[50vh] text-center px-4">
                       <div className="bg-gray-100 p-8 rounded-full mb-6">
                         <WineOff size={48} className="text-gray-400" />
                       </div>
@@ -180,11 +180,13 @@ function ProductsContent() {
                     </div>
                   )}
 
-                  <Pagination
+                  {formattedProducts.length > 0 && (
+                    <Pagination
                     currentPage={currentPage}
                     totalPages={pagination?.pages || 1}
                     onPageChange={setCurrentPage}
                   />
+                  )}
                 </>
               )}
             </div>

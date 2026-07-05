@@ -22,7 +22,7 @@ export default function ProfileDropdown({ user, onLogout }: ProfileDropdownProps
     <div className="hidden lg:block">
       <DropdownMenu.Root>
         <DropdownMenu.Trigger asChild>
-          <button className="flex items-center gap-2 group focus:outline-none rounded-sm px-3 py-1.5 transition-colors text-(--eerie-black)/70 hover:text-(--eerie-black)">
+          <button className="flex items-center gap-2 group focus:outline-none rounded-sm px-3 py-1.5 transition-colors text-(--eerie-black) hover:text-(--ocean-green)">
             <div className="flex items-center justify-center rounded-full transition-colors h-6 w-6 overflow-hidden shrink-0">
               {user && user.profileImage ? (
                 <img 
@@ -35,10 +35,14 @@ export default function ProfileDropdown({ user, onLogout }: ProfileDropdownProps
                 <CircleUserRound size={20} />
               )}
             </div>
-            <span className="text-sm font-medium group-hover:text-black hidden lg:block max-w-[100px] truncate">
+            <span className="text-sm font-medium group-hover:text-(--ocean-green) hidden lg:flex gap-1 flex-row justify-center items-center h-full max-w-[100px] truncate text-(--eerie-black) hover:text-(--ocean-green)">
+<p>
               {user.username || "Account"}
+
+</p>
+            <ChevronDown size={14} strokeWidth={2} className="group-hover:text-(--ocean-green) transition-transform duration-200 group-data-[state=open]:rotate-180" />
+
             </span>
-            <ChevronDown size={14} className="group-hover:text-black transition-transform duration-200 group-data-[state=open]:rotate-180" />
           </button>
         </DropdownMenu.Trigger>
 
